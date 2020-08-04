@@ -1,0 +1,9 @@
+"/*" {BEGIN(comment);num_chars+=yyleng;}
+[0-9]+ {num_dec++; num_chars+=yyleng;}
+[_a-zA-Z][_a-zA-Z0-9]* {++num_idents; num_chars += yyleng;}
+\n {++num_lines; ++num_chars;}
+.  {++num_chars;}
+
+<comment>"*/" BEGIN(INITIAL); num_chars += yyleng; ++num_lines;
+<comment>\n ++num_lines; num_chars+=2;
+<comment>. num_chars++;
