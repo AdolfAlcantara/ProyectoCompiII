@@ -1,0 +1,4 @@
+* { std::cout<<"loop text: "<<input.tokenText()<<"\n";
+                    input.cur--;
+                    std::cout<<"loop text: "<<input.tokenText()<<"\n";
+                    goto loop;}

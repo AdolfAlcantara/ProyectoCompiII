@@ -43,7 +43,7 @@ int ExprLexer::getNextToken(semantic_type *yylval)
             num = [0-9]+;
             ident = [_a-zA-Z0-9][_a-zA-Z0-9]*;
             string = ["][^(\n|")]*["];
-            comment = "#"[^\n]*"\n";
+            comment = "#"[^\n]*;
             
 
 
@@ -53,6 +53,7 @@ int ExprLexer::getNextToken(semantic_type *yylval)
                         std::cout<<"global newline: "<<input.tokenText();
                         std::cout<<"global newline size: "<<input.tokenText().length() <<"\n";
                         //makeToken(token::TK_EOF);
+                        input.tok = input.cur;
                         goto indent_block;
                     }
             end     {return input.eof? TkEof(): TkError();}
@@ -163,16 +164,19 @@ int ExprLexer::getNextToken(semantic_type *yylval)
         
         */
 
-
         indent_block:
             /*!re2c
-
                 wsp2 = [ \t]+;
 
-                * { std::cout<<"loop text: "<<input.tokenText()<<"\n";
-                    goto loop;}
+                comment { continue;}
 
-                [ \t]+ {
+                "\n" {  std::cout<<"indent_b new line: "<<input.tokenText()<<"\n"; 
+                        input.tok = input.cur;
+                        goto indent_block;
+                    }
+
+                [ \t]* {
+                    //input.cur--;
                     //yylval->emplace<std::string>(std::string(input.tok, input.cur).c_str(),std::string(input.tok, input.cur).size());
                     std::cout<<"text: "<<input.tokenText()<<"\n";
                     std::cout<<"text: "<<input.tokenText()<<"\n";
@@ -204,10 +208,6 @@ int ExprLexer::getNextToken(semantic_type *yylval)
                         return makeToken(token::NewLine);
                     }
                 }
-
-                [\n] {  std::cout<<"indent_b new line: "<<input.tokenText()<<"\n"; 
-                        goto indent_block;
-                    }
 
             */
     }
