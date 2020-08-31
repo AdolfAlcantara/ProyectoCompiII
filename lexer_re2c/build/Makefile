@@ -123,6 +123,33 @@ expr/fast:
 	$(MAKE) -f CMakeFiles/expr.dir/build.make CMakeFiles/expr.dir/build
 .PHONY : expr/fast
 
+expr_ast.o: expr_ast.cpp.o
+
+.PHONY : expr_ast.o
+
+# target to build an object file
+expr_ast.cpp.o:
+	$(MAKE) -f CMakeFiles/expr.dir/build.make CMakeFiles/expr.dir/expr_ast.cpp.o
+.PHONY : expr_ast.cpp.o
+
+expr_ast.i: expr_ast.cpp.i
+
+.PHONY : expr_ast.i
+
+# target to preprocess a source file
+expr_ast.cpp.i:
+	$(MAKE) -f CMakeFiles/expr.dir/build.make CMakeFiles/expr.dir/expr_ast.cpp.i
+.PHONY : expr_ast.cpp.i
+
+expr_ast.s: expr_ast.cpp.s
+
+.PHONY : expr_ast.s
+
+# target to generate assembly for a file
+expr_ast.cpp.s:
+	$(MAKE) -f CMakeFiles/expr.dir/build.make CMakeFiles/expr.dir/expr_ast.cpp.s
+.PHONY : expr_ast.cpp.s
+
 expr_lexer.o: expr_lexer.cpp.o
 
 .PHONY : expr_lexer.o
@@ -213,6 +240,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... expr"
+	@echo "... expr_ast.o"
+	@echo "... expr_ast.i"
+	@echo "... expr_ast.s"
 	@echo "... expr_lexer.o"
 	@echo "... expr_lexer.i"
 	@echo "... expr_lexer.s"

@@ -36,7 +36,7 @@
 
 
 // First part of user prologue.
-#line 21 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+#line 22 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
 
     #include <iostream>
     #include <unordered_map>
@@ -215,16 +215,16 @@ namespace Expr {
   {
     switch (this->type_get ())
     {
-      case 20: // TK_NUMBER
-      case 40: // expr
-      case 41: // term
-      case 42: // prod
-      case 43: // factor
+      case 21: // TK_NUMBER
+      case 58: // expr
+      case 59: // term
+      case 60: // prod
+      case 61: // factor
         value.move< int > (std::move (that.value));
         break;
 
-      case 19: // TK_STRING
-      case 24: // TK_IDENTIFIER
+      case 20: // TK_STRING
+      case 33: // TK_IDENTIFIER
         value.move< std::string > (std::move (that.value));
         break;
 
@@ -242,16 +242,16 @@ namespace Expr {
   {
     switch (this->type_get ())
     {
-      case 20: // TK_NUMBER
-      case 40: // expr
-      case 41: // term
-      case 42: // prod
-      case 43: // factor
+      case 21: // TK_NUMBER
+      case 58: // expr
+      case 59: // term
+      case 60: // prod
+      case 61: // factor
         value.copy< int > (YY_MOVE (that.value));
         break;
 
-      case 19: // TK_STRING
-      case 24: // TK_IDENTIFIER
+      case 20: // TK_STRING
+      case 33: // TK_IDENTIFIER
         value.copy< std::string > (YY_MOVE (that.value));
         break;
 
@@ -277,16 +277,16 @@ namespace Expr {
     super_type::move (s);
     switch (this->type_get ())
     {
-      case 20: // TK_NUMBER
-      case 40: // expr
-      case 41: // term
-      case 42: // prod
-      case 43: // factor
+      case 21: // TK_NUMBER
+      case 58: // expr
+      case 59: // term
+      case 60: // prod
+      case 61: // factor
         value.move< int > (YY_MOVE (s.value));
         break;
 
-      case 19: // TK_STRING
-      case 24: // TK_IDENTIFIER
+      case 20: // TK_STRING
+      case 33: // TK_IDENTIFIER
         value.move< std::string > (YY_MOVE (s.value));
         break;
 
@@ -380,16 +380,16 @@ namespace Expr {
   {
     switch (that.type_get ())
     {
-      case 20: // TK_NUMBER
-      case 40: // expr
-      case 41: // term
-      case 42: // prod
-      case 43: // factor
+      case 21: // TK_NUMBER
+      case 58: // expr
+      case 59: // term
+      case 60: // prod
+      case 61: // factor
         value.YY_MOVE_OR_COPY< int > (YY_MOVE (that.value));
         break;
 
-      case 19: // TK_STRING
-      case 24: // TK_IDENTIFIER
+      case 20: // TK_STRING
+      case 33: // TK_IDENTIFIER
         value.YY_MOVE_OR_COPY< std::string > (YY_MOVE (that.value));
         break;
 
@@ -408,16 +408,16 @@ namespace Expr {
   {
     switch (that.type_get ())
     {
-      case 20: // TK_NUMBER
-      case 40: // expr
-      case 41: // term
-      case 42: // prod
-      case 43: // factor
+      case 21: // TK_NUMBER
+      case 58: // expr
+      case 59: // term
+      case 60: // prod
+      case 61: // factor
         value.move< int > (YY_MOVE (that.value));
         break;
 
-      case 19: // TK_STRING
-      case 24: // TK_IDENTIFIER
+      case 20: // TK_STRING
+      case 33: // TK_IDENTIFIER
         value.move< std::string > (YY_MOVE (that.value));
         break;
 
@@ -436,16 +436,16 @@ namespace Expr {
     state = that.state;
     switch (that.type_get ())
     {
-      case 20: // TK_NUMBER
-      case 40: // expr
-      case 41: // term
-      case 42: // prod
-      case 43: // factor
+      case 21: // TK_NUMBER
+      case 58: // expr
+      case 59: // term
+      case 60: // prod
+      case 61: // factor
         value.copy< int > (that.value);
         break;
 
-      case 19: // TK_STRING
-      case 24: // TK_IDENTIFIER
+      case 20: // TK_STRING
+      case 33: // TK_IDENTIFIER
         value.copy< std::string > (that.value);
         break;
 
@@ -462,16 +462,16 @@ namespace Expr {
     state = that.state;
     switch (that.type_get ())
     {
-      case 20: // TK_NUMBER
-      case 40: // expr
-      case 41: // term
-      case 42: // prod
-      case 43: // factor
+      case 21: // TK_NUMBER
+      case 58: // expr
+      case 59: // term
+      case 60: // prod
+      case 61: // factor
         value.move< int > (that.value);
         break;
 
-      case 19: // TK_STRING
-      case 24: // TK_IDENTIFIER
+      case 20: // TK_STRING
+      case 33: // TK_IDENTIFIER
         value.move< std::string > (that.value);
         break;
 
@@ -719,16 +719,16 @@ namespace Expr {
          when using variants.  */
       switch (yyr1_[yyn])
     {
-      case 20: // TK_NUMBER
-      case 40: // expr
-      case 41: // term
-      case 42: // prod
-      case 43: // factor
+      case 21: // TK_NUMBER
+      case 58: // expr
+      case 59: // term
+      case 60: // prod
+      case 61: // factor
         yylhs.value.emplace< int > ();
         break;
 
-      case 19: // TK_STRING
-      case 24: // TK_IDENTIFIER
+      case 20: // TK_STRING
+      case 33: // TK_IDENTIFIER
         yylhs.value.emplace< std::string > ();
         break;
 
@@ -746,140 +746,128 @@ namespace Expr {
         {
           switch (yyn)
             {
-  case 11:
-#line 98 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                                    {vars.insert({yystack_[2].value.as < std::string > (),yystack_[0].value.as < int > ()});}
+  case 37:
+#line 163 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                         {/*$$ = $1 + $3;*/}
 #line 753 "expr_parser.cpp"
     break;
 
-  case 13:
-#line 104 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                                 {std::cout<<yystack_[0].value.as < int > ()<<"\n";}
+  case 38:
+#line 164 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                           {/*$$ = $1 - $3;*/}
 #line 759 "expr_parser.cpp"
     break;
 
-  case 14:
-#line 105 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                                          {std::cout<<yystack_[0].value.as < std::string > ()<<"\n";}
+  case 39:
+#line 165 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                          {/*$$ = $1 > $3;*/}
 #line 765 "expr_parser.cpp"
     break;
 
-  case 18:
-#line 114 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                         {yylhs.value.as < int > () = yystack_[2].value.as < int > () + yystack_[0].value.as < int > ();}
+  case 40:
+#line 166 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                          {/*$$ = $1 < $3;*/}
 #line 771 "expr_parser.cpp"
     break;
 
-  case 19:
-#line 115 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                           {yylhs.value.as < int > () = yystack_[2].value.as < int > () - yystack_[0].value.as < int > ();}
+  case 41:
+#line 167 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                           {/*$$ = $1 >= $3;*/}
 #line 777 "expr_parser.cpp"
     break;
 
-  case 20:
-#line 116 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                          {yylhs.value.as < int > () = yystack_[2].value.as < int > () > yystack_[0].value.as < int > ();}
+  case 42:
+#line 168 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                           {/*$$ = $1 <= $3;*/}
 #line 783 "expr_parser.cpp"
     break;
 
-  case 21:
-#line 117 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                          {yylhs.value.as < int > () = yystack_[2].value.as < int > () < yystack_[0].value.as < int > ();}
+  case 43:
+#line 169 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                          {/*$$ = $1 == $3;*/}
 #line 789 "expr_parser.cpp"
     break;
 
-  case 22:
-#line 118 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                           {yylhs.value.as < int > () = yystack_[2].value.as < int > () >= yystack_[0].value.as < int > ();}
+  case 44:
+#line 170 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                           {/*$$ = $1 != $3;*/}
 #line 795 "expr_parser.cpp"
     break;
 
-  case 23:
-#line 119 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                           {yylhs.value.as < int > () = yystack_[2].value.as < int > () <= yystack_[0].value.as < int > ();}
+  case 45:
+#line 171 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+               {/*$$ = $1;*/}
 #line 801 "expr_parser.cpp"
     break;
 
-  case 24:
-#line 120 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                          {yylhs.value.as < int > () = yystack_[2].value.as < int > () == yystack_[0].value.as < int > ();}
+  case 46:
+#line 174 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                         {/*$$ = $1 * $3;*/}
 #line 807 "expr_parser.cpp"
     break;
 
-  case 25:
-#line 121 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                           {yylhs.value.as < int > () = yystack_[2].value.as < int > () != yystack_[0].value.as < int > ();}
+  case 47:
+#line 175 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                           {/*$$ = $1 / $3;*/}
 #line 813 "expr_parser.cpp"
     break;
 
-  case 26:
-#line 122 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-               {yylhs.value.as < int > () = yystack_[0].value.as < int > ();}
+  case 48:
+#line 176 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+               {/* $$ = $1;*/}
 #line 819 "expr_parser.cpp"
     break;
 
-  case 27:
-#line 125 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                         {yylhs.value.as < int > () = yystack_[2].value.as < int > () * yystack_[0].value.as < int > ();}
+  case 49:
+#line 179 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                           {/*/*$$ = $1 % $3;*/}
 #line 825 "expr_parser.cpp"
     break;
 
-  case 28:
-#line 126 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                           {yylhs.value.as < int > () = yystack_[2].value.as < int > () / yystack_[0].value.as < int > ();}
+  case 50:
+#line 180 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                             {/*$$ = pow($1,$3);*/}
 #line 831 "expr_parser.cpp"
     break;
 
-  case 29:
-#line 127 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-               { yylhs.value.as < int > () = yystack_[0].value.as < int > ();}
+  case 51:
+#line 181 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                 {/* $$ = $1;*/}
 #line 837 "expr_parser.cpp"
     break;
 
-  case 30:
-#line 130 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                           {yylhs.value.as < int > () = yystack_[2].value.as < int > () % yystack_[0].value.as < int > ();}
+  case 52:
+#line 184 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                      {/*$$ = $1;*/}
 #line 843 "expr_parser.cpp"
     break;
 
-  case 31:
-#line 131 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                             {yylhs.value.as < int > () = pow(yystack_[2].value.as < int > (),yystack_[0].value.as < int > ());}
+  case 53:
+#line 185 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                                          {/* $$ = $2;*/}
 #line 849 "expr_parser.cpp"
     break;
 
-  case 32:
-#line 132 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                 { yylhs.value.as < int > () = yystack_[0].value.as < int > ();}
+  case 55:
+#line 187 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                                                        {/*std::cout<<$3; std::cin>>$$;*/}
 #line 855 "expr_parser.cpp"
     break;
 
-  case 33:
-#line 135 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                      {yylhs.value.as < int > () = yystack_[0].value.as < int > ();}
+  case 56:
+#line 190 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                                            {/*std::cout<<"funcion\n";*/}
 #line 861 "expr_parser.cpp"
     break;
 
-  case 34:
-#line 136 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                                          { yylhs.value.as < int > () = yystack_[1].value.as < int > ();}
+  case 57:
+#line 191 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
+                   {/*std::cout<<"identificador\n";*/}
 #line 867 "expr_parser.cpp"
     break;
 
-  case 35:
-#line 137 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                            {yylhs.value.as < int > () = vars[yystack_[0].value.as < std::string > ()];}
-#line 873 "expr_parser.cpp"
-    break;
 
-  case 36:
-#line 138 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
-                                                        {std::cout<<yystack_[1].value.as < std::string > (); std::cin>>yylhs.value.as < int > ();}
-#line 879 "expr_parser.cpp"
-    break;
-
-
-#line 883 "expr_parser.cpp"
+#line 871 "expr_parser.cpp"
 
             default:
               break;
@@ -1146,95 +1134,152 @@ namespace Expr {
   }
 
 
-  const signed char Parser::yypact_ninf_ = -24;
+  const signed char Parser::yypact_ninf_ = -43;
 
   const signed char Parser::yytable_ninf_ = -1;
 
-  const signed char
+  const short
   Parser::yypact_[] =
   {
-     -23,   -24,     6,   -19,   -19,   -24,   -24,   -24,    21,   -24,
-     -10,   -10,   -24,     3,    13,    15,   -24,   -24,   -24,   -24,
-      15,   -24,   -24,    18,   -24,    12,    14,    40,   -24,    12,
-      -3,    33,    15,    15,    15,    15,    15,    15,    15,    15,
-      15,    15,    15,    15,   -24,    38,    14,    14,    14,    14,
-      14,    14,    14,    14,    40,    40,   -24,   -24,   -24
+     -29,   -43,     8,   162,   162,   -43,   -15,   -43,    10,    10,
+      10,    -6,    14,   -43,   -43,   -43,    -2,   -43,    -2,    -2,
+      31,   -43,    39,   -11,    10,   -43,    33,    42,    51,     6,
+      11,   -43,   168,    75,    28,    10,   -43,   -43,   -43,   -43,
+      10,   -43,   -43,   168,   153,    47,    10,   -43,    10,    10,
+      10,    10,    10,    10,    10,    10,    32,    10,    10,    10,
+      10,    35,    37,   168,    55,    56,   168,   -43,    58,    59,
+       6,     6,     6,     6,     6,     6,     6,     6,   -43,    11,
+      11,   -43,   -43,   -43,    57,    61,    10,   -43,   -43,   -43,
+       7,    99,    10,    45,    56,   -43,   -12,   -43,   -43,    66,
+     -43,   -43,    10,    65,   -43,    72,   112,   104,    60,    62,
+     -43,    64,   -43,   -43,   -43,    23,   125,     7,   -43,   -43,
+     -43,   -43,   -43
   };
 
   const signed char
   Parser::yydefact_[] =
   {
-       6,     6,     0,     3,     2,     1,    17,    16,     0,     5,
-      10,    10,     4,    12,     0,     0,     9,     7,     8,    15,
-       0,    14,    33,     0,    35,    13,    26,    29,    32,    11,
+       6,     6,     0,     3,     2,     1,     0,    31,     0,     0,
+       0,     0,     0,     5,    12,    11,    14,    10,    14,    14,
+       0,     4,    27,     0,     0,    52,     0,    57,     0,    45,
+      48,    51,    17,     0,     0,     0,    13,     9,     7,     8,
+       0,    30,    29,    28,     0,     0,     0,    54,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,    34,     0,    18,    19,    20,    21,
-      22,    23,    24,    25,    27,    28,    30,    31,    36
+       0,     0,     0,    26,     0,    35,    36,    53,     0,     0,
+      37,    38,    39,    40,    41,    42,    43,    44,     6,    46,
+      47,    49,    50,     6,     0,     0,     0,    33,    55,    56,
+       0,     0,     0,     0,    35,    20,    23,    18,    16,     0,
+       6,    34,     0,     0,    19,     0,     0,     0,     0,     0,
+      32,     0,     6,     6,     6,     0,     0,     0,    25,    24,
+      22,    15,    21
   };
 
-  const signed char
+  const short
   Parser::yypgoto_[] =
   {
-     -24,   -24,    29,   -24,    45,   -24,   -24,   -24,   -24,   -24,
-      -2,     8,    10,    11
+     -43,   -43,    -1,   -43,    20,   -43,   -43,   -43,   -43,   -25,
+     -43,   -43,   -43,   -43,   -43,   -43,   -43,   -42,     3,    15,
+      -7,   148,   -33,   -18,   -43
   };
 
   const signed char
   Parser::yydefgoto_[] =
   {
-      -1,     2,     3,     9,    17,    10,    11,    13,    14,    12,
-      25,    26,    27,    28
+      -1,     2,     3,    13,    37,    14,    15,    16,    17,    97,
+     104,   120,    18,    19,    22,    23,    21,    64,    87,    65,
+      66,    29,    30,    31,    47
   };
 
   const signed char
   Parser::yytable_[] =
   {
-      32,    33,     6,     7,     1,     8,     5,    34,    35,    36,
-      37,    38,    39,    29,    44,    32,    33,    16,    30,    40,
-      41,    19,    34,    35,    36,    37,    38,    39,    15,    20,
-       4,    20,    21,    22,    31,    22,    23,    24,    23,    24,
-      46,    47,    48,    49,    50,    51,    52,    53,    42,    43,
-      54,    55,    45,    56,    57,    58,    18
+       4,    28,    32,    33,    69,    24,     1,    95,     5,    42,
+      25,    57,    58,    26,   102,   103,    43,    44,    20,    59,
+      60,    35,    27,   118,    79,    80,    24,    34,    63,     6,
+       7,    25,     8,    36,    26,     9,    10,    11,    38,    39,
+      12,    81,    82,    27,    96,     6,     7,    40,     8,    45,
+      99,     9,    10,    11,    48,    49,    12,    41,    46,    62,
+     119,    50,    51,    52,    53,    54,    55,    68,    78,    84,
+      56,    83,    85,    92,    86,    88,    89,    90,    48,    49,
+      93,   100,    91,   105,   108,    50,    51,    52,    53,    54,
+      55,   109,   122,     0,    61,   107,   112,   101,   113,   106,
+     114,    94,     0,     0,     0,     0,     0,    48,    49,     0,
+       0,   115,   116,   117,    50,    51,    52,    53,    54,    55,
+       0,     6,     7,   111,     8,     0,     0,     9,    10,    11,
+       0,     0,    12,     0,     6,     7,    98,     8,     0,     0,
+       9,    10,    11,     0,     0,    12,     0,     6,     7,   110,
+       8,     0,     0,     9,    10,    11,    48,    49,    12,     0,
+       0,     0,   121,    50,    51,    52,    53,    54,    55,     0,
+      67,    48,    49,     0,     0,     0,     0,     0,    50,    51,
+      52,    53,    54,    55,     6,     7,     0,     8,     0,     0,
+       9,    10,    11,     0,     0,    12,    70,    71,    72,    73,
+      74,    75,    76,    77
   };
 
   const signed char
   Parser::yycheck_[] =
   {
-       3,     4,    21,    22,    27,    24,     0,    10,    11,    12,
-      13,    14,    15,    15,    17,     3,     4,    27,    20,     5,
-       6,    18,    10,    11,    12,    13,    14,    15,     7,    16,
-       1,    16,    19,    20,    16,    20,    23,    24,    23,    24,
-      32,    33,    34,    35,    36,    37,    38,    39,     8,     9,
-      40,    41,    19,    42,    43,    17,    11
+       1,     8,     9,    10,    46,    16,    35,     0,     0,    20,
+      21,     5,     6,    24,    26,    27,    23,    24,    33,     8,
+       9,     7,    33,     0,    57,    58,    16,    33,    35,    22,
+      23,    21,    25,    35,    24,    28,    29,    30,    18,    19,
+      33,    59,    60,    33,    37,    22,    23,    16,    25,    16,
+      92,    28,    29,    30,     3,     4,    33,    18,    16,    31,
+      37,    10,    11,    12,    13,    14,    15,    20,    36,    32,
+      19,    36,    17,    16,    18,    17,    17,    78,     3,     4,
+      19,    36,    83,    17,    19,    10,    11,    12,    13,    14,
+      15,    19,   117,    -1,    19,   102,    36,    94,    36,   100,
+      36,    86,    -1,    -1,    -1,    -1,    -1,     3,     4,    -1,
+      -1,   112,   113,   114,    10,    11,    12,    13,    14,    15,
+      -1,    22,    23,    19,    25,    -1,    -1,    28,    29,    30,
+      -1,    -1,    33,    -1,    22,    23,    37,    25,    -1,    -1,
+      28,    29,    30,    -1,    -1,    33,    -1,    22,    23,    37,
+      25,    -1,    -1,    28,    29,    30,     3,     4,    33,    -1,
+      -1,    -1,    37,    10,    11,    12,    13,    14,    15,    -1,
+      17,     3,     4,    -1,    -1,    -1,    -1,    -1,    10,    11,
+      12,    13,    14,    15,    22,    23,    -1,    25,    -1,    -1,
+      28,    29,    30,    -1,    -1,    33,    48,    49,    50,    51,
+      52,    53,    54,    55
   };
 
   const signed char
   Parser::yystos_[] =
   {
-       0,    27,    31,    32,    32,     0,    21,    22,    24,    33,
-      35,    36,    39,    37,    38,     7,    27,    34,    34,    18,
-      16,    19,    20,    23,    24,    40,    41,    42,    43,    40,
-      40,    16,     3,     4,    10,    11,    12,    13,    14,    15,
-       5,     6,     8,     9,    17,    19,    41,    41,    41,    41,
-      41,    41,    41,    41,    42,    42,    43,    43,    17
+       0,    35,    39,    40,    40,     0,    22,    23,    25,    28,
+      29,    30,    33,    41,    43,    44,    45,    46,    50,    51,
+      33,    54,    52,    53,    16,    21,    24,    33,    58,    59,
+      60,    61,    58,    58,    33,     7,    35,    42,    42,    42,
+      16,    18,    20,    58,    58,    16,    16,    62,     3,     4,
+      10,    11,    12,    13,    14,    15,    19,     5,     6,     8,
+       9,    19,    31,    58,    55,    57,    58,    17,    20,    55,
+      59,    59,    59,    59,    59,    59,    59,    59,    36,    60,
+      60,    61,    61,    36,    32,    17,    18,    56,    17,    17,
+      40,    40,    16,    19,    57,     0,    37,    47,    37,    55,
+      36,    56,    26,    27,    48,    17,    40,    58,    19,    19,
+      37,    19,    36,    36,    36,    40,    40,    40,     0,    37,
+      49,    37,    47
   };
 
   const signed char
   Parser::yyr1_[] =
   {
-       0,    30,    31,    31,    32,    32,    32,    33,    33,    34,
-      34,    35,    36,    37,    37,    38,    38,    39,    40,    40,
-      40,    40,    40,    40,    40,    40,    40,    41,    41,    41,
-      42,    42,    42,    43,    43,    43,    43
+       0,    38,    39,    39,    40,    40,    40,    41,    41,    41,
+      41,    41,    41,    42,    42,    43,    44,    45,    46,    47,
+      47,    48,    48,    48,    49,    49,    50,    51,    52,    52,
+      53,    53,    54,    55,    56,    56,    57,    58,    58,    58,
+      58,    58,    58,    58,    58,    58,    59,    59,    59,    60,
+      60,    60,    61,    61,    61,    61,    62,    62
   };
 
   const signed char
   Parser::yyr2_[] =
   {
-       0,     2,     2,     1,     3,     2,     0,     2,     2,     1,
-       0,     3,     2,     2,     2,     2,     0,     0,     3,     3,
-       3,     3,     3,     3,     3,     3,     1,     3,     3,     1,
-       3,     3,     1,     1,     3,     1,     4
+       0,     2,     2,     1,     3,     2,     0,     2,     2,     2,
+       1,     1,     1,     1,     0,    11,     6,     2,     6,     2,
+       1,     6,     5,     0,     1,     1,     3,     2,     2,     2,
+       2,     0,     8,     2,     3,     0,     1,     3,     3,     3,
+       3,     3,     3,     3,     3,     1,     3,     3,     1,     3,
+       3,     1,     1,     3,     2,     4,     3,     0
   };
 
 
@@ -1244,24 +1289,29 @@ namespace Expr {
   const char*
   const Parser::yytname_[] =
   {
-  "$end", "error", "$undefined", "\"+\"", "\"-\"", "\"*\"", "\"/\"",
+  "TK_EOF", "error", "$undefined", "\"+\"", "\"-\"", "\"*\"", "\"/\"",
   "\"=\"", "\"%\"", "\"**\"", "\">\"", "\"<\"", "\">=\"", "\"<=\"",
-  "\"==\"", "\"!=\"", "\"(\"", "\")\"", "\",\"", "TK_STRING", "TK_NUMBER",
-  "KW_DEF", "KW_PRINT", "KW_INPUT", "TK_IDENTIFIER", "TK_ERROR", "TK_EOF",
-  "NewLine", "Indent", "Dedent", "$accept", "input", "complex_stmts",
-  "simple_stmts", "stmt_end_nl", "assign_stmt", "print_stmt",
-  "print_stmt_p", "print_stmt_pp", "func_decl", "expr", "term", "prod",
-  "factor", YY_NULLPTR
+  "\"==\"", "\"!=\"", "\"(\"", "\")\"", "\",\"", "\":\"", "TK_STRING",
+  "TK_NUMBER", "KW_DEF", "KW_PRINT", "KW_INPUT", "KW_IF", "KW_ELIF",
+  "KW_ELSE", "KW_RETURN", "KW_WHILE", "KW_FOR", "KW_IN", "KW_RANGE",
+  "TK_IDENTIFIER", "TK_ERROR", "NewLine", "Indent", "Dedent", "$accept",
+  "input", "complex_stmts", "simple_stmts", "stmt_end_nl", "for_stmt",
+  "while_stmt", "return_stmt", "if_stmt", "if_opt", "if_opt_p",
+  "if_opt_pp", "assign_stmt", "print_stmt", "print_stmt_p",
+  "print_stmt_pp", "func_decl", "arg_list", "arg_list_p", "arg", "expr",
+  "term", "prod", "factor", "factor_p", YY_NULLPTR
   };
 
 #if YYDEBUG
   const unsigned char
   Parser::yyrline_[] =
   {
-       0,    80,    80,    81,    84,    85,    86,    89,    90,    94,
-      95,    98,   101,   104,   105,   108,   109,   111,   114,   115,
-     116,   117,   118,   119,   120,   121,   122,   125,   126,   127,
-     130,   131,   132,   135,   136,   137,   138
+       0,    90,    90,    91,    94,    95,    96,    99,   100,   101,
+     102,   103,   104,   107,   108,   111,   114,   117,   120,   123,
+     124,   127,   128,   129,   132,   133,   137,   140,   143,   144,
+     147,   148,   151,   154,   156,   157,   160,   163,   164,   165,
+     166,   167,   168,   169,   170,   171,   174,   175,   176,   179,
+     180,   181,   184,   185,   186,   187,   190,   191
   };
 
   // Print the state stack on the debug stream.
@@ -1330,9 +1380,10 @@ namespace Expr {
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
-      25,    26,    27,    28,    29
+      25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
+      35,    36,    37
     };
-    const int user_token_number_max_ = 284;
+    const int user_token_number_max_ = 292;
 
     if (t <= 0)
       return yyeof_;
@@ -1344,5 +1395,5 @@ namespace Expr {
 
 #line 8 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
 } // Expr
-#line 1348 "expr_parser.cpp"
+#line 1399 "expr_parser.cpp"
 

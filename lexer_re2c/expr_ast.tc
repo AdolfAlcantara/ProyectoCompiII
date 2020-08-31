@@ -1,0 +1,142 @@
+%option lang = "C++"
+%option namespace = "Ast"
+// %option reentrant
+
+//va en el header
+%decls %{
+#include <string>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+
+using string_t = std::string;
+
+namespace Ast
+{
+    class AstNode;
+    using NodeVector = std::vector<AstNode*>;
+    using SymbolTable = std::unordered_map<std::string, int>;
+}
+%}
+
+//esto va para el cpp
+%{
+    #include "expr_ast.h"
+
+%}
+
+%node AstNode %abstract %typedef
+%node Expr AstNode %abstract
+
+%node BinaryExpr Expr %abstract = {
+    Expr *expr1;
+    Expr *expr2;
+}
+
+%node NumExpr Expr = {
+    int value;
+}
+
+%node IdExpr Expr = {
+    string_t id;
+}
+
+%node AddExpr BinaryExpr
+%node SubExpr BinaryExpr
+%node MulExpr BinaryExpr
+%node DivExpr BinaryExpr
+%node GTExpr BinaryExpr
+%node LTExpr BinaryExpr
+%node GEExpr BinaryExpr
+%node LEExpr BinaryExpr
+%node EqExpr BinaryExpr
+%node NotExpr BinaryExpr
+
+%node Stmt AstNode %abstract
+
+%node AssignStmt Stmt = {
+    string_t id;
+    Expr * expr;
+}
+
+%node BlockStmt Stmt = {
+    NodeVector l;
+}
+
+%node PrintStmt Stmt = {
+    Expr * expr;
+}
+
+%node IfStmt Stmt = {
+    Expr * cond;
+    Stmt * true_blk;
+    Stmt * false_blk;
+}
+
+%node WhileStmt Stmt = {
+    Expr *cond;
+    Stmt *block;
+}
+
+%operation %virtual int eval(AstNode *this, SymbolTable& vars);
+
+eval(AddExpr) { return expr1->eval(vars) + expr2->eval(vars);}
+eval(SubExpr) { return expr1->eval(vars) - expr2->eval(vars);}
+eval(MulExpr) { return expr1->eval(vars) * expr2->eval(vars);}
+eval(DivExpr) { return expr1->eval(vars) / expr2->eval(vars);}
+eval(GTExpr) { return expr1->eval(vars) > expr2->eval(vars);}
+eval(LTExpr) { return expr1->eval(vars) < expr2->eval(vars);}
+eval(GEExpr) { return expr1->eval(vars) >= expr2->eval(vars);}
+eval(LEExpr) { return expr1->eval(vars) <= expr2->eval(vars);}
+eval(EqExpr) { return expr1->eval(vars) == expr2->eval(vars);}
+eval(NotExpr) { return expr1->eval(vars) != expr2->eval(vars);}
+
+eval(NumExpr){
+    return value;
+}
+
+eval(IdExpr){
+    auto it = vars.find(id);
+
+    if(it != vars.end())
+        return it->second;
+    else
+        throw std::exception();
+}
+
+eval(AssignStmt){
+    int value = expr->eval(vars);
+    vars[id] = value;
+
+    return 0;
+}
+
+eval(BlockStmt){
+    for(const auto& stmt : l){
+        stmt->eval(vars);
+    }
+
+    return 0;
+}
+
+eval(PrintStmt){
+    std::cout << expr->eval(vars) << std::endl;
+    return 0;
+}
+
+eval(IfStmt){
+    if(cond->eval(vars))
+        true_blk->eval(vars);
+    else if(false_blk != nullptr)
+        false_blk->eval(vars);
+
+    return 0;
+}
+
+eval(WhileStmt){
+    while(cond->eval(vars))
+        block->eval(vars);
+
+    return 0;
+}

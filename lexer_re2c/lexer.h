@@ -7,7 +7,7 @@
 #include <vector>
 #include "expr_parser.h"
 
-static const size_t SIZE = 50; //tamano del buffer en bytes
+static const size_t SIZE = 80; //tamano del buffer en bytes
 
 class ExprLexer {
     public:
@@ -59,7 +59,7 @@ private:
     int TkEof()
     {
         text = "<<EOF>>";
-        return 0;
+        return token::TK_EOF;
     }
 
     int TkError()

@@ -57,20 +57,37 @@ include CMakeFiles/expr.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/expr.dir/flags.make
 
+expr_ast.cpp: ../expr_ast.tc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating expr_ast.cpp"
+	/usr/local/bin/treecc -o expr_ast.cpp -h expr_ast.h /home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr_ast.tc
+
 expr_lexer.cpp: ../large_input.re
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating expr_lexer.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating expr_lexer.cpp"
 	re2c -o expr_lexer.cpp /home/deafdead/Documentos/compiII/proyecto/lexer_re2c/large_input.re
 
 expr_parser.h: ../expr.y
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating expr_parser.h, expr_parser.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating expr_parser.h, expr_parser.cpp"
 	bison --defines=expr_parser.h -o expr_parser.cpp /home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y
 
 expr_parser.cpp: expr_parser.h
 	@$(CMAKE_COMMAND) -E touch_nocreate expr_parser.cpp
 
+CMakeFiles/expr.dir/expr_ast.cpp.o: CMakeFiles/expr.dir/flags.make
+CMakeFiles/expr.dir/expr_ast.cpp.o: expr_ast.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/expr.dir/expr_ast.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/expr.dir/expr_ast.cpp.o -c /home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/expr_ast.cpp
+
+CMakeFiles/expr.dir/expr_ast.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/expr.dir/expr_ast.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/expr_ast.cpp > CMakeFiles/expr.dir/expr_ast.cpp.i
+
+CMakeFiles/expr.dir/expr_ast.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/expr.dir/expr_ast.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/expr_ast.cpp -o CMakeFiles/expr.dir/expr_ast.cpp.s
+
 CMakeFiles/expr.dir/expr_lexer.cpp.o: CMakeFiles/expr.dir/flags.make
 CMakeFiles/expr.dir/expr_lexer.cpp.o: expr_lexer.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/expr.dir/expr_lexer.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/expr.dir/expr_lexer.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/expr.dir/expr_lexer.cpp.o -c /home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/expr_lexer.cpp
 
 CMakeFiles/expr.dir/expr_lexer.cpp.i: cmake_force
@@ -83,7 +100,7 @@ CMakeFiles/expr.dir/expr_lexer.cpp.s: cmake_force
 
 CMakeFiles/expr.dir/expr_parser.cpp.o: CMakeFiles/expr.dir/flags.make
 CMakeFiles/expr.dir/expr_parser.cpp.o: expr_parser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/expr.dir/expr_parser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/expr.dir/expr_parser.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/expr.dir/expr_parser.cpp.o -c /home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/expr_parser.cpp
 
 CMakeFiles/expr.dir/expr_parser.cpp.i: cmake_force
@@ -96,7 +113,7 @@ CMakeFiles/expr.dir/expr_parser.cpp.s: cmake_force
 
 CMakeFiles/expr.dir/main.cpp.o: CMakeFiles/expr.dir/flags.make
 CMakeFiles/expr.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/expr.dir/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/expr.dir/main.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/expr.dir/main.cpp.o -c /home/deafdead/Documentos/compiII/proyecto/lexer_re2c/main.cpp
 
 CMakeFiles/expr.dir/main.cpp.i: cmake_force
@@ -109,6 +126,7 @@ CMakeFiles/expr.dir/main.cpp.s: cmake_force
 
 # Object files for target expr
 expr_OBJECTS = \
+"CMakeFiles/expr.dir/expr_ast.cpp.o" \
 "CMakeFiles/expr.dir/expr_lexer.cpp.o" \
 "CMakeFiles/expr.dir/expr_parser.cpp.o" \
 "CMakeFiles/expr.dir/main.cpp.o"
@@ -116,12 +134,13 @@ expr_OBJECTS = \
 # External object files for target expr
 expr_EXTERNAL_OBJECTS =
 
+expr: CMakeFiles/expr.dir/expr_ast.cpp.o
 expr: CMakeFiles/expr.dir/expr_lexer.cpp.o
 expr: CMakeFiles/expr.dir/expr_parser.cpp.o
 expr: CMakeFiles/expr.dir/main.cpp.o
 expr: CMakeFiles/expr.dir/build.make
 expr: CMakeFiles/expr.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable expr"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable expr"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/expr.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -133,6 +152,7 @@ CMakeFiles/expr.dir/clean:
 	$(CMAKE_COMMAND) -P CMakeFiles/expr.dir/cmake_clean.cmake
 .PHONY : CMakeFiles/expr.dir/clean
 
+CMakeFiles/expr.dir/depend: expr_ast.cpp
 CMakeFiles/expr.dir/depend: expr_lexer.cpp
 CMakeFiles/expr.dir/depend: expr_parser.h
 CMakeFiles/expr.dir/depend: expr_parser.cpp

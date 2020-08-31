@@ -22,6 +22,7 @@ int ExprLexer::getNextToken(semantic_type *yylval)
 
     
     if(remaining_tokens.size() > 0){
+        std::cout<<"dedent in stack\n";
         remaining_tokens.pop_back();
         return makeToken(token::Dedent);
     }
@@ -42,7 +43,7 @@ int ExprLexer::getNextToken(semantic_type *yylval)
             wsp = [ \t]+;
             num = [0-9]+;
             ident = [_a-zA-Z0-9][_a-zA-Z0-9]*;
-            string = ["][^(\n|")]*["];
+            string = ["'][^(\n|"|')]*['"];
             comment = "#"[^\n]*;
             
 
@@ -61,6 +62,8 @@ int ExprLexer::getNextToken(semantic_type *yylval)
             
             num     {
                 yylval->emplace<int>(std::strtol(std::string(input.tok, input.cur).c_str(), nullptr,10));
+                std::cout<<"number token\n";
+                std::cout<<"-----"<<"\n"; 
                 return makeToken(token::TK_NUMBER);
             }
             ident   {
@@ -75,12 +78,58 @@ int ExprLexer::getNextToken(semantic_type *yylval)
                     std::cout<<"input token\n";
                     std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_INPUT);
+                }else if(input.tokenText().compare("if")==0){
+                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    std::cout<<"if token\n";
+                    std::cout<<"-----"<<"\n"; 
+                    return makeToken(token::KW_IF);
+                }else if(input.tokenText().compare("elif")==0){
+                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    std::cout<<"elif token\n";
+                    std::cout<<"-----"<<"\n"; 
+                    return makeToken(token::KW_ELIF);
+                }else if(input.tokenText().compare("else")==0){
+                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    std::cout<<"else token\n";
+                    std::cout<<"-----"<<"\n"; 
+                    return makeToken(token::KW_ELSE);
+                }else if(input.tokenText().compare("def")==0){
+                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    std::cout<<"def token\n";
+                    std::cout<<"-----"<<"\n"; 
+                    return makeToken(token::KW_DEF);
+                }else if(input.tokenText().compare("return")==0){
+                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    std::cout<<"return token\n";
+                    std::cout<<"-----"<<"\n"; 
+                    return makeToken(token::KW_RETURN);
+                }else if(input.tokenText().compare("while")==0){
+                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    std::cout<<"while token\n";
+                    std::cout<<"-----"<<"\n"; 
+                    return makeToken(token::KW_WHILE);
+                }else if(input.tokenText().compare("for")==0){
+                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    std::cout<<"for token\n";
+                    std::cout<<"-----"<<"\n"; 
+                    return makeToken(token::KW_FOR);
+                }else if(input.tokenText().compare("in")==0){
+                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    std::cout<<"in token\n";
+                    std::cout<<"-----"<<"\n"; 
+                    return makeToken(token::KW_IN);
+                }else if(input.tokenText().compare("range")==0){
+                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    std::cout<<"range token\n";
+                    std::cout<<"-----"<<"\n"; 
+                    return makeToken(token::KW_RANGE);
                 }else{
                     std::cout<<"secret word: "<<input.tokenText()<<"\n";
                     std::cout<<"ident token\n";
                     std::cout<<"-----"<<"\n"; 
                     return makeToken(token::TK_IDENTIFIER);
                 }
+                
             }
 
 
@@ -125,11 +174,19 @@ int ExprLexer::getNextToken(semantic_type *yylval)
             ")"  {
                     std::cout<<"close par token\n"; 
                     std::cout<<"-----"<<"\n";
-                    return makeToken(token::TK_CLOSEPAR);}
+                    auto x = makeToken(token::TK_CLOSEPAR);
+                    std::cout<<text<<"\n";
+                    return x;
+                }
             ","  {
-                    std::cout<<"close par token\n"; 
+                    std::cout<<"comma token\n"; 
                     std::cout<<"-----"<<"\n";
                     return makeToken(token::TK_COMMA);
+                }
+            ":" {
+                    std::cout<<"colon token\n";
+                    std::cout<<"-----"<<"\n";
+                    return makeToken(token::TK_COLON);
                 }
             ">"  {
                     std::cout<<"greater than token\n"; 
@@ -178,21 +235,23 @@ int ExprLexer::getNextToken(semantic_type *yylval)
                 [ \t]* {
                     //input.cur--;
                     //yylval->emplace<std::string>(std::string(input.tok, input.cur).c_str(),std::string(input.tok, input.cur).size());
-                    std::cout<<"text: "<<input.tokenText()<<"\n";
-                    std::cout<<"text: "<<input.tokenText()<<"\n";
+                    //std::cout<<"text: "<<input.tokenText()<<"\n";
+                    //std::cout<<"text: "<<input.tokenText()<<"\n";
                     int _spaces = input.tokenText().length();
                     std::cout<<"spaces entrando:" << _spaces << "\n";
                     std::cout<<"pila de espacios:" << spaces.size() << "\n";
                     for(int x = 0; x<spaces.size(); x++){
                         std::cout<<"pos:"<<x<<", text:"<<spaces[x] << "\n";
                     }
-                    std::cout<<"flag2\n";
+                    
 
                     if(_spaces > spaces.back()){
                         std::cout<<"flag\n";
                         spaces.push_back(_spaces);
                         std::cout<<"Push:" << _spaces << "\n\n";
-                        
+
+                        std::cout<<"indent token\n"; 
+                        std::cout<<"-----"<<"\n";    
                         return makeToken(token::Indent);
 
                     }else if(_spaces < spaces.back()){
@@ -203,8 +262,12 @@ int ExprLexer::getNextToken(semantic_type *yylval)
                             }
                             //std::cout<<"remaining_dedents size: "<< remaining_dedents.size() << "\n";
                             remaining_tokens.pop_back();
+                            std::cout<<"Dedent token\n"; 
+                            std::cout<<"-----"<<"\n";    
                             return makeToken(token::Dedent);
                     }else{
+                        std::cout<<"newline token\n"; 
+                        std::cout<<"-----"<<"\n";    
                         return makeToken(token::NewLine);
                     }
                 }
