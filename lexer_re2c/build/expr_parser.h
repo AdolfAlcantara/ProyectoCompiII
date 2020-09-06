@@ -433,26 +433,28 @@ namespace Expr {
         OP_NEQ = 270,
         TK_OPENPAR = 271,
         TK_CLOSEPAR = 272,
-        TK_COMMA = 273,
-        TK_COLON = 274,
-        TK_STRING = 275,
-        TK_NUMBER = 276,
-        KW_DEF = 277,
-        KW_PRINT = 278,
-        KW_INPUT = 279,
-        KW_IF = 280,
-        KW_ELIF = 281,
-        KW_ELSE = 282,
-        KW_RETURN = 283,
-        KW_WHILE = 284,
-        KW_FOR = 285,
-        KW_IN = 286,
-        KW_RANGE = 287,
-        TK_IDENTIFIER = 288,
-        TK_ERROR = 289,
-        NewLine = 290,
-        Indent = 291,
-        Dedent = 292
+        TK_OPENBCKT = 273,
+        TK_CLOSEBCKT = 274,
+        TK_COMMA = 275,
+        TK_COLON = 276,
+        TK_STRING = 277,
+        TK_NUMBER = 278,
+        KW_DEF = 279,
+        KW_PRINT = 280,
+        KW_INPUT = 281,
+        KW_IF = 282,
+        KW_ELIF = 283,
+        KW_ELSE = 284,
+        KW_RETURN = 285,
+        KW_WHILE = 286,
+        KW_FOR = 287,
+        KW_IN = 288,
+        KW_RANGE = 289,
+        TK_IDENTIFIER = 290,
+        TK_ERROR = 291,
+        NewLine = 292,
+        Indent = 293,
+        Dedent = 294
       };
     };
 
@@ -548,16 +550,16 @@ namespace Expr {
         // Type destructor.
 switch (yytype)
     {
-      case 21: // TK_NUMBER
-      case 58: // expr
-      case 59: // term
-      case 60: // prod
-      case 61: // factor
+      case 23: // TK_NUMBER
+      case 64: // expr
+      case 65: // term
+      case 66: // prod
+      case 67: // factor
         value.template destroy< int > ();
         break;
 
-      case 20: // TK_STRING
-      case 33: // TK_IDENTIFIER
+      case 22: // TK_STRING
+      case 35: // TK_IDENTIFIER
         value.template destroy< std::string > ();
         break;
 
@@ -634,13 +636,13 @@ switch (yytype)
       symbol_type (int tok)
         : super_type(token_type (tok))
       {
-        YY_ASSERT (tok == token::TK_EOF || tok == token::OP_ADD || tok == token::OP_SUB || tok == token::OP_MUL || tok == token::OP_DIV || tok == token::OP_ASSIGN || tok == token::OP_MOD || tok == token::OP_PWD || tok == token::OP_GT || tok == token::OP_LT || tok == token::OP_GET || tok == token::OP_LET || tok == token::OP_EQ || tok == token::OP_NEQ || tok == token::TK_OPENPAR || tok == token::TK_CLOSEPAR || tok == token::TK_COMMA || tok == token::TK_COLON || tok == token::KW_DEF || tok == token::KW_PRINT || tok == token::KW_INPUT || tok == token::KW_IF || tok == token::KW_ELIF || tok == token::KW_ELSE || tok == token::KW_RETURN || tok == token::KW_WHILE || tok == token::KW_FOR || tok == token::KW_IN || tok == token::KW_RANGE || tok == token::TK_ERROR || tok == token::NewLine || tok == token::Indent || tok == token::Dedent);
+        YY_ASSERT (tok == token::TK_EOF || tok == token::OP_ADD || tok == token::OP_SUB || tok == token::OP_MUL || tok == token::OP_DIV || tok == token::OP_ASSIGN || tok == token::OP_MOD || tok == token::OP_PWD || tok == token::OP_GT || tok == token::OP_LT || tok == token::OP_GET || tok == token::OP_LET || tok == token::OP_EQ || tok == token::OP_NEQ || tok == token::TK_OPENPAR || tok == token::TK_CLOSEPAR || tok == token::TK_OPENBCKT || tok == token::TK_CLOSEBCKT || tok == token::TK_COMMA || tok == token::TK_COLON || tok == token::KW_DEF || tok == token::KW_PRINT || tok == token::KW_INPUT || tok == token::KW_IF || tok == token::KW_ELIF || tok == token::KW_ELSE || tok == token::KW_RETURN || tok == token::KW_WHILE || tok == token::KW_FOR || tok == token::KW_IN || tok == token::KW_RANGE || tok == token::TK_ERROR || tok == token::NewLine || tok == token::Indent || tok == token::Dedent);
       }
 #else
       symbol_type (int tok)
         : super_type(token_type (tok))
       {
-        YY_ASSERT (tok == token::TK_EOF || tok == token::OP_ADD || tok == token::OP_SUB || tok == token::OP_MUL || tok == token::OP_DIV || tok == token::OP_ASSIGN || tok == token::OP_MOD || tok == token::OP_PWD || tok == token::OP_GT || tok == token::OP_LT || tok == token::OP_GET || tok == token::OP_LET || tok == token::OP_EQ || tok == token::OP_NEQ || tok == token::TK_OPENPAR || tok == token::TK_CLOSEPAR || tok == token::TK_COMMA || tok == token::TK_COLON || tok == token::KW_DEF || tok == token::KW_PRINT || tok == token::KW_INPUT || tok == token::KW_IF || tok == token::KW_ELIF || tok == token::KW_ELSE || tok == token::KW_RETURN || tok == token::KW_WHILE || tok == token::KW_FOR || tok == token::KW_IN || tok == token::KW_RANGE || tok == token::TK_ERROR || tok == token::NewLine || tok == token::Indent || tok == token::Dedent);
+        YY_ASSERT (tok == token::TK_EOF || tok == token::OP_ADD || tok == token::OP_SUB || tok == token::OP_MUL || tok == token::OP_DIV || tok == token::OP_ASSIGN || tok == token::OP_MOD || tok == token::OP_PWD || tok == token::OP_GT || tok == token::OP_LT || tok == token::OP_GET || tok == token::OP_LET || tok == token::OP_EQ || tok == token::OP_NEQ || tok == token::TK_OPENPAR || tok == token::TK_CLOSEPAR || tok == token::TK_OPENBCKT || tok == token::TK_CLOSEBCKT || tok == token::TK_COMMA || tok == token::TK_COLON || tok == token::KW_DEF || tok == token::KW_PRINT || tok == token::KW_INPUT || tok == token::KW_IF || tok == token::KW_ELIF || tok == token::KW_ELSE || tok == token::KW_RETURN || tok == token::KW_WHILE || tok == token::KW_FOR || tok == token::KW_IN || tok == token::KW_RANGE || tok == token::TK_ERROR || tok == token::NewLine || tok == token::Indent || tok == token::Dedent);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -943,6 +945,36 @@ switch (yytype)
       make_TK_CLOSEPAR ()
       {
         return symbol_type (token::TK_CLOSEPAR);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_TK_OPENBCKT ()
+      {
+        return symbol_type (token::TK_OPENBCKT);
+      }
+#else
+      static
+      symbol_type
+      make_TK_OPENBCKT ()
+      {
+        return symbol_type (token::TK_OPENBCKT);
+      }
+#endif
+#if 201103L <= YY_CPLUSPLUS
+      static
+      symbol_type
+      make_TK_CLOSEBCKT ()
+      {
+        return symbol_type (token::TK_CLOSEBCKT);
+      }
+#else
+      static
+      symbol_type
+      make_TK_CLOSEBCKT ()
+      {
+        return symbol_type (token::TK_CLOSEBCKT);
       }
 #endif
 #if 201103L <= YY_CPLUSPLUS
@@ -1253,7 +1285,7 @@ switch (yytype)
     Parser& operator= (const Parser&);
 
     /// Stored state numbers (used for stacks).
-    typedef signed char state_type;
+    typedef unsigned char state_type;
 
     /// Generate an error message.
     /// \param yystate   the state where the error occurred.
@@ -1296,14 +1328,14 @@ switch (yytype)
     static const short yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
-    static const signed char yydefgoto_[];
+    static const short yydefgoto_[];
 
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
     // number is the opposite.  If YYTABLE_NINF, syntax error.
-    static const signed char yytable_[];
+    static const unsigned char yytable_[];
 
-    static const signed char yycheck_[];
+    static const short yycheck_[];
 
     // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
     // symbol of state STATE-NUM.
@@ -1551,10 +1583,10 @@ switch (yytype)
     enum
     {
       yyeof_ = 0,
-      yylast_ = 203,     ///< Last index in yytable_.
-      yynnts_ = 25,  ///< Number of nonterminal symbols.
+      yylast_ = 236,     ///< Last index in yytable_.
+      yynnts_ = 29,  ///< Number of nonterminal symbols.
       yyfinal_ = 5, ///< Termination state number.
-      yyntokens_ = 38  ///< Number of tokens.
+      yyntokens_ = 40  ///< Number of tokens.
     };
 
 
@@ -1566,7 +1598,7 @@ switch (yytype)
 
 #line 8 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c/expr.y"
 } // Expr
-#line 1570 "expr_parser.h"
+#line 1602 "expr_parser.h"
 
 
 

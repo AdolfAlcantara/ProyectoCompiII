@@ -60,6 +60,8 @@
 %token OP_NEQ "!="
 %token TK_OPENPAR "("
 %token TK_CLOSEPAR ")"
+%token TK_OPENBCKT "["
+%token TK_CLOSEBCKT "]"
 %token TK_COMMA ","
 %token TK_COLON ":"
 %token<std::string> TK_STRING
@@ -93,10 +95,10 @@ input: NewLine complex_stmts
 
 complex_stmts: complex_stmts KW_DEF func_decl
                 | complex_stmts simple_stmts
-                | /**/
+                |/**/
 ;
 
-simple_stmts: assign_stmt stmt_end_nl
+simple_stmts: TK_IDENTIFIER simple_stmts_p stmt_end_nl
             | print_stmt stmt_end_nl
             | return_stmt stmt_end_nl
             | if_stmt
@@ -104,12 +106,30 @@ simple_stmts: assign_stmt stmt_end_nl
             | for_stmt
 ;
 
+simple_stmts_p: assign_stmt 
+                | array_stmt
+                | func_stmt
+;
+
+func_stmt: "(" arg_list ")"
+;
+
+array_stmt: "[" expr "]" "=" expr
+;
+
+assign_stmt: "=" assign_stmt_op
+;
+
+assign_stmt_op: expr
+                | "[" arg_list "]"
+;
+
 stmt_end_nl: NewLine
             | /**/
 ;
 
 for_stmt: KW_FOR TK_IDENTIFIER KW_IN KW_RANGE TK_OPENPAR arg_list TK_CLOSEPAR TK_COLON Indent complex_stmts Dedent
-
+;
 
 while_stmt: KW_WHILE expr TK_COLON Indent complex_stmts Dedent
 ;
@@ -131,10 +151,6 @@ if_opt_p:   KW_ELIF expr TK_COLON Indent complex_stmts if_opt
 
 if_opt_pp:  Dedent      
             | TK_EOF    
-;
-
-
-assign_stmt: TK_IDENTIFIER "=" expr 
 ;
 
 print_stmt: KW_PRINT print_stmt_p
@@ -188,5 +204,6 @@ factor:     TK_NUMBER {/*$$ = $1;*/}
 ;
 
 factor_p:   TK_OPENPAR arg_list TK_CLOSEPAR {/*std::cout<<"funcion\n";*/}
+            | "[" expr "]" 
             | /**/ {/*std::cout<<"identificador\n";*/}
 ;

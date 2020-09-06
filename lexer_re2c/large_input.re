@@ -178,6 +178,20 @@ int ExprLexer::getNextToken(semantic_type *yylval)
                     std::cout<<text<<"\n";
                     return x;
                 }
+            "["  {
+                    std::cout<<"open bracket token\n"; 
+                    std::cout<<"-----"<<"\n";
+                    auto x = makeToken(token::TK_OPENBCKT);
+                    std::cout<<text<<"\n";
+                    return x;
+                }
+            "]"  {
+                    std::cout<<"close bracket token\n"; 
+                    std::cout<<"-----"<<"\n";
+                    auto x = makeToken(token::TK_CLOSEBCKT);
+                    std::cout<<text<<"\n";
+                    return x;
+                }
             ","  {
                     std::cout<<"comma token\n"; 
                     std::cout<<"-----"<<"\n";
