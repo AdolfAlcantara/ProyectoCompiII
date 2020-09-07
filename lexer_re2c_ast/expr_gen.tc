@@ -1,0 +1,139 @@
+gen(AddExpr)
+{
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    place = aux.getReg();
+
+    code = expr1->code + expr2->code;
+    code += "add $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);
+    return 0;
+}
+
+gen(SubExpr)
+{
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    place = aux.getReg();
+
+    code = expr1->code + expr2->code;
+    code += "sub $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);
+    return 0;
+}
+
+gen(MulExpr) {return 0;}
+gen(DivExpr) {return 0;}
+gen(ModExpr) {return 0;}
+gen(PwdExpr) {return 0;}
+gen(GTExpr) {return 0;}
+gen(LTExpr) {return 0;}
+gen(GEExpr) {return 0;}
+gen(LEExpr) {return 0;}
+gen(EqExpr) {return 0;}
+gen(NotExpr) {return 0;}
+
+
+gen(NumExpr)
+{
+    place = aux.getReg();
+
+    code = "li $t"+aux.to_str(place)+", "+aux.to_str(value) + "\n";
+    return 0;
+}
+
+gen(IdExpr){
+    place  = aux.getReg();
+    
+    code = "la $t"+aux.to_str(place)+", "+id+"\n";
+    code += "lw $t"+aux.to_str(place)+", 0($t"+aux.to_str(place)+")\n";
+    return 0;
+}
+
+gen(InputExpr){
+    return 0;
+}
+
+gen(AssignStmt){
+    expr->gen(vars);
+
+    place = aux.getReg();
+
+    code = expr->code;
+    code += "la $t"+aux.to_str(place)+", "+id+"\n";
+    code += "sw $t"+aux.to_str(expr->place)+", 0($t"+aux.to_str(place)+")\n";
+
+    aux.freeReg(expr->place);
+    return 0;
+}
+
+gen(BlockStmt){
+    code = "";
+    for(const auto& stmt : l){
+        stmt->gen(vars);
+        code += stmt->code;
+        aux.freeReg(stmt->place);
+    }
+
+    return 0;
+}
+
+gen(ArgList){
+    return 0;
+}
+
+gen(ForStmt){
+    return 0;
+}
+
+gen(PrintList){
+    code = "";
+    for(const auto& val : vals){
+        val->gen(vars);
+        code += val->code;
+        aux.freeReg(val->place);
+    }
+}
+
+gen(PrintExpr)
+{
+    expr->gen(vars);
+    place = aux.getReg();
+
+    code = expr->code;
+    code+= "move $a0,$t"+aux.to_str(expr->place)+"\n";
+    code+= "jal print_int";
+
+    aux.freeReg(expr->place);
+    return 0;
+}
+
+gen(PrintString)
+{
+    code = expr->code;
+    code+= "move $a0,"+literal+"\n";
+    code+= "jal print_str\n";
+
+    return 0;
+}
+
+gen(IfStmt)
+{
+    return 0;
+}
+
+gen(ElseStmt)
+{
+    return 0;
+}
+
+gen(WhileStmt)
+{
+    return 0;
+}

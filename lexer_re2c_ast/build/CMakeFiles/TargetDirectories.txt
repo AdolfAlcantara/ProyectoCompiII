@@ -1,0 +1,3 @@
+/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/build/CMakeFiles/rebuild_cache.dir
+/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/build/CMakeFiles/edit_cache.dir
+/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/build/CMakeFiles/expr.dir

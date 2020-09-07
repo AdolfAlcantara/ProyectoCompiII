@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../Auxiliar.h
+sstream
+-
+cstdio
+-
+map
+-
+
+/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/build/expr_ast.cpp
+expr_ast.h
+/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/build/expr_ast.h
+cstddef
+-
+
+/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/build/expr_ast.h
+string
+-
+cstddef
+-
+iostream
+-
+vector
+-
+unordered_map
+-
+math.h
+-
+Auxiliar.h
+/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/build/Auxiliar.h
+new
+-
+

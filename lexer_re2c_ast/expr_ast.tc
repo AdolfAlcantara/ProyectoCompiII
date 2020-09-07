@@ -1,0 +1,371 @@
+%option lang = "C++"
+%option namespace = "Ast"
+// %option reentrant
+
+//va en el header
+%decls %{
+#include <string>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include <math.h> 
+#include "Auxiliar.h"
+
+using string_t = std::string;
+
+namespace Ast
+{
+    class Node;
+    using NodeVector = std::vector<Node*>;
+    using SymbolTable = std::unordered_map<std::string, int>;
+    using SymbolTableGen = std::unordered_map<std::string, std::string>;
+}
+%}
+
+//esto va para el cpp
+%{
+    #include "expr_ast.h"
+    Auxiliar aux;
+%}
+
+%node Node %abstract %typedef = {
+    %nocreate string_t code;
+    %nocreate int place;
+}
+
+%node Expr Node %abstract
+
+%node BinaryExpr Expr %abstract = {
+    Expr *expr1;
+    Expr *expr2;
+}
+
+%node NumExpr Expr = {
+    int value;
+}
+
+%node IdExpr Expr = {
+    string_t id;
+}
+
+%node InputExpr Expr = {
+    string_t text;
+}
+
+%node AddExpr BinaryExpr
+%node SubExpr BinaryExpr
+%node MulExpr BinaryExpr
+%node DivExpr BinaryExpr
+%node ModExpr BinaryExpr
+%node PwdExpr BinaryExpr
+%node GTExpr BinaryExpr
+%node LTExpr BinaryExpr
+%node GEExpr BinaryExpr
+%node LEExpr BinaryExpr
+%node EqExpr BinaryExpr
+%node NotExpr BinaryExpr
+
+%node Stmt Node %abstract
+
+%node AssignStmt Stmt = {
+    string_t id;
+    Expr * expr;
+}
+
+%node BlockStmt Stmt = {
+    NodeVector l;
+}
+
+%node ArgList Expr = {
+    NodeVector args;
+}
+
+%node ForStmt Stmt = {
+    string_t id;
+    ArgList * args;
+    Stmt * blck_stmts;
+}
+
+%node PrintList Stmt = {
+    NodeVector vals;
+}
+
+%node PrintExpr Stmt = {
+    Expr * expr;
+}
+
+%node PrintString Stmt = {
+    string_t literal;
+}
+
+%node IfStmt Stmt = {
+    Expr * cond;
+    Stmt * true_blk;
+    Stmt * false_blk;
+}
+
+%node ElseStmt Stmt = {
+    Stmt *  code_blk;
+}
+
+%node WhileStmt Stmt = {
+    Expr *cond;
+    Stmt *block;
+}
+
+%operation %virtual int eval(Node *this, SymbolTable& vars);
+
+eval(AddExpr) { return expr1->eval(vars) + expr2->eval(vars);}
+eval(SubExpr) { return expr1->eval(vars) - expr2->eval(vars);}
+eval(MulExpr) { return expr1->eval(vars) * expr2->eval(vars);}
+eval(DivExpr) { return expr1->eval(vars) / expr2->eval(vars);}
+eval(ModExpr) { return expr1->eval(vars) % expr2->eval(vars);}
+eval(PwdExpr) { return pow(expr1->eval(vars), expr2->eval(vars));}
+eval(GTExpr) { return expr1->eval(vars) > expr2->eval(vars);}
+eval(LTExpr) { return expr1->eval(vars) < expr2->eval(vars);}
+eval(GEExpr) { return expr1->eval(vars) >= expr2->eval(vars);}
+eval(LEExpr) { return expr1->eval(vars) <= expr2->eval(vars);}
+eval(EqExpr) { return expr1->eval(vars) == expr2->eval(vars);}
+eval(NotExpr) { return expr1->eval(vars) != expr2->eval(vars);}
+
+eval(NumExpr){
+    return value;
+}
+
+eval(IdExpr){
+    auto it = vars.find(id);
+
+    if(it != vars.end())
+        return it->second;
+    else
+        throw std::exception();
+}
+
+eval(InputExpr){
+    std::cout<<text;
+    int val;
+    std::cin>>val;
+    return val;
+}
+
+eval(AssignStmt){
+    int value = expr->eval(vars);
+    vars[id] = value;
+
+    return 0;
+}
+
+eval(BlockStmt){
+    for(const auto& stmt : l){
+        stmt->eval(vars);
+    }
+
+    return 0;
+}
+
+eval(ArgList){
+    for(const auto& arg : args){
+        arg->eval(vars);
+    }
+    return 0; 
+}
+
+eval(ForStmt){
+    int second = args->args.back()->eval(vars);
+    std::cout<<"second: "<<second<<std::endl;
+    args->args.pop_back();
+    int first = args->args.back()->eval(vars);
+    std::cout<<"first: "<<first<<std::endl;
+    vars[id] = first;
+    int i = first;
+    for(;i<second;){
+        blck_stmts->eval(vars);
+        i++;
+        vars[id] = i;
+    }
+    return 0;
+}
+
+eval(PrintExpr){
+    std::cout << expr->eval(vars);
+    return 0;
+}
+
+eval(PrintString){
+    std::cout<<literal;
+    return 0;
+}
+
+eval(PrintList){
+    for(const auto& p : vals){
+        p->eval(vars);
+    }
+    std::cout<<std::endl;
+    return 0;
+}
+
+eval(IfStmt){
+    if(cond->eval(vars))
+        true_blk->eval(vars);
+    else if(false_blk != nullptr)
+        false_blk->eval(vars);
+
+    return 0;
+}
+
+eval(ElseStmt){
+    if(code_blk != nullptr){
+        code_blk->eval(vars);
+    }
+    return 0;
+}
+
+eval(WhileStmt){
+    while(cond->eval(vars))
+        block->eval(vars);
+    return 0;
+}
+
+%operation %virtual int gen(Node *this, SymbolTableGen& vars);
+
+gen(AddExpr)
+{
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    place = aux.getReg();
+
+    code = expr1->code + expr2->code;
+    code += "add $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);
+    return 0;
+}
+
+gen(SubExpr)
+{
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    place = aux.getReg();
+
+    code = expr1->code + expr2->code;
+    code += "sub $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);
+    return 0;
+}
+
+gen(MulExpr) {return 0;}
+gen(DivExpr) {return 0;}
+gen(ModExpr) {return 0;}
+gen(PwdExpr) {return 0;}
+gen(GTExpr) {return 0;}
+gen(LTExpr) {return 0;}
+gen(GEExpr) {return 0;}
+gen(LEExpr) {return 0;}
+gen(EqExpr) {return 0;}
+gen(NotExpr) {return 0;}
+
+
+gen(NumExpr)
+{
+    place = aux.getReg();
+
+    code = "li $t"+aux.to_str(place)+", "+aux.to_str(value) + "\n";
+    return 0;
+}
+
+gen(IdExpr){
+    place  = aux.getReg();
+    
+    code = "la $t"+aux.to_str(place)+", "+id+"\n";
+    code += "lw $t"+aux.to_str(place)+", 0($t"+aux.to_str(place)+")\n";
+    return 0;
+}
+
+gen(InputExpr){
+    return 0;
+}
+
+gen(AssignStmt){
+    expr->gen(vars);
+
+    place = aux.getReg();
+    aux.saveVar(vars,id,1);
+    code = expr->code;
+    code += "la $t"+aux.to_str(place)+", "+id+"\n";
+    code += "sw $t"+aux.to_str(expr->place)+", 0($t"+aux.to_str(place)+")\n";
+
+    aux.freeReg(expr->place);
+    return 0;
+}
+
+gen(BlockStmt){
+    code = "";
+    for(const auto& stmt : l){
+        stmt->gen(vars);
+        code += stmt->code;
+        aux.freeReg(stmt->place);
+    }
+
+    return 0;
+}
+
+gen(ArgList){
+    return 0;
+}
+
+gen(ForStmt){
+    return 0;
+}
+
+gen(PrintList){
+    code = "";
+    for(const auto& val : vals){
+        val->gen(vars);
+        code += val->code;
+        aux.freeReg(val->place);
+    }
+    return 0;
+}
+
+gen(PrintExpr)
+{
+    expr->gen(vars);
+    place = aux.getReg();
+
+    code = expr->code;
+    code+= "move $a0,$t"+aux.to_str(expr->place)+"\n";
+    code+= "jal print_int\n";
+
+    aux.freeReg(expr->place);
+    return 0;
+}
+
+gen(PrintString)
+{
+    string_t var = aux.saveVar(vars,literal,2);
+    code = "la $a0,"+var+"\n";
+    code+= "jal print_str\n";
+
+    return 0;
+}
+
+gen(IfStmt)
+{
+    return 0;
+}
+
+gen(ElseStmt)
+{
+    return 0;
+}
+
+gen(WhileStmt)
+{
+    return 0;
+}

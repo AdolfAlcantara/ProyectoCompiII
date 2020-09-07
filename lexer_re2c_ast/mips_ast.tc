@@ -1,0 +1,94 @@
+%option lang = "C++"
+%option namespace = "Ast"
+
+%decls %{
+#include <string>
+#include <cstddef>
+#include <iostream>
+#include <vector>
+#include <unordered_map>
+#include "Auxiliar.h"
+
+using string_t = std::string;
+
+namespace Ast
+{
+    class Node;
+    using NodeVector = std::vector<Node*>;
+    using SymbolTable = std::unordered_map<std::string, int>;
+}
+%}
+
+%{
+    #include "mips_ast.h"
+    Auxiliar aux;
+
+%}
+
+%node Node %abstract %typedef = {
+    string_t code;
+    int place;
+}
+
+%node Expr Node %abstract
+
+%node BinaryExpr Expr %abstract = {
+    Expr *expr1;
+    Expr *expr2;
+}
+
+%node NumExpr Expr = {
+    int value;
+}
+
+%node AddExpr BinaryExpr
+%node SubExpr BinaryExpr
+%node MulExpr BinaryExpr
+%node DivExpr BinaryExpr
+%node GTExpr BinaryExpr
+%node LTExpr BinaryExpr
+%node GEExpr BinaryExpr
+%node LEExpr BinaryExpr
+%node EqExpr BinaryExpr
+%node NotExpr BinaryExpr
+
+%node Stmt Node %abstract
+
+%node BlockStmt Stmt = {
+    NodeVector stmts;
+}
+
+%operation %virtual int eval(Node *this, SymbolTable& vars);
+
+eval(AddExpr) { return expr1->eval(vars) + expr2->eval(vars);}
+eval(SubExpr) { return expr1->eval(vars) - expr2->eval(vars);}
+eval(MulExpr) { return expr1->eval(vars) * expr2->eval(vars);}
+eval(DivExpr) { return expr1->eval(vars) / expr2->eval(vars);}
+eval(GTExpr) { return expr1->eval(vars) > expr2->eval(vars);}
+eval(LTExpr) { return expr1->eval(vars) < expr2->eval(vars);}
+eval(GEExpr) { return expr1->eval(vars) >= expr2->eval(vars);}
+eval(LEExpr) { return expr1->eval(vars) <= expr2->eval(vars);}
+eval(EqExpr) { return expr1->eval(vars) == expr2->eval(vars);}
+eval(NotExpr) { return expr1->eval(vars) != expr2->eval(vars);}
+
+eval(NumExpr){
+    return value;
+}
+
+eval(BlockStmt){
+    for(const auto& stmt : stmts){
+        stmt->eval(vars);
+    }
+
+    return 0;
+}
+
+%operation %virtual int gen(ASTNode *n);
+
+gen(NumExpr){
+    place = aux.getReg();
+    code = "li $t0, "+value;
+}
+
+
+
