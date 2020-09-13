@@ -8,17 +8,44 @@ public:
     Auxiliar(){}
 
     int getReg(){
+        // for(int i=0;i<10;i++){
+        //     std::cout<<to_str(i)+": "<<regs[i]<<"\n";
+        // }
         for(int i=0;i<10;i++){
             if(!regs[i]){
                 regs[i] = true;
                 return i;
             }
         }
+        std::cout<<"Oh oh, no registers avaialable\n";
+        throw std::exception();
+    }
+
+    int getArg(){
+        for(int i=0;i<4;i++){
+            if(!args[i]){
+                args[i]=true;
+                return i;
+            }
+        }
+        std::cout<<"Oh oh, no arguments avaialable\n";
+        throw std::exception();
     }
 
     void freeReg(int regPos){
         regs[regPos] = false;
         return;
+    }
+
+    void freeArg(int argPos){
+        args[argPos] = false;
+        return;
+    }
+
+    void freeArgs(){
+       for(int i=0;i<4;i++){
+            args[i]=false;
+        }
     }
 
     std::string to_str(int x) {
@@ -30,6 +57,14 @@ public:
     std::string varGenerator(){
         return "var"+to_str(varCounter++);
     }
+
+    std::string labelGenerator(std::string modifier){
+        if(modifier!=""){
+            return "label_"+modifier+"_"+to_str(labelCounter++);
+        }else{
+            return "label_"+to_str(labelCounter++);
+        }
+    }
     
     //vars = tabla de variables
     // t = identificador o literal
@@ -38,7 +73,7 @@ public:
     std::string saveVar(std::unordered_map<std::string, std::string> &vars, std::string t,int varType){
         if(varType == 1){
             vars.insert({t,""});
-            return nullptr;
+            return "";
         }else{
             std::string var = varGenerator();
             vars.insert({var,t});
@@ -48,7 +83,13 @@ public:
 
 private:
 
-    int varCounter = 0;
+    int varCounter = 0,labelCounter=0;
+    std::map<int, bool> args{
+        {0,false},
+        {1,false},
+        {2,false},
+        {3,false}
+    };
     std::map<int,bool> regs{ 
         {0,false},
         {1,false},

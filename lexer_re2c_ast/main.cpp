@@ -31,7 +31,7 @@ int main(int argc, char* argv[])
     }
     Ast::SymbolTable symb_tbl;
     Ast::SymbolTableGen symb_tbl_gen;
-    root->eval(symb_tbl);
+    // root->eval(symb_tbl);
     root->gen(symb_tbl_gen);
 
     std::string context =".data\n";
@@ -39,10 +39,10 @@ int main(int argc, char* argv[])
         if(x.second == ""){
             context += x.first +": .word 0\n";
         }else{
-            context += x.first+":\n\t.byte "+x.second+",0\n";
+            context += x.first+":\n\t.byte "+x.second+", 0 \n";
         }
     }
-    context += "\n.text\n";
+    context += "\n.text\nmain:\n";
     context += root->code;
     std::cout<<"Codigo generado:"<<std::endl;
     std::cout<<context;
