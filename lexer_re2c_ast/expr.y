@@ -83,11 +83,12 @@
 %token NewLine
 %token Indent
 %token Dedent
-%type<Ast::Expr*> expr term factor prod
-%type<Ast::Node *> complex_stmts simple_stmts print_stmt func_decl assign_stmt arg_list arg_list_p
+%type<Ast::Expr*> expr term factor prod factor_p
+%type<Ast::Node *> complex_stmts simple_stmts simple_stmts_p print_stmt func_decl assign_stmt arg_list arg_list_p
 %type<Ast::Node *> print_stmt_pp print_stmt_p
 %type<Ast::Node *> if_stmt if_opt if_opt_p 
-%type<Ast::Node *> for_stmt while_stmt
+%type<Ast::Node *> for_stmt while_stmt 
+%type<Ast::Node *> func_stmt 
 
 %% 
 input: NewLine complex_stmts {root = $2;}
@@ -111,12 +112,28 @@ complex_stmts: complex_stmts KW_DEF func_decl   {
 func_decl:  TK_IDENTIFIER TK_OPENPAR arg_list TK_CLOSEPAR TK_COLON Indent complex_stmts Dedent
 ;
 
-simple_stmts: assign_stmt  stmt_end_nl  {$$ = $1;}
+simple_stmts: TK_IDENTIFIER simple_stmts_p stmt_end_nl  {
+                                                            std::string kind = $2->getKindName();
+                                                            if(kind=="AssignStmt"){
+                                                                $$ = $2;
+                                                                reinterpret_cast<Ast::AssignStmt*>($$)->id = $1;
+                                                            }else if(kind == "FuncCall"){
+                                                                $$ = $2;
+                                                                reinterpret_cast<Ast::FuncCall*>($$)->name = $1;
+                                                            }
+                                                        }
             | print_stmt stmt_end_nl    {$$ = $1;}
             | if_stmt                   {$$ = $1;}
             | for_stmt                  {$$ = $1;}
             | while_stmt                {$$ = $1;}
 
+;
+
+simple_stmts_p: assign_stmt {$$ = $1;}
+                | func_stmt {$$ = $1;}
+;
+
+func_stmt: "(" arg_list ")" {$$ = new Ast::FuncCall("",reinterpret_cast<Ast::ArgList*>($2));}
 ;
 
 while_stmt: KW_WHILE expr TK_COLON Indent complex_stmts Dedent
@@ -147,7 +164,7 @@ if_opt_pp:  Dedent
             | TK_EOF    
 ;
 
-assign_stmt: TK_IDENTIFIER "=" expr {$$ = new Ast::AssignStmt($1,$3);}
+assign_stmt: "=" expr {$$ = new Ast::AssignStmt("",$2);}
 ;
 
 stmt_end_nl: NewLine
@@ -214,6 +231,20 @@ prod:   prod OP_MOD factor {$$ = new Ast::ModExpr($1,$3);}
 
 factor:     TK_NUMBER {$$ = new Ast::NumExpr($1);}
             | TK_OPENPAR expr TK_CLOSEPAR { $$ = $2;}
-            | TK_IDENTIFIER {$$ = new Ast::IdExpr($1);}
+            | TK_IDENTIFIER factor_p {                      
+                                        std::string kind = $2->getKindName();
+                                        if(kind=="FuncCall"){
+                                            $$ = $2;
+                                            reinterpret_cast<Ast::FuncCall*>($$)->name = $1;
+                                        }else if(kind == "IdExpr"){
+                                            $$ = $2;
+                                            reinterpret_cast<Ast::IdExpr*>($$)->id = $1;
+                                        }
+                                    }
             | KW_INPUT TK_OPENPAR TK_STRING TK_CLOSEPAR {$$ = new Ast::InputExpr($3);}
+;
+
+factor_p:   TK_OPENPAR arg_list TK_CLOSEPAR {$$ = new Ast::FuncCall("",reinterpret_cast<Ast::ArgList*>($2));}
+            | "[" expr "]" 
+            | /**/ {$$ = new Ast::IdExpr("");}
 ;

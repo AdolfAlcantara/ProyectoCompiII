@@ -215,27 +215,30 @@ namespace Expr {
   {
     switch (this->type_get ())
     {
-      case 58: // expr
-      case 59: // term
-      case 60: // prod
-      case 61: // factor
+      case 60: // expr
+      case 61: // term
+      case 62: // prod
+      case 63: // factor
+      case 64: // factor_p
         value.move< Ast::Expr* > (std::move (that.value));
         break;
 
       case 42: // complex_stmts
       case 43: // func_decl
       case 44: // simple_stmts
-      case 45: // while_stmt
-      case 46: // for_stmt
-      case 47: // if_stmt
-      case 48: // if_opt
-      case 49: // if_opt_p
-      case 51: // assign_stmt
-      case 53: // arg_list
-      case 54: // arg_list_p
-      case 55: // print_stmt
-      case 56: // print_stmt_p
-      case 57: // print_stmt_pp
+      case 45: // simple_stmts_p
+      case 46: // func_stmt
+      case 47: // while_stmt
+      case 48: // for_stmt
+      case 49: // if_stmt
+      case 50: // if_opt
+      case 51: // if_opt_p
+      case 53: // assign_stmt
+      case 55: // arg_list
+      case 56: // arg_list_p
+      case 57: // print_stmt
+      case 58: // print_stmt_p
+      case 59: // print_stmt_pp
         value.move< Ast::Node * > (std::move (that.value));
         break;
 
@@ -262,27 +265,30 @@ namespace Expr {
   {
     switch (this->type_get ())
     {
-      case 58: // expr
-      case 59: // term
-      case 60: // prod
-      case 61: // factor
+      case 60: // expr
+      case 61: // term
+      case 62: // prod
+      case 63: // factor
+      case 64: // factor_p
         value.copy< Ast::Expr* > (YY_MOVE (that.value));
         break;
 
       case 42: // complex_stmts
       case 43: // func_decl
       case 44: // simple_stmts
-      case 45: // while_stmt
-      case 46: // for_stmt
-      case 47: // if_stmt
-      case 48: // if_opt
-      case 49: // if_opt_p
-      case 51: // assign_stmt
-      case 53: // arg_list
-      case 54: // arg_list_p
-      case 55: // print_stmt
-      case 56: // print_stmt_p
-      case 57: // print_stmt_pp
+      case 45: // simple_stmts_p
+      case 46: // func_stmt
+      case 47: // while_stmt
+      case 48: // for_stmt
+      case 49: // if_stmt
+      case 50: // if_opt
+      case 51: // if_opt_p
+      case 53: // assign_stmt
+      case 55: // arg_list
+      case 56: // arg_list_p
+      case 57: // print_stmt
+      case 58: // print_stmt_p
+      case 59: // print_stmt_pp
         value.copy< Ast::Node * > (YY_MOVE (that.value));
         break;
 
@@ -317,27 +323,30 @@ namespace Expr {
     super_type::move (s);
     switch (this->type_get ())
     {
-      case 58: // expr
-      case 59: // term
-      case 60: // prod
-      case 61: // factor
+      case 60: // expr
+      case 61: // term
+      case 62: // prod
+      case 63: // factor
+      case 64: // factor_p
         value.move< Ast::Expr* > (YY_MOVE (s.value));
         break;
 
       case 42: // complex_stmts
       case 43: // func_decl
       case 44: // simple_stmts
-      case 45: // while_stmt
-      case 46: // for_stmt
-      case 47: // if_stmt
-      case 48: // if_opt
-      case 49: // if_opt_p
-      case 51: // assign_stmt
-      case 53: // arg_list
-      case 54: // arg_list_p
-      case 55: // print_stmt
-      case 56: // print_stmt_p
-      case 57: // print_stmt_pp
+      case 45: // simple_stmts_p
+      case 46: // func_stmt
+      case 47: // while_stmt
+      case 48: // for_stmt
+      case 49: // if_stmt
+      case 50: // if_opt
+      case 51: // if_opt_p
+      case 53: // assign_stmt
+      case 55: // arg_list
+      case 56: // arg_list_p
+      case 57: // print_stmt
+      case 58: // print_stmt_p
+      case 59: // print_stmt_pp
         value.move< Ast::Node * > (YY_MOVE (s.value));
         break;
 
@@ -440,27 +449,30 @@ namespace Expr {
   {
     switch (that.type_get ())
     {
-      case 58: // expr
-      case 59: // term
-      case 60: // prod
-      case 61: // factor
+      case 60: // expr
+      case 61: // term
+      case 62: // prod
+      case 63: // factor
+      case 64: // factor_p
         value.YY_MOVE_OR_COPY< Ast::Expr* > (YY_MOVE (that.value));
         break;
 
       case 42: // complex_stmts
       case 43: // func_decl
       case 44: // simple_stmts
-      case 45: // while_stmt
-      case 46: // for_stmt
-      case 47: // if_stmt
-      case 48: // if_opt
-      case 49: // if_opt_p
-      case 51: // assign_stmt
-      case 53: // arg_list
-      case 54: // arg_list_p
-      case 55: // print_stmt
-      case 56: // print_stmt_p
-      case 57: // print_stmt_pp
+      case 45: // simple_stmts_p
+      case 46: // func_stmt
+      case 47: // while_stmt
+      case 48: // for_stmt
+      case 49: // if_stmt
+      case 50: // if_opt
+      case 51: // if_opt_p
+      case 53: // assign_stmt
+      case 55: // arg_list
+      case 56: // arg_list_p
+      case 57: // print_stmt
+      case 58: // print_stmt_p
+      case 59: // print_stmt_pp
         value.YY_MOVE_OR_COPY< Ast::Node * > (YY_MOVE (that.value));
         break;
 
@@ -488,27 +500,30 @@ namespace Expr {
   {
     switch (that.type_get ())
     {
-      case 58: // expr
-      case 59: // term
-      case 60: // prod
-      case 61: // factor
+      case 60: // expr
+      case 61: // term
+      case 62: // prod
+      case 63: // factor
+      case 64: // factor_p
         value.move< Ast::Expr* > (YY_MOVE (that.value));
         break;
 
       case 42: // complex_stmts
       case 43: // func_decl
       case 44: // simple_stmts
-      case 45: // while_stmt
-      case 46: // for_stmt
-      case 47: // if_stmt
-      case 48: // if_opt
-      case 49: // if_opt_p
-      case 51: // assign_stmt
-      case 53: // arg_list
-      case 54: // arg_list_p
-      case 55: // print_stmt
-      case 56: // print_stmt_p
-      case 57: // print_stmt_pp
+      case 45: // simple_stmts_p
+      case 46: // func_stmt
+      case 47: // while_stmt
+      case 48: // for_stmt
+      case 49: // if_stmt
+      case 50: // if_opt
+      case 51: // if_opt_p
+      case 53: // assign_stmt
+      case 55: // arg_list
+      case 56: // arg_list_p
+      case 57: // print_stmt
+      case 58: // print_stmt_p
+      case 59: // print_stmt_pp
         value.move< Ast::Node * > (YY_MOVE (that.value));
         break;
 
@@ -536,27 +551,30 @@ namespace Expr {
     state = that.state;
     switch (that.type_get ())
     {
-      case 58: // expr
-      case 59: // term
-      case 60: // prod
-      case 61: // factor
+      case 60: // expr
+      case 61: // term
+      case 62: // prod
+      case 63: // factor
+      case 64: // factor_p
         value.copy< Ast::Expr* > (that.value);
         break;
 
       case 42: // complex_stmts
       case 43: // func_decl
       case 44: // simple_stmts
-      case 45: // while_stmt
-      case 46: // for_stmt
-      case 47: // if_stmt
-      case 48: // if_opt
-      case 49: // if_opt_p
-      case 51: // assign_stmt
-      case 53: // arg_list
-      case 54: // arg_list_p
-      case 55: // print_stmt
-      case 56: // print_stmt_p
-      case 57: // print_stmt_pp
+      case 45: // simple_stmts_p
+      case 46: // func_stmt
+      case 47: // while_stmt
+      case 48: // for_stmt
+      case 49: // if_stmt
+      case 50: // if_opt
+      case 51: // if_opt_p
+      case 53: // assign_stmt
+      case 55: // arg_list
+      case 56: // arg_list_p
+      case 57: // print_stmt
+      case 58: // print_stmt_p
+      case 59: // print_stmt_pp
         value.copy< Ast::Node * > (that.value);
         break;
 
@@ -582,27 +600,30 @@ namespace Expr {
     state = that.state;
     switch (that.type_get ())
     {
-      case 58: // expr
-      case 59: // term
-      case 60: // prod
-      case 61: // factor
+      case 60: // expr
+      case 61: // term
+      case 62: // prod
+      case 63: // factor
+      case 64: // factor_p
         value.move< Ast::Expr* > (that.value);
         break;
 
       case 42: // complex_stmts
       case 43: // func_decl
       case 44: // simple_stmts
-      case 45: // while_stmt
-      case 46: // for_stmt
-      case 47: // if_stmt
-      case 48: // if_opt
-      case 49: // if_opt_p
-      case 51: // assign_stmt
-      case 53: // arg_list
-      case 54: // arg_list_p
-      case 55: // print_stmt
-      case 56: // print_stmt_p
-      case 57: // print_stmt_pp
+      case 45: // simple_stmts_p
+      case 46: // func_stmt
+      case 47: // while_stmt
+      case 48: // for_stmt
+      case 49: // if_stmt
+      case 50: // if_opt
+      case 51: // if_opt_p
+      case 53: // assign_stmt
+      case 55: // arg_list
+      case 56: // arg_list_p
+      case 57: // print_stmt
+      case 58: // print_stmt_p
+      case 59: // print_stmt_pp
         value.move< Ast::Node * > (that.value);
         break;
 
@@ -859,27 +880,30 @@ namespace Expr {
          when using variants.  */
       switch (yyr1_[yyn])
     {
-      case 58: // expr
-      case 59: // term
-      case 60: // prod
-      case 61: // factor
+      case 60: // expr
+      case 61: // term
+      case 62: // prod
+      case 63: // factor
+      case 64: // factor_p
         yylhs.value.emplace< Ast::Expr* > ();
         break;
 
       case 42: // complex_stmts
       case 43: // func_decl
       case 44: // simple_stmts
-      case 45: // while_stmt
-      case 46: // for_stmt
-      case 47: // if_stmt
-      case 48: // if_opt
-      case 49: // if_opt_p
-      case 51: // assign_stmt
-      case 53: // arg_list
-      case 54: // arg_list_p
-      case 55: // print_stmt
-      case 56: // print_stmt_p
-      case 57: // print_stmt_pp
+      case 45: // simple_stmts_p
+      case 46: // func_stmt
+      case 47: // while_stmt
+      case 48: // for_stmt
+      case 49: // if_stmt
+      case 50: // if_opt
+      case 51: // if_opt_p
+      case 53: // assign_stmt
+      case 55: // arg_list
+      case 56: // arg_list_p
+      case 57: // print_stmt
+      case 58: // print_stmt_p
+      case 59: // print_stmt_pp
         yylhs.value.emplace< Ast::Node * > ();
         break;
 
@@ -907,316 +931,364 @@ namespace Expr {
           switch (yyn)
             {
   case 2:
-#line 93 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+#line 94 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                              {root = yystack_[0].value.as < Ast::Node * > ();}
-#line 913 "expr_parser.cpp"
+#line 937 "expr_parser.cpp"
     break;
 
   case 3:
-#line 94 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+#line 95 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                             {root = yystack_[0].value.as < Ast::Node * > ();}
-#line 919 "expr_parser.cpp"
+#line 943 "expr_parser.cpp"
     break;
 
   case 4:
-#line 97 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+#line 98 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                                 {
                                                     // $$ = $1;
                                                     // reinterpret_cast<Ast::BlockStmt*>($$)->l.push_back($2);
                                                 }
-#line 928 "expr_parser.cpp"
+#line 952 "expr_parser.cpp"
     break;
 
   case 5:
-#line 101 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+#line 102 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                                 {
                                                     yylhs.value.as < Ast::Node * > () = yystack_[1].value.as < Ast::Node * > ();
                                                     reinterpret_cast<Ast::BlockStmt*>(yylhs.value.as < Ast::Node * > ())->l.push_back(yystack_[0].value.as < Ast::Node * > ());
                                                 }
-#line 937 "expr_parser.cpp"
+#line 961 "expr_parser.cpp"
     break;
 
   case 6:
-#line 105 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+#line 106 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                                 { 
                                                     Ast::NodeVector stmts;
                                                     yylhs.value.as < Ast::Node * > () = new Ast::BlockStmt(stmts);
                                                 }
-#line 946 "expr_parser.cpp"
-    break;
-
-  case 8:
-#line 114 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                        {yylhs.value.as < Ast::Node * > () = yystack_[1].value.as < Ast::Node * > ();}
-#line 952 "expr_parser.cpp"
-    break;
-
-  case 9:
-#line 115 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                        {yylhs.value.as < Ast::Node * > () = yystack_[1].value.as < Ast::Node * > ();}
-#line 958 "expr_parser.cpp"
-    break;
-
-  case 10:
-#line 116 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                        {yylhs.value.as < Ast::Node * > () = yystack_[0].value.as < Ast::Node * > ();}
-#line 964 "expr_parser.cpp"
-    break;
-
-  case 11:
-#line 117 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                        {yylhs.value.as < Ast::Node * > () = yystack_[0].value.as < Ast::Node * > ();}
 #line 970 "expr_parser.cpp"
     break;
 
-  case 12:
-#line 118 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+  case 8:
+#line 115 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                                        {
+                                                            std::string kind = yystack_[1].value.as < Ast::Node * > ()->getKindName();
+                                                            if(kind=="AssignStmt"){
+                                                                yylhs.value.as < Ast::Node * > () = yystack_[1].value.as < Ast::Node * > ();
+                                                                reinterpret_cast<Ast::AssignStmt*>(yylhs.value.as < Ast::Node * > ())->id = yystack_[2].value.as < std::string > ();
+                                                            }else if(kind == "FuncCall"){
+                                                                yylhs.value.as < Ast::Node * > () = yystack_[1].value.as < Ast::Node * > ();
+                                                                reinterpret_cast<Ast::FuncCall*>(yylhs.value.as < Ast::Node * > ())->name = yystack_[2].value.as < std::string > ();
+                                                            }
+                                                        }
+#line 985 "expr_parser.cpp"
+    break;
+
+  case 9:
+#line 125 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                        {yylhs.value.as < Ast::Node * > () = yystack_[1].value.as < Ast::Node * > ();}
+#line 991 "expr_parser.cpp"
+    break;
+
+  case 10:
+#line 126 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                         {yylhs.value.as < Ast::Node * > () = yystack_[0].value.as < Ast::Node * > ();}
-#line 976 "expr_parser.cpp"
+#line 997 "expr_parser.cpp"
+    break;
+
+  case 11:
+#line 127 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                        {yylhs.value.as < Ast::Node * > () = yystack_[0].value.as < Ast::Node * > ();}
+#line 1003 "expr_parser.cpp"
+    break;
+
+  case 12:
+#line 128 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                        {yylhs.value.as < Ast::Node * > () = yystack_[0].value.as < Ast::Node * > ();}
+#line 1009 "expr_parser.cpp"
     break;
 
   case 13:
-#line 123 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-            {
-                yylhs.value.as < Ast::Node * > () = new Ast::WhileStmt(yystack_[4].value.as < Ast::Expr* > (),reinterpret_cast<Ast::Stmt*>(yystack_[1].value.as < Ast::Node * > ()));
-            }
-#line 984 "expr_parser.cpp"
+#line 132 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                            {yylhs.value.as < Ast::Node * > () = yystack_[0].value.as < Ast::Node * > ();}
+#line 1015 "expr_parser.cpp"
     break;
 
   case 14:
-#line 129 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-            {
-                yylhs.value.as < Ast::Node * > () = new Ast::ForStmt(yystack_[9].value.as < std::string > (), reinterpret_cast<Ast::ArgList*>(yystack_[5].value.as < Ast::Node * > ()),reinterpret_cast<Ast::Stmt*>(yystack_[1].value.as < Ast::Node * > ()));
-            }
-#line 992 "expr_parser.cpp"
+#line 133 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                            {yylhs.value.as < Ast::Node * > () = yystack_[0].value.as < Ast::Node * > ();}
+#line 1021 "expr_parser.cpp"
     break;
 
   case 15:
-#line 134 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                                            { yylhs.value.as < Ast::Node * > () = new Ast::IfStmt(yystack_[4].value.as < Ast::Expr* > (),reinterpret_cast<Ast::Stmt*>(yystack_[1].value.as < Ast::Node * > ()), reinterpret_cast<Ast::Stmt*>(yystack_[0].value.as < Ast::Node * > ()));}
-#line 998 "expr_parser.cpp"
+#line 136 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                            {yylhs.value.as < Ast::Node * > () = new Ast::FuncCall("",reinterpret_cast<Ast::ArgList*>(yystack_[1].value.as < Ast::Node * > ()));}
+#line 1027 "expr_parser.cpp"
     break;
 
   case 16:
-#line 137 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                {yylhs.value.as < Ast::Node * > () = yystack_[0].value.as < Ast::Node * > ();}
-#line 1004 "expr_parser.cpp"
+#line 140 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+            {
+                yylhs.value.as < Ast::Node * > () = new Ast::WhileStmt(yystack_[4].value.as < Ast::Expr* > (),reinterpret_cast<Ast::Stmt*>(yystack_[1].value.as < Ast::Node * > ()));
+            }
+#line 1035 "expr_parser.cpp"
     break;
 
   case 17:
-#line 138 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                {yylhs.value.as < Ast::Node * > () = nullptr;}
-#line 1010 "expr_parser.cpp"
+#line 146 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+            {
+                yylhs.value.as < Ast::Node * > () = new Ast::ForStmt(yystack_[9].value.as < std::string > (), reinterpret_cast<Ast::ArgList*>(yystack_[5].value.as < Ast::Node * > ()),reinterpret_cast<Ast::Stmt*>(yystack_[1].value.as < Ast::Node * > ()));
+            }
+#line 1043 "expr_parser.cpp"
     break;
 
   case 18:
-#line 141 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                                                {yylhs.value.as < Ast::Node * > () = new Ast::IfStmt(yystack_[4].value.as < Ast::Expr* > (),reinterpret_cast<Ast::Stmt*>(yystack_[1].value.as < Ast::Node * > ()),reinterpret_cast<Ast::Stmt*>(yystack_[0].value.as < Ast::Node * > ()));}
-#line 1016 "expr_parser.cpp"
+#line 151 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                                            { yylhs.value.as < Ast::Node * > () = new Ast::IfStmt(yystack_[4].value.as < Ast::Expr* > (),reinterpret_cast<Ast::Stmt*>(yystack_[1].value.as < Ast::Node * > ()), reinterpret_cast<Ast::Stmt*>(yystack_[0].value.as < Ast::Node * > ()));}
+#line 1049 "expr_parser.cpp"
     break;
 
   case 19:
-#line 142 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                                                {yylhs.value.as < Ast::Node * > () = new Ast::ElseStmt(reinterpret_cast<Ast::Stmt*>(yystack_[1].value.as < Ast::Node * > ()));}
-#line 1022 "expr_parser.cpp"
+#line 154 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                {yylhs.value.as < Ast::Node * > () = yystack_[0].value.as < Ast::Node * > ();}
+#line 1055 "expr_parser.cpp"
     break;
 
   case 20:
-#line 143 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                                                {yylhs.value.as < Ast::Node * > () = nullptr;}
-#line 1028 "expr_parser.cpp"
+#line 155 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                {yylhs.value.as < Ast::Node * > () = nullptr;}
+#line 1061 "expr_parser.cpp"
+    break;
+
+  case 21:
+#line 158 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                                                {yylhs.value.as < Ast::Node * > () = new Ast::IfStmt(yystack_[4].value.as < Ast::Expr* > (),reinterpret_cast<Ast::Stmt*>(yystack_[1].value.as < Ast::Node * > ()),reinterpret_cast<Ast::Stmt*>(yystack_[0].value.as < Ast::Node * > ()));}
+#line 1067 "expr_parser.cpp"
+    break;
+
+  case 22:
+#line 159 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                                                {yylhs.value.as < Ast::Node * > () = new Ast::ElseStmt(reinterpret_cast<Ast::Stmt*>(yystack_[1].value.as < Ast::Node * > ()));}
+#line 1073 "expr_parser.cpp"
     break;
 
   case 23:
-#line 150 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                    {yylhs.value.as < Ast::Node * > () = new Ast::AssignStmt(yystack_[2].value.as < std::string > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1034 "expr_parser.cpp"
+#line 160 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                                                {yylhs.value.as < Ast::Node * > () = nullptr;}
+#line 1079 "expr_parser.cpp"
     break;
 
   case 26:
-#line 157 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+#line 167 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                      {yylhs.value.as < Ast::Node * > () = new Ast::AssignStmt("",yystack_[0].value.as < Ast::Expr* > ());}
+#line 1085 "expr_parser.cpp"
+    break;
+
+  case 29:
+#line 174 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                         {
                                             yylhs.value.as < Ast::Node * > () = yystack_[1].value.as < Ast::Node * > ();
                                             reinterpret_cast<Ast::ArgList*>(yylhs.value.as < Ast::Node * > ())->args.push_back(yystack_[0].value.as < Ast::Expr* > ());
                                         }
-#line 1043 "expr_parser.cpp"
+#line 1094 "expr_parser.cpp"
     break;
 
-  case 27:
-#line 162 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+  case 30:
+#line 179 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                         {
                                             yylhs.value.as < Ast::Node * > () = yystack_[2].value.as < Ast::Node * > ();
                                             reinterpret_cast<Ast::ArgList*>(yylhs.value.as < Ast::Node * > ())->args.push_back(yystack_[1].value.as < Ast::Expr* > ());
                                         }
-#line 1052 "expr_parser.cpp"
+#line 1103 "expr_parser.cpp"
     break;
 
-  case 28:
-#line 166 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+  case 31:
+#line 183 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                         {
                                             Ast::NodeVector args;
                                             yylhs.value.as < Ast::Node * > () = new Ast::ArgList(args);
                                         }
-#line 1061 "expr_parser.cpp"
+#line 1112 "expr_parser.cpp"
     break;
 
-  case 29:
-#line 172 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+  case 32:
+#line 189 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                             {yylhs.value.as < Ast::Node * > () = yystack_[0].value.as < Ast::Node * > ();}
-#line 1067 "expr_parser.cpp"
+#line 1118 "expr_parser.cpp"
     break;
 
-  case 30:
-#line 175 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+  case 33:
+#line 192 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                             {
                                                 yylhs.value.as < Ast::Node * > () = yystack_[1].value.as < Ast::Node * > ();
                                                 reinterpret_cast<Ast::PrintList*>(yylhs.value.as < Ast::Node * > ())->vals.push_back(new Ast::PrintExpr(yystack_[0].value.as < Ast::Expr* > ()));
                                             }
-#line 1076 "expr_parser.cpp"
+#line 1127 "expr_parser.cpp"
     break;
 
-  case 31:
-#line 179 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+  case 34:
+#line 196 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                             {
                                                 yylhs.value.as < Ast::Node * > () = yystack_[1].value.as < Ast::Node * > ();
                                                 reinterpret_cast<Ast::PrintList*>(yylhs.value.as < Ast::Node * > ())->vals.push_back(new Ast::PrintString(yystack_[0].value.as < std::string > ()));
                                             }
-#line 1085 "expr_parser.cpp"
+#line 1136 "expr_parser.cpp"
     break;
 
-  case 32:
-#line 185 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+  case 35:
+#line 202 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                         {
                                             yylhs.value.as < Ast::Node * > () = yystack_[1].value.as < Ast::Node * > ();
                                         }
-#line 1093 "expr_parser.cpp"
+#line 1144 "expr_parser.cpp"
     break;
 
-  case 33:
-#line 188 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+  case 36:
+#line 205 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                         {
                                             Ast::NodeVector vals;
                                             yylhs.value.as < Ast::Node * > () = new Ast::PrintList(vals);
                                         }
-#line 1102 "expr_parser.cpp"
-    break;
-
-  case 34:
-#line 194 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                         {yylhs.value.as < Ast::Expr* > () = new Ast::AddExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1108 "expr_parser.cpp"
-    break;
-
-  case 35:
-#line 195 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                           {yylhs.value.as < Ast::Expr* > () = new Ast::SubExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1114 "expr_parser.cpp"
-    break;
-
-  case 36:
-#line 196 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                          {yylhs.value.as < Ast::Expr* > () = new Ast::GTExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1120 "expr_parser.cpp"
+#line 1153 "expr_parser.cpp"
     break;
 
   case 37:
-#line 197 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                          {yylhs.value.as < Ast::Expr* > () = new Ast::LTExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1126 "expr_parser.cpp"
+#line 211 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                         {yylhs.value.as < Ast::Expr* > () = new Ast::AddExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1159 "expr_parser.cpp"
     break;
 
   case 38:
-#line 198 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                           {yylhs.value.as < Ast::Expr* > () = new Ast::GEExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1132 "expr_parser.cpp"
+#line 212 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                           {yylhs.value.as < Ast::Expr* > () = new Ast::SubExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1165 "expr_parser.cpp"
     break;
 
   case 39:
-#line 199 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                           {yylhs.value.as < Ast::Expr* > () = new Ast::LEExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1138 "expr_parser.cpp"
+#line 213 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                          {yylhs.value.as < Ast::Expr* > () = new Ast::GTExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1171 "expr_parser.cpp"
     break;
 
   case 40:
-#line 200 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                          {yylhs.value.as < Ast::Expr* > () = new Ast::EqExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1144 "expr_parser.cpp"
+#line 214 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                          {yylhs.value.as < Ast::Expr* > () = new Ast::LTExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1177 "expr_parser.cpp"
     break;
 
   case 41:
-#line 201 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                           {yylhs.value.as < Ast::Expr* > () = new Ast::NotExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1150 "expr_parser.cpp"
+#line 215 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                           {yylhs.value.as < Ast::Expr* > () = new Ast::GEExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1183 "expr_parser.cpp"
     break;
 
   case 42:
-#line 202 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-               {yylhs.value.as < Ast::Expr* > () = yystack_[0].value.as < Ast::Expr* > ();}
-#line 1156 "expr_parser.cpp"
+#line 216 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                           {yylhs.value.as < Ast::Expr* > () = new Ast::LEExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1189 "expr_parser.cpp"
     break;
 
   case 43:
-#line 205 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                         {yylhs.value.as < Ast::Expr* > () = new Ast::MulExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1162 "expr_parser.cpp"
+#line 217 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                          {yylhs.value.as < Ast::Expr* > () = new Ast::EqExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1195 "expr_parser.cpp"
     break;
 
   case 44:
-#line 206 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                           {yylhs.value.as < Ast::Expr* > () = new Ast::DivExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1168 "expr_parser.cpp"
+#line 218 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                           {yylhs.value.as < Ast::Expr* > () = new Ast::NotExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1201 "expr_parser.cpp"
     break;
 
   case 45:
-#line 207 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-               { yylhs.value.as < Ast::Expr* > () = yystack_[0].value.as < Ast::Expr* > ();}
-#line 1174 "expr_parser.cpp"
+#line 219 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+               {yylhs.value.as < Ast::Expr* > () = yystack_[0].value.as < Ast::Expr* > ();}
+#line 1207 "expr_parser.cpp"
     break;
 
   case 46:
-#line 210 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                           {yylhs.value.as < Ast::Expr* > () = new Ast::ModExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
-#line 1180 "expr_parser.cpp"
+#line 222 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                         {yylhs.value.as < Ast::Expr* > () = new Ast::MulExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1213 "expr_parser.cpp"
     break;
 
   case 47:
-#line 211 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                             {yylhs.value.as < Ast::Expr* > () = new Ast::PwdExpr(yystack_[2].value.as < Ast::Expr* > (), yystack_[0].value.as < Ast::Expr* > ());}
-#line 1186 "expr_parser.cpp"
+#line 223 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                           {yylhs.value.as < Ast::Expr* > () = new Ast::DivExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1219 "expr_parser.cpp"
     break;
 
   case 48:
-#line 212 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                 {yylhs.value.as < Ast::Expr* > () = yystack_[0].value.as < Ast::Expr* > ();}
-#line 1192 "expr_parser.cpp"
+#line 224 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+               { yylhs.value.as < Ast::Expr* > () = yystack_[0].value.as < Ast::Expr* > ();}
+#line 1225 "expr_parser.cpp"
     break;
 
   case 49:
-#line 215 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                      {yylhs.value.as < Ast::Expr* > () = new Ast::NumExpr(yystack_[0].value.as < int > ());}
-#line 1198 "expr_parser.cpp"
+#line 227 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                           {yylhs.value.as < Ast::Expr* > () = new Ast::ModExpr(yystack_[2].value.as < Ast::Expr* > (),yystack_[0].value.as < Ast::Expr* > ());}
+#line 1231 "expr_parser.cpp"
     break;
 
   case 50:
-#line 216 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                                          { yylhs.value.as < Ast::Expr* > () = yystack_[1].value.as < Ast::Expr* > ();}
-#line 1204 "expr_parser.cpp"
+#line 228 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                             {yylhs.value.as < Ast::Expr* > () = new Ast::PwdExpr(yystack_[2].value.as < Ast::Expr* > (), yystack_[0].value.as < Ast::Expr* > ());}
+#line 1237 "expr_parser.cpp"
     break;
 
   case 51:
-#line 217 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
-                            {yylhs.value.as < Ast::Expr* > () = new Ast::IdExpr(yystack_[0].value.as < std::string > ());}
-#line 1210 "expr_parser.cpp"
+#line 229 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                 {yylhs.value.as < Ast::Expr* > () = yystack_[0].value.as < Ast::Expr* > ();}
+#line 1243 "expr_parser.cpp"
     break;
 
   case 52:
-#line 218 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+#line 232 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                      {yylhs.value.as < Ast::Expr* > () = new Ast::NumExpr(yystack_[0].value.as < int > ());}
+#line 1249 "expr_parser.cpp"
+    break;
+
+  case 53:
+#line 233 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                          { yylhs.value.as < Ast::Expr* > () = yystack_[1].value.as < Ast::Expr* > ();}
+#line 1255 "expr_parser.cpp"
+    break;
+
+  case 54:
+#line 234 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                     {                      
+                                        std::string kind = yystack_[0].value.as < Ast::Expr* > ()->getKindName();
+                                        if(kind=="FuncCall"){
+                                            yylhs.value.as < Ast::Expr* > () = yystack_[0].value.as < Ast::Expr* > ();
+                                            reinterpret_cast<Ast::FuncCall*>(yylhs.value.as < Ast::Expr* > ())->name = yystack_[1].value.as < std::string > ();
+                                        }else if(kind == "IdExpr"){
+                                            yylhs.value.as < Ast::Expr* > () = yystack_[0].value.as < Ast::Expr* > ();
+                                            reinterpret_cast<Ast::IdExpr*>(yylhs.value.as < Ast::Expr* > ())->id = yystack_[1].value.as < std::string > ();
+                                        }
+                                    }
+#line 1270 "expr_parser.cpp"
+    break;
+
+  case 55:
+#line 244 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
                                                         {yylhs.value.as < Ast::Expr* > () = new Ast::InputExpr(yystack_[1].value.as < std::string > ());}
-#line 1216 "expr_parser.cpp"
+#line 1276 "expr_parser.cpp"
+    break;
+
+  case 56:
+#line 247 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                                            {yylhs.value.as < Ast::Expr* > () = new Ast::FuncCall("",reinterpret_cast<Ast::ArgList*>(yystack_[1].value.as < Ast::Node * > ()));}
+#line 1282 "expr_parser.cpp"
+    break;
+
+  case 58:
+#line 249 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
+                   {yylhs.value.as < Ast::Expr* > () = new Ast::IdExpr("");}
+#line 1288 "expr_parser.cpp"
     break;
 
 
-#line 1220 "expr_parser.cpp"
+#line 1292 "expr_parser.cpp"
 
             default:
               break;
@@ -1483,143 +1555,154 @@ namespace Expr {
   }
 
 
-  const signed char Parser::yypact_ninf_ = -35;
+  const signed char Parser::yypact_ninf_ = -37;
 
   const signed char Parser::yytable_ninf_ = -1;
 
   const short
   Parser::yypact_[] =
   {
-     -27,   -35,    12,    41,    41,   -35,   -13,   -35,    29,    29,
-     -12,    18,   -35,   -35,   -35,   -35,    -6,    -6,    16,   -35,
-      10,    -7,    29,   -35,    23,   -35,    67,    -2,    -3,   -35,
-      82,     7,    29,   -35,   -35,   -35,   -35,   -35,   -35,   163,
-     148,    22,    29,    29,    29,    29,    29,    29,    29,    29,
-       9,    29,    29,    29,    29,    15,    20,   163,    31,    29,
-     -35,    32,    -2,    -2,    -2,    -2,    -2,    -2,    -2,    -2,
-     -35,    -3,    -3,   -35,   -35,   -35,    51,    54,   108,   -35,
-       2,   100,   -35,    46,   -35,   -35,   -21,   -35,   -35,    70,
-     -35,    29,    69,   -35,    83,   109,    95,    53,    75,   -35,
-      76,   -35,   -35,   -35,    11,   118,     2,   -35,   -35,   -35,
-     -35,   -35
+     -32,   -37,     7,   175,   175,   -37,   -20,   -37,    34,    34,
+     -18,     2,   -37,   -37,   -37,   -37,   -15,    13,   -37,    19,
+      -2,    34,   -37,    20,   -12,    60,     5,    17,   -37,    76,
+      21,    34,   -37,   -15,   -37,   -37,   -37,   -37,   -37,   -37,
+     -37,   183,   168,    -3,   -37,    34,   -37,    34,    34,    34,
+      34,    34,    34,    34,    34,     8,    34,    34,    34,    34,
+      11,    25,   183,    44,    34,   -37,    45,   -37,    48,    49,
+     127,     5,     5,     5,     5,     5,     5,     5,     5,   -37,
+      17,    17,   -37,   -37,   -37,    51,   -37,   114,    47,   -37,
+     -37,   -37,     3,   120,   -37,   -37,    38,   -37,    24,   -37,
+     -37,    65,   -37,    34,    56,   -37,    63,   129,    95,    54,
+      55,   -37,    58,   -37,   -37,   -37,    16,   138,     3,   -37,
+     -37,   -37,   -37,   -37
   };
 
   const signed char
   Parser::yydefact_[] =
   {
-       6,     6,     0,     3,     2,     1,     0,    33,     0,     0,
-       0,     0,     5,    12,    11,    10,    25,    25,     0,     4,
-      29,     0,     0,    49,     0,    51,     0,    42,    45,    48,
-       0,     0,     0,    24,     8,     9,    28,    32,    31,    30,
+       6,     6,     0,     3,     2,     1,     0,    36,     0,     0,
+       0,     0,     5,    12,    11,    10,    28,     0,     4,    32,
+       0,     0,    52,     0,    58,     0,    45,    48,    51,     0,
+       0,     0,    31,    28,    14,    13,    27,     9,    31,    35,
+      34,    33,     0,     0,    31,     0,    54,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    23,     0,     0,
-      50,     0,    34,    35,    36,    37,    38,    39,    40,    41,
-       6,    43,    44,    46,    47,     6,     0,     0,    26,    52,
-       0,     0,    28,     0,    27,    17,    20,    15,    13,     0,
-       6,     0,     0,    16,     0,     0,     0,     0,     0,     7,
-       0,     6,     6,     6,     0,     0,     0,    22,    21,    19,
-      14,    18
+       0,     0,    26,     0,     0,     8,     0,    53,     0,     0,
+       0,    37,    38,    39,    40,    41,    42,    43,    44,     6,
+      46,    47,    49,    50,     6,     0,    15,    29,     0,    55,
+      56,    57,     0,     0,    31,    30,     0,    20,    23,    18,
+      16,     0,     6,     0,     0,    19,     0,     0,     0,     0,
+       0,     7,     0,     6,     6,     6,     0,     0,     0,    25,
+      24,    22,    17,    21
   };
 
-  const signed char
+  const short
   Parser::yypgoto_[] =
   {
-     -35,   -35,    -1,   -35,   -35,   -35,   -35,   -35,    24,   -35,
-     -35,   -35,    98,    35,   -35,   -35,   -35,   -35,    -8,    14,
-     -34,   -33
+     -37,   -37,    -1,   -37,   -37,   -37,   -37,   -37,   -37,   -37,
+     -33,   -37,   -37,   -37,    61,   -36,   -37,   -37,   -37,   -37,
+      -8,   164,   -25,   -14,   -37
   };
 
   const signed char
   Parser::yydefgoto_[] =
   {
-      -1,     2,     3,    19,    12,    13,    14,    15,    87,    93,
-     109,    16,    34,    58,    59,    17,    20,    21,    26,    27,
-      28,    29
+      -1,     2,     3,    18,    12,    33,    34,    13,    14,    15,
+      99,   105,   121,    35,    37,    63,    64,    16,    19,    20,
+      25,    26,    27,    28,    46
   };
 
   const signed char
   Parser::yytable_[] =
   {
-       4,    30,    85,    51,    52,    53,    54,    91,    92,    22,
-       1,   107,     5,    39,    40,    38,    23,    71,    72,    24,
-      73,    74,    18,    31,    57,    32,     6,     7,    25,     8,
-      37,    33,    36,     9,    10,     6,     7,    11,     8,    41,
-      56,    86,     9,    10,    61,    22,    11,    70,    77,    79,
-     108,    78,    23,    75,    76,    24,    62,    63,    64,    65,
-      66,    67,    68,    69,    25,     6,     7,    82,     8,    80,
-      42,    43,     9,    10,    81,    83,    11,    44,    45,    46,
-      47,    48,    49,    96,    90,    42,    43,    94,    50,    95,
-      97,   101,    44,    45,    46,    47,    48,    49,    42,    43,
-     104,   105,   106,    55,    98,    44,    45,    46,    47,    48,
-      49,    42,    43,   102,   103,    35,   100,    89,    44,    45,
-      46,    47,    48,    49,     6,     7,     0,     8,    84,     0,
-     111,     9,    10,     6,     7,    11,     8,     0,     0,    88,
-       9,    10,     6,     7,    11,     8,     0,     0,    99,     9,
-      10,    42,    43,    11,     0,     0,     0,   110,    44,    45,
-      46,    47,    48,    49,     0,    60,    42,    43,     0,     0,
-       0,     0,     0,    44,    45,    46,    47,    48,    49
+       4,    29,    66,    97,    44,     1,    45,     5,    69,    31,
+      56,    57,    41,    42,    21,    17,   119,    30,    32,    68,
+      40,    22,    36,    62,    23,    58,    59,     6,     7,    38,
+       8,    80,    81,    24,     9,    10,    43,    70,    11,    39,
+       6,     7,    98,     8,    82,    83,    79,     9,    10,    84,
+      21,    11,   103,   104,    61,   120,    87,    22,   101,    85,
+      23,    86,    88,    47,    48,    89,    90,    94,    96,    24,
+      49,    50,    51,    52,    53,    54,   102,   109,    92,    47,
+      48,    55,   106,    93,   110,   123,    49,    50,    51,    52,
+      53,    54,   113,   114,    65,   108,   115,    60,    47,    48,
+       0,   107,     0,     0,     0,    49,    50,    51,    52,    53,
+      54,     0,   116,   117,   118,     0,   112,    47,    48,     0,
+       0,     0,     0,     0,    49,    50,    51,    52,    53,    54,
+      47,    48,     0,     0,    95,     0,     0,    49,    50,    51,
+      52,    53,    54,     0,     6,     7,    91,     8,     0,     0,
+       0,     9,    10,     6,     7,    11,     8,     0,     0,   100,
+       9,    10,     6,     7,    11,     8,     0,     0,   111,     9,
+      10,    47,    48,    11,     0,     0,     0,   122,    49,    50,
+      51,    52,    53,    54,     0,    67,    47,    48,     0,     0,
+       0,     0,     0,    49,    50,    51,    52,    53,    54,     6,
+       7,     0,     8,     0,     0,     0,     9,    10,     0,     0,
+      11,    71,    72,    73,    74,    75,    76,    77,    78
   };
 
   const signed char
   Parser::yycheck_[] =
   {
-       1,     9,     0,     5,     6,     8,     9,    28,    29,    16,
-      37,     0,     0,    21,    22,    22,    23,    51,    52,    26,
-      53,    54,    35,    35,    32,     7,    24,    25,    35,    27,
-      20,    37,    16,    31,    32,    24,    25,    35,    27,    16,
-      33,    39,    31,    32,    22,    16,    35,    38,    17,    17,
-      39,    59,    23,    38,    34,    26,    42,    43,    44,    45,
-      46,    47,    48,    49,    35,    24,    25,    16,    27,    70,
-       3,     4,    31,    32,    75,    21,    35,    10,    11,    12,
-      13,    14,    15,    91,    38,     3,     4,    17,    21,    90,
-      21,    38,    10,    11,    12,    13,    14,    15,     3,     4,
-     101,   102,   103,    21,    21,    10,    11,    12,    13,    14,
-      15,     3,     4,    38,    38,    17,    21,    82,    10,    11,
-      12,    13,    14,    15,    24,    25,    -1,    27,    20,    -1,
-     106,    31,    32,    24,    25,    35,    27,    -1,    -1,    39,
+       1,     9,    38,     0,    16,    37,    18,     0,    44,     7,
+       5,     6,    20,    21,    16,    35,     0,    35,    16,    22,
+      22,    23,    37,    31,    26,     8,     9,    24,    25,    16,
+      27,    56,    57,    35,    31,    32,    16,    45,    35,    20,
+      24,    25,    39,    27,    58,    59,    38,    31,    32,    38,
+      16,    35,    28,    29,    33,    39,    64,    23,    94,    34,
+      26,    17,    17,     3,     4,    17,    17,    16,    21,    35,
+      10,    11,    12,    13,    14,    15,    38,    21,    79,     3,
+       4,    21,    17,    84,    21,   118,    10,    11,    12,    13,
+      14,    15,    38,    38,    33,   103,    38,    21,     3,     4,
+      -1,   102,    -1,    -1,    -1,    10,    11,    12,    13,    14,
+      15,    -1,   113,   114,   115,    -1,    21,     3,     4,    -1,
+      -1,    -1,    -1,    -1,    10,    11,    12,    13,    14,    15,
+       3,     4,    -1,    -1,    20,    -1,    -1,    10,    11,    12,
+      13,    14,    15,    -1,    24,    25,    19,    27,    -1,    -1,
+      -1,    31,    32,    24,    25,    35,    27,    -1,    -1,    39,
       31,    32,    24,    25,    35,    27,    -1,    -1,    39,    31,
       32,     3,     4,    35,    -1,    -1,    -1,    39,    10,    11,
       12,    13,    14,    15,    -1,    17,     3,     4,    -1,    -1,
-      -1,    -1,    -1,    10,    11,    12,    13,    14,    15
+      -1,    -1,    -1,    10,    11,    12,    13,    14,    15,    24,
+      25,    -1,    27,    -1,    -1,    -1,    31,    32,    -1,    -1,
+      35,    47,    48,    49,    50,    51,    52,    53,    54
   };
 
   const signed char
   Parser::yystos_[] =
   {
        0,    37,    41,    42,    42,     0,    24,    25,    27,    31,
-      32,    35,    44,    45,    46,    47,    51,    55,    35,    43,
-      56,    57,    16,    23,    26,    35,    58,    59,    60,    61,
-      58,    35,     7,    37,    52,    52,    16,    20,    22,    58,
-      58,    16,     3,     4,    10,    11,    12,    13,    14,    15,
-      21,     5,     6,     8,     9,    21,    33,    58,    53,    54,
-      17,    22,    59,    59,    59,    59,    59,    59,    59,    59,
-      38,    60,    60,    61,    61,    38,    34,    17,    58,    17,
-      42,    42,    16,    21,    20,     0,    39,    48,    39,    53,
-      38,    28,    29,    49,    17,    42,    58,    21,    21,    39,
-      21,    38,    38,    38,    42,    42,    42,     0,    39,    50,
-      39,    48
+      32,    35,    44,    47,    48,    49,    57,    35,    43,    58,
+      59,    16,    23,    26,    35,    60,    61,    62,    63,    60,
+      35,     7,    16,    45,    46,    53,    37,    54,    16,    20,
+      22,    60,    60,    16,    16,    18,    64,     3,     4,    10,
+      11,    12,    13,    14,    15,    21,     5,     6,     8,     9,
+      21,    33,    60,    55,    56,    54,    55,    17,    22,    55,
+      60,    61,    61,    61,    61,    61,    61,    61,    61,    38,
+      62,    62,    63,    63,    38,    34,    17,    60,    17,    17,
+      17,    19,    42,    42,    16,    20,    21,     0,    39,    50,
+      39,    55,    38,    28,    29,    51,    17,    42,    60,    21,
+      21,    39,    21,    38,    38,    38,    42,    42,    42,     0,
+      39,    52,    39,    50
   };
 
   const signed char
   Parser::yyr1_[] =
   {
        0,    40,    41,    41,    42,    42,    42,    43,    44,    44,
-      44,    44,    44,    45,    46,    47,    48,    48,    49,    49,
-      49,    50,    50,    51,    52,    52,    53,    54,    54,    55,
-      56,    56,    57,    57,    58,    58,    58,    58,    58,    58,
-      58,    58,    58,    59,    59,    59,    60,    60,    60,    61,
-      61,    61,    61
+      44,    44,    44,    45,    45,    46,    47,    48,    49,    50,
+      50,    51,    51,    51,    52,    52,    53,    54,    54,    55,
+      56,    56,    57,    58,    58,    59,    59,    60,    60,    60,
+      60,    60,    60,    60,    60,    60,    61,    61,    61,    62,
+      62,    62,    63,    63,    63,    63,    64,    64,    64
   };
 
   const signed char
   Parser::yyr2_[] =
   {
-       0,     2,     2,     1,     3,     2,     0,     8,     2,     2,
-       1,     1,     1,     6,    11,     6,     2,     1,     6,     5,
-       0,     1,     1,     3,     1,     0,     2,     3,     0,     2,
-       2,     2,     2,     0,     3,     3,     3,     3,     3,     3,
-       3,     3,     1,     3,     3,     1,     3,     3,     1,     1,
-       3,     1,     4
+       0,     2,     2,     1,     3,     2,     0,     8,     3,     2,
+       1,     1,     1,     1,     1,     3,     6,    11,     6,     2,
+       1,     6,     5,     0,     1,     1,     2,     1,     0,     2,
+       3,     0,     2,     2,     2,     2,     0,     3,     3,     3,
+       3,     3,     3,     3,     3,     1,     3,     3,     1,     3,
+       3,     1,     1,     3,     2,     4,     3,     3,     0
   };
 
 
@@ -1636,21 +1719,22 @@ namespace Expr {
   "KW_ELIF", "KW_ELSE", "KW_RETURN", "KW_WHILE", "KW_FOR", "KW_IN",
   "KW_RANGE", "TK_IDENTIFIER", "TK_ERROR", "NewLine", "Indent", "Dedent",
   "$accept", "input", "complex_stmts", "func_decl", "simple_stmts",
-  "while_stmt", "for_stmt", "if_stmt", "if_opt", "if_opt_p", "if_opt_pp",
-  "assign_stmt", "stmt_end_nl", "arg_list", "arg_list_p", "print_stmt",
-  "print_stmt_p", "print_stmt_pp", "expr", "term", "prod", "factor", YY_NULLPTR
+  "simple_stmts_p", "func_stmt", "while_stmt", "for_stmt", "if_stmt",
+  "if_opt", "if_opt_p", "if_opt_pp", "assign_stmt", "stmt_end_nl",
+  "arg_list", "arg_list_p", "print_stmt", "print_stmt_p", "print_stmt_pp",
+  "expr", "term", "prod", "factor", "factor_p", YY_NULLPTR
   };
 
 #if YYDEBUG
   const unsigned char
   Parser::yyrline_[] =
   {
-       0,    93,    93,    94,    97,   101,   105,   111,   114,   115,
-     116,   117,   118,   122,   128,   134,   137,   138,   141,   142,
-     143,   146,   147,   150,   153,   154,   157,   162,   166,   172,
-     175,   179,   185,   188,   194,   195,   196,   197,   198,   199,
-     200,   201,   202,   205,   206,   207,   210,   211,   212,   215,
-     216,   217,   218
+       0,    94,    94,    95,    98,   102,   106,   112,   115,   125,
+     126,   127,   128,   132,   133,   136,   139,   145,   151,   154,
+     155,   158,   159,   160,   163,   164,   167,   170,   171,   174,
+     179,   183,   189,   192,   196,   202,   205,   211,   212,   213,
+     214,   215,   216,   217,   218,   219,   222,   223,   224,   227,
+     228,   229,   232,   233,   234,   244,   247,   248,   249
   };
 
   // Print the state stack on the debug stream.
@@ -1734,5 +1818,5 @@ namespace Expr {
 
 #line 8 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
 } // Expr
-#line 1738 "expr_parser.cpp"
+#line 1822 "expr_parser.cpp"
 

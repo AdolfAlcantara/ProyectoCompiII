@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     // root->eval(symb_tbl);
     root->gen(symb_tbl_gen);
 
-    std::string context =".data\n";
+    std::string context =".global main\n.data\n";
     for(auto &x: symb_tbl_gen){
         if(x.second == ""){
             context += x.first +": .word 0\n";

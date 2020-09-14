@@ -35,6 +35,7 @@ const int NumExpr_kind = 4;
 const int IdExpr_kind = 5;
 const int InputExpr_kind = 6;
 const int ArgList_kind = 22;
+const int FuncCall_kind = 31;
 const int AddExpr_kind = 7;
 const int SubExpr_kind = 8;
 const int MulExpr_kind = 9;
@@ -56,6 +57,7 @@ const int PrintString_kind = 26;
 const int IfStmt_kind = 27;
 const int ElseStmt_kind = 28;
 const int WhileStmt_kind = 29;
+const int FuncDecl_kind = 30;
 
 class Node;
 class Expr;
@@ -65,6 +67,7 @@ class NumExpr;
 class IdExpr;
 class InputExpr;
 class ArgList;
+class FuncCall;
 class AddExpr;
 class SubExpr;
 class MulExpr;
@@ -86,6 +89,7 @@ class PrintString;
 class IfStmt;
 class ElseStmt;
 class WhileStmt;
+class FuncDecl;
 
 class YYNODESTATE
 {
@@ -100,7 +104,7 @@ private:
 	struct YYNODESTATE_block *blocks__;
 	struct YYNODESTATE_push *push_stack__;
 	int used__;
-#line 104 "expr_ast.h"
+#line 108 "expr_ast.h"
 private:
 
 	static YYNODESTATE *state__;
@@ -315,6 +319,29 @@ public:
 protected:
 
 	virtual ~ArgList();
+
+};
+
+class FuncCall : public Expr
+{
+public:
+
+	FuncCall(string_t name, ArgList * args);
+
+public:
+
+	string_t name;
+	ArgList * args;
+
+	virtual int eval(SymbolTable & vars);
+	virtual int gen(SymbolTableGen & vars);
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~FuncCall();
 
 };
 
@@ -759,6 +786,30 @@ public:
 protected:
 
 	virtual ~WhileStmt();
+
+};
+
+class FuncDecl : public Stmt
+{
+public:
+
+	FuncDecl(string_t name, ArgList * args, Stmt * code_blk);
+
+public:
+
+	string_t name;
+	ArgList * args;
+	Stmt * code_blk;
+
+	virtual int eval(SymbolTable & vars);
+	virtual int gen(SymbolTableGen & vars);
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~FuncDecl();
 
 };
 

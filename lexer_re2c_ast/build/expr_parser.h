@@ -372,11 +372,14 @@ namespace Expr {
       // term
       // prod
       // factor
+      // factor_p
       char dummy1[sizeof (Ast::Expr*)];
 
       // complex_stmts
       // func_decl
       // simple_stmts
+      // simple_stmts_p
+      // func_stmt
       // while_stmt
       // for_stmt
       // if_stmt
@@ -589,27 +592,30 @@ namespace Expr {
         // Type destructor.
 switch (yytype)
     {
-      case 58: // expr
-      case 59: // term
-      case 60: // prod
-      case 61: // factor
+      case 60: // expr
+      case 61: // term
+      case 62: // prod
+      case 63: // factor
+      case 64: // factor_p
         value.template destroy< Ast::Expr* > ();
         break;
 
       case 42: // complex_stmts
       case 43: // func_decl
       case 44: // simple_stmts
-      case 45: // while_stmt
-      case 46: // for_stmt
-      case 47: // if_stmt
-      case 48: // if_opt
-      case 49: // if_opt_p
-      case 51: // assign_stmt
-      case 53: // arg_list
-      case 54: // arg_list_p
-      case 55: // print_stmt
-      case 56: // print_stmt_p
-      case 57: // print_stmt_pp
+      case 45: // simple_stmts_p
+      case 46: // func_stmt
+      case 47: // while_stmt
+      case 48: // for_stmt
+      case 49: // if_stmt
+      case 50: // if_opt
+      case 51: // if_opt_p
+      case 53: // assign_stmt
+      case 55: // arg_list
+      case 56: // arg_list_p
+      case 57: // print_stmt
+      case 58: // print_stmt_p
+      case 59: // print_stmt_pp
         value.template destroy< Ast::Node * > ();
         break;
 
@@ -1384,7 +1390,7 @@ switch (yytype)
     static const signed char yydefact_[];
 
     // YYPGOTO[NTERM-NUM].
-    static const signed char yypgoto_[];
+    static const short yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
     static const signed char yydefgoto_[];
@@ -1642,8 +1648,8 @@ switch (yytype)
     enum
     {
       yyeof_ = 0,
-      yylast_ = 178,     ///< Last index in yytable_.
-      yynnts_ = 22,  ///< Number of nonterminal symbols.
+      yylast_ = 218,     ///< Last index in yytable_.
+      yynnts_ = 25,  ///< Number of nonterminal symbols.
       yyfinal_ = 5, ///< Termination state number.
       yyntokens_ = 40  ///< Number of tokens.
     };
@@ -1657,7 +1663,7 @@ switch (yytype)
 
 #line 8 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
 } // Expr
-#line 1661 "expr_parser.h"
+#line 1667 "expr_parser.h"
 
 
 

@@ -83,9 +83,7 @@ namespace Ast
 
 %node ForStmt Stmt = {
     string_t id;
-    ArgList * args;for(int i=0;i<10;i++){
-        //     std::cout<<to_str(i)+": "<<regs[i]<<"\n";
-        // }
+    ArgList * args;
     Stmt * blck_stmts;
 }
 
@@ -114,6 +112,17 @@ namespace Ast
 %node WhileStmt Stmt = {
     Expr *cond;
     Stmt *block;
+}
+
+%node FuncDecl Stmt = {
+    string_t name;
+    ArgList * args;
+    Stmt *  code_blk;
+}
+
+%node FuncCall Expr = {
+    string_t name;
+    ArgList *args;
 }
 
 %operation %virtual int eval(Node *this, SymbolTable& vars);
@@ -229,6 +238,14 @@ eval(WhileStmt){
     return 0;
 }
 
+eval(FuncDecl){
+    return 0;
+}
+
+eval(FuncCall){
+    return 0;
+}
+
 %operation %virtual int gen(Node *this, SymbolTableGen& vars);
 
 gen(AddExpr)
@@ -272,19 +289,65 @@ gen(GTExpr)
 
     place = aux.getReg();
     code = expr1->code + expr2->code;
-    code+="slt\t\t $t"+aux.to_str(place)+", $t"+expr2->place+", $t"+expr1->place+"\n";
+    code+="slt\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr2->place)+", $t"+aux.to_str(expr1->place)+"\n";
     aux.freeReg(expr1->place);
     aux.freeReg(expr2->place);
     return 0;
 }
 gen(LTExpr) 
 {
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    place = aux.getReg();
+    code = expr1->code + expr2->code;
+    code+="slt\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n";
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);
     return 0;
 }
 gen(GEExpr) {return 0;}
-gen(LEExpr) {return 0;}
-gen(EqExpr) {return 0;}
-gen(NotExpr) {return 0;}
+gen(LEExpr) 
+{
+    
+    return 0;
+}
+gen(EqExpr) 
+{
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    place = aux.getReg();
+
+    code = expr1->code + expr2->code;
+    code += "sub\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+    code += "slt\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(place)+", $zero\n";
+    code += "slt\t\t $t"+aux.to_str(expr2->place)+", $zero, $t"+aux.to_str(place)+"\n";
+    code += "xori\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr1->place)+", 1\n";
+    code += "xori\t\t $t"+aux.to_str(expr2->place)+", $t"+aux.to_str(expr2->place)+", 0\n";
+    code += "xor\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n";
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);
+    return 0;
+}
+
+gen(NotExpr) 
+{
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    place = aux.getReg();
+
+    code = expr1->code + expr2->code;
+    code += "sub\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+    code += "slt\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(place)+", $zero\n";
+    code += "slt\t\t $t"+aux.to_str(expr2->place)+", $zero, $t"+aux.to_str(place)+"\n";
+    code += "xor\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n";
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);
+    return 0;
+    
+}
 
 
 gen(NumExpr)
@@ -316,9 +379,7 @@ gen(AssignStmt){
     expr->gen(vars);
 
     place = aux.getReg();
-    std::cout<<"flag\n";
     aux.saveVar(vars,id,1);
-    std::cout<<"flag5\n";
     code = expr->code;
     code += "la\t\t $t"+aux.to_str(place)+", "+id+"\n";
     code += "sw\t\t $t"+aux.to_str(expr->place)+", 0($t"+aux.to_str(place)+")\n";
@@ -396,7 +457,7 @@ gen(PrintList){
 }
 
 gen(PrintExpr)
-{
+{ 
     expr->gen(vars);
 
     code = expr->code;
@@ -420,7 +481,6 @@ gen(IfStmt)
 {
     cond->gen(vars);
     code = cond->code;
-    std::cout<<"code:"+code+"\n";
     std::string label_if = aux.labelGenerator("if");
     std::string label_end_if = aux.labelGenerator("end_if");
     code+= "\n"+label_if+":\n\n";
@@ -452,5 +512,58 @@ gen(ElseStmt)
 
 gen(WhileStmt)
 {
+    std::string label_while = aux.labelGenerator("while");
+    code = "\n"+label_while+":\n";
+    cond->gen(vars);
+    code += cond->code;
+
+    std::string label_end_while = aux.labelGenerator("while_end");
+    code += "beq\t\t $t"+aux.to_str(cond->place)+", $zero, "+label_end_while+"\n";
+
+    aux.freeReg(cond->place);
+    block->gen(vars);
+
+    code += block->code;
+
+    code += "j\t\t "+label_while+"\n";
+    
+    code += "\n"+label_end_while+":\n";
+
+    return 0;
+}
+
+gen(FuncDecl)
+{
+    args->gen(vars);
+    code = args->code;
+
+    std::string label_func = aux.labelGenerator(name);
+    int label_pos = aux.getReg();
+    int func_name = aux.getReg();
+    aux.saveVar(vars,name,1);
+    code += "la\t\t $t"+aux.to_str(label_pos)+", "+label_func+"\n";
+    code += "la\t\t $t"+aux.to_str(func_name)+", "+name+"\n";
+    code += "sw\t\t $t"+aux.to_str(label_pos)+", 0($t"+aux.to_str(func_name)+")\n";
+    
+    aux.freeReg(label_pos);
+    aux.freeReg(func_name); 
+
+    code+= "\n"+label_func+":\n\n";
+    
+    code_blk->gen(vars);
+    code += code_blk->code;
+
+    return 0;
+}
+
+gen(FuncCall){
+    args->gen(vars);
+    code = args->code;
+    
+    code += "addi\t\t $sp, $sp, -4\n";
+    code += "sw\t\t $ra, 0($sp)\n";
+    code += "jal\t\t "+name+"\n\n";
+    code += "lw\t\t $ra, 0($sp)\n";
+    code += "addi\t\t $sp, $sp, 4\n";
     return 0;
 }

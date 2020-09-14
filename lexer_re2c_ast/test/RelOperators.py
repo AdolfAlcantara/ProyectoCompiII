@@ -15,10 +15,10 @@ print "x > y: ", x > y
 print "x < y: ", x < y
 
 # Greather or Equal
-print "x >= y: ", x >= y
+#print "x >= y: ", x >= y
 
 # Less or Equal
-print "x <= y: ", x <= y
+#print "x <= y: ", x <= y
 
 # Not Equal
 print "x != y: ", x != y
