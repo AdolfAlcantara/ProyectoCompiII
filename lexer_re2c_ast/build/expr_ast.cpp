@@ -410,14 +410,14 @@ NumExpr::~NumExpr()
 }
 
 int NumExpr::eval(SymbolTable & vars)
-#line 143 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 163 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     return value;
 }
 #line 418 "expr_ast.cpp"
 
 int NumExpr::gen(SymbolTableGen & vars)
-#line 354 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 390 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     place = aux.getReg();
 
@@ -452,7 +452,7 @@ IdExpr::~IdExpr()
 }
 
 int IdExpr::eval(SymbolTable & vars)
-#line 147 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 167 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     auto it = vars.find(id);
 
@@ -464,7 +464,7 @@ int IdExpr::eval(SymbolTable & vars)
 #line 465 "expr_ast.cpp"
 
 int IdExpr::gen(SymbolTableGen & vars)
-#line 361 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 397 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     std::cout<<"IdExpr:\n";
     place  = aux.getReg();
@@ -501,7 +501,7 @@ InputExpr::~InputExpr()
 }
 
 int InputExpr::eval(SymbolTable & vars)
-#line 156 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 176 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     std::cout<<text;
     int val;
@@ -511,15 +511,21 @@ int InputExpr::eval(SymbolTable & vars)
 #line 512 "expr_ast.cpp"
 
 int InputExpr::gen(SymbolTableGen & vars)
-#line 370 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 406 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     place = aux.getReg();
     
-    code = "jal read_int\n";
+    code = "addi\t\t $sp, $sp, -4\n";
+    code += "sw\t\t $ra, 0($sp)\n";
+    
+    code += "jal read_int\n";
     code+= "move\t\t $t"+aux.to_str(place)+", $v0\n";
+
+    code += "lw\t\t $ra, 0($sp)\n";
+    code += "addi\t\t $sp, $sp, 4\n";
     return 0;
 }
-#line 523 "expr_ast.cpp"
+#line 529 "expr_ast.cpp"
 
 int InputExpr::isA(int kind) const
 {
@@ -547,17 +553,17 @@ ArgList::~ArgList()
 }
 
 int ArgList::eval(SymbolTable & vars)
-#line 178 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 210 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     for(const auto& arg : args){
         arg->eval(vars);
     }
     return 0; 
 }
-#line 558 "expr_ast.cpp"
+#line 564 "expr_ast.cpp"
 
 int ArgList::gen(SymbolTableGen & vars)
-#line 401 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 443 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     code ="";
     for(const auto& arg : args){
@@ -570,7 +576,7 @@ int ArgList::gen(SymbolTableGen & vars)
     aux.freeArgs();
     return 0; 
 }
-#line 574 "expr_ast.cpp"
+#line 580 "expr_ast.cpp"
 
 int ArgList::isA(int kind) const
 {
@@ -599,26 +605,26 @@ FuncCall::~FuncCall()
 }
 
 int FuncCall::eval(SymbolTable & vars)
-#line 245 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 277 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     return 0;
 }
-#line 607 "expr_ast.cpp"
+#line 613 "expr_ast.cpp"
 
 int FuncCall::gen(SymbolTableGen & vars)
-#line 559 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 612 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     args->gen(vars);
     code = args->code;
-    
+    std::string _name = aux.getLabel(name);
     code += "addi\t\t $sp, $sp, -4\n";
     code += "sw\t\t $ra, 0($sp)\n";
-    code += "jal\t\t "+name+"\n\n";
+    code += "jal\t\t "+_name+"\n\n";
     code += "lw\t\t $ra, 0($sp)\n";
     code += "addi\t\t $sp, $sp, 4\n";
     return 0;
 }
-#line 622 "expr_ast.cpp"
+#line 628 "expr_ast.cpp"
 
 int FuncCall::isA(int kind) const
 {
@@ -633,6 +639,46 @@ const char *FuncCall::getKindName() const
 	return "FuncCall";
 }
 
+ArrayExpr::ArrayExpr(string_t name, Expr * exprPos)
+	: Expr()
+{
+	this->kind__ = ArrayExpr_kind;
+	this->name = name;
+	this->exprPos = exprPos;
+}
+
+ArrayExpr::~ArrayExpr()
+{
+	// not used
+}
+
+int ArrayExpr::eval(SymbolTable & vars)
+#line 191 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+{
+    return 0;
+}
+#line 661 "expr_ast.cpp"
+
+int ArrayExpr::gen(SymbolTableGen & vars)
+#line 642 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+{
+    return 0;
+}
+#line 668 "expr_ast.cpp"
+
+int ArrayExpr::isA(int kind) const
+{
+	if(kind == ArrayExpr_kind)
+		return 1;
+	else
+		return Expr::isA(kind);
+}
+
+const char *ArrayExpr::getKindName() const
+{
+	return "ArrayExpr";
+}
+
 AddExpr::AddExpr(Expr * expr1, Expr * expr2)
 	: BinaryExpr(expr1, expr2)
 {
@@ -645,12 +691,12 @@ AddExpr::~AddExpr()
 }
 
 int AddExpr::eval(SymbolTable & vars)
-#line 130 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 150 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) + expr2->eval(vars);}
-#line 651 "expr_ast.cpp"
+#line 697 "expr_ast.cpp"
 
 int AddExpr::gen(SymbolTableGen & vars)
-#line 252 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 288 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     expr1->gen(vars);
     expr2->gen(vars);
@@ -664,7 +710,7 @@ int AddExpr::gen(SymbolTableGen & vars)
     aux.freeReg(expr2->place);
     return 0;
 }
-#line 668 "expr_ast.cpp"
+#line 714 "expr_ast.cpp"
 
 int AddExpr::isA(int kind) const
 {
@@ -691,12 +737,12 @@ SubExpr::~SubExpr()
 }
 
 int SubExpr::eval(SymbolTable & vars)
-#line 131 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 151 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) - expr2->eval(vars);}
-#line 697 "expr_ast.cpp"
+#line 743 "expr_ast.cpp"
 
 int SubExpr::gen(SymbolTableGen & vars)
-#line 267 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 303 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     expr1->gen(vars);
     expr2->gen(vars);
@@ -710,7 +756,7 @@ int SubExpr::gen(SymbolTableGen & vars)
     aux.freeReg(expr2->place);
     return 0;
 }
-#line 714 "expr_ast.cpp"
+#line 760 "expr_ast.cpp"
 
 int SubExpr::isA(int kind) const
 {
@@ -737,14 +783,14 @@ MulExpr::~MulExpr()
 }
 
 int MulExpr::eval(SymbolTable & vars)
-#line 132 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 152 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) * expr2->eval(vars);}
-#line 743 "expr_ast.cpp"
+#line 789 "expr_ast.cpp"
 
 int MulExpr::gen(SymbolTableGen & vars)
-#line 281 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 317 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {return 0;}
-#line 748 "expr_ast.cpp"
+#line 794 "expr_ast.cpp"
 
 int MulExpr::isA(int kind) const
 {
@@ -771,14 +817,14 @@ DivExpr::~DivExpr()
 }
 
 int DivExpr::eval(SymbolTable & vars)
-#line 133 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 153 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) / expr2->eval(vars);}
-#line 777 "expr_ast.cpp"
+#line 823 "expr_ast.cpp"
 
 int DivExpr::gen(SymbolTableGen & vars)
-#line 282 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 318 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {return 0;}
-#line 782 "expr_ast.cpp"
+#line 828 "expr_ast.cpp"
 
 int DivExpr::isA(int kind) const
 {
@@ -805,14 +851,14 @@ ModExpr::~ModExpr()
 }
 
 int ModExpr::eval(SymbolTable & vars)
-#line 134 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 154 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) % expr2->eval(vars);}
-#line 811 "expr_ast.cpp"
+#line 857 "expr_ast.cpp"
 
 int ModExpr::gen(SymbolTableGen & vars)
-#line 283 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 319 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {return 0;}
-#line 816 "expr_ast.cpp"
+#line 862 "expr_ast.cpp"
 
 int ModExpr::isA(int kind) const
 {
@@ -839,14 +885,14 @@ PwdExpr::~PwdExpr()
 }
 
 int PwdExpr::eval(SymbolTable & vars)
-#line 135 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 155 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return pow(expr1->eval(vars), expr2->eval(vars));}
-#line 845 "expr_ast.cpp"
+#line 891 "expr_ast.cpp"
 
 int PwdExpr::gen(SymbolTableGen & vars)
-#line 284 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 320 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {return 0;}
-#line 850 "expr_ast.cpp"
+#line 896 "expr_ast.cpp"
 
 int PwdExpr::isA(int kind) const
 {
@@ -873,12 +919,12 @@ GTExpr::~GTExpr()
 }
 
 int GTExpr::eval(SymbolTable & vars)
-#line 136 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 156 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) > expr2->eval(vars);}
-#line 879 "expr_ast.cpp"
+#line 925 "expr_ast.cpp"
 
 int GTExpr::gen(SymbolTableGen & vars)
-#line 286 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 322 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     expr1->gen(vars);
     expr2->gen(vars);
@@ -890,7 +936,7 @@ int GTExpr::gen(SymbolTableGen & vars)
     aux.freeReg(expr2->place);
     return 0;
 }
-#line 894 "expr_ast.cpp"
+#line 940 "expr_ast.cpp"
 
 int GTExpr::isA(int kind) const
 {
@@ -917,12 +963,12 @@ LTExpr::~LTExpr()
 }
 
 int LTExpr::eval(SymbolTable & vars)
-#line 137 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 157 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) < expr2->eval(vars);}
-#line 923 "expr_ast.cpp"
+#line 969 "expr_ast.cpp"
 
 int LTExpr::gen(SymbolTableGen & vars)
-#line 298 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 334 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     expr1->gen(vars);
     expr2->gen(vars);
@@ -934,7 +980,7 @@ int LTExpr::gen(SymbolTableGen & vars)
     aux.freeReg(expr2->place);
     return 0;
 }
-#line 938 "expr_ast.cpp"
+#line 984 "expr_ast.cpp"
 
 int LTExpr::isA(int kind) const
 {
@@ -961,14 +1007,14 @@ GEExpr::~GEExpr()
 }
 
 int GEExpr::eval(SymbolTable & vars)
-#line 138 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 158 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) >= expr2->eval(vars);}
-#line 967 "expr_ast.cpp"
+#line 1013 "expr_ast.cpp"
 
 int GEExpr::gen(SymbolTableGen & vars)
-#line 309 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 345 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {return 0;}
-#line 972 "expr_ast.cpp"
+#line 1018 "expr_ast.cpp"
 
 int GEExpr::isA(int kind) const
 {
@@ -995,17 +1041,17 @@ LEExpr::~LEExpr()
 }
 
 int LEExpr::eval(SymbolTable & vars)
-#line 139 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 159 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) <= expr2->eval(vars);}
-#line 1001 "expr_ast.cpp"
+#line 1047 "expr_ast.cpp"
 
 int LEExpr::gen(SymbolTableGen & vars)
-#line 311 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 347 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     
     return 0;
 }
-#line 1009 "expr_ast.cpp"
+#line 1055 "expr_ast.cpp"
 
 int LEExpr::isA(int kind) const
 {
@@ -1032,12 +1078,12 @@ EqExpr::~EqExpr()
 }
 
 int EqExpr::eval(SymbolTable & vars)
-#line 140 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 160 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) == expr2->eval(vars);}
-#line 1038 "expr_ast.cpp"
+#line 1084 "expr_ast.cpp"
 
 int EqExpr::gen(SymbolTableGen & vars)
-#line 316 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 352 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     expr1->gen(vars);
     expr2->gen(vars);
@@ -1055,7 +1101,7 @@ int EqExpr::gen(SymbolTableGen & vars)
     aux.freeReg(expr2->place);
     return 0;
 }
-#line 1059 "expr_ast.cpp"
+#line 1105 "expr_ast.cpp"
 
 int EqExpr::isA(int kind) const
 {
@@ -1082,12 +1128,12 @@ NotExpr::~NotExpr()
 }
 
 int NotExpr::eval(SymbolTable & vars)
-#line 141 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 161 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { return expr1->eval(vars) != expr2->eval(vars);}
-#line 1088 "expr_ast.cpp"
+#line 1134 "expr_ast.cpp"
 
 int NotExpr::gen(SymbolTableGen & vars)
-#line 335 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 371 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     expr1->gen(vars);
     expr2->gen(vars);
@@ -1104,7 +1150,7 @@ int NotExpr::gen(SymbolTableGen & vars)
     return 0;
     
 }
-#line 1108 "expr_ast.cpp"
+#line 1154 "expr_ast.cpp"
 
 int NotExpr::isA(int kind) const
 {
@@ -1133,17 +1179,17 @@ AssignStmt::~AssignStmt()
 }
 
 int AssignStmt::eval(SymbolTable & vars)
-#line 163 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 195 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     int value = expr->eval(vars);
     vars[id] = value;
 
     return 0;
 }
-#line 1144 "expr_ast.cpp"
+#line 1190 "expr_ast.cpp"
 
 int AssignStmt::gen(SymbolTableGen & vars)
-#line 378 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 420 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     expr->gen(vars);
 
@@ -1156,7 +1202,7 @@ int AssignStmt::gen(SymbolTableGen & vars)
     aux.freeReg(expr->place);
     return 0;
 }
-#line 1160 "expr_ast.cpp"
+#line 1206 "expr_ast.cpp"
 
 int AssignStmt::isA(int kind) const
 {
@@ -1184,7 +1230,7 @@ BlockStmt::~BlockStmt()
 }
 
 int BlockStmt::eval(SymbolTable & vars)
-#line 170 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 202 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     for(const auto& stmt : l){
         stmt->eval(vars);
@@ -1192,10 +1238,10 @@ int BlockStmt::eval(SymbolTable & vars)
 
     return 0;
 }
-#line 1196 "expr_ast.cpp"
+#line 1242 "expr_ast.cpp"
 
 int BlockStmt::gen(SymbolTableGen & vars)
-#line 391 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 433 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     code = "";
     for(const auto& stmt : l){
@@ -1205,7 +1251,7 @@ int BlockStmt::gen(SymbolTableGen & vars)
 
     return 0;
 }
-#line 1209 "expr_ast.cpp"
+#line 1255 "expr_ast.cpp"
 
 int BlockStmt::isA(int kind) const
 {
@@ -1235,7 +1281,7 @@ ForStmt::~ForStmt()
 }
 
 int ForStmt::eval(SymbolTable & vars)
-#line 185 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 217 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     // int second = args->args.back()->eval(vars);
     // std::cout<<"second: "<<second<<std::endl;
@@ -1251,10 +1297,10 @@ int ForStmt::eval(SymbolTable & vars)
     // }
     return 0;
 }
-#line 1255 "expr_ast.cpp"
+#line 1301 "expr_ast.cpp"
 
 int ForStmt::gen(SymbolTableGen & vars)
-#line 414 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 456 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     args->gen(vars);
     code = args->code;
@@ -1290,7 +1336,7 @@ int ForStmt::gen(SymbolTableGen & vars)
     aux.freeReg(end);
     return 0;
 }
-#line 1294 "expr_ast.cpp"
+#line 1340 "expr_ast.cpp"
 
 int ForStmt::isA(int kind) const
 {
@@ -1318,7 +1364,7 @@ PrintList::~PrintList()
 }
 
 int PrintList::eval(SymbolTable & vars)
-#line 211 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 243 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     for(const auto& p : vals){
         p->eval(vars);
@@ -1326,10 +1372,10 @@ int PrintList::eval(SymbolTable & vars)
     std::cout<<std::endl;
     return 0;
 }
-#line 1330 "expr_ast.cpp"
+#line 1376 "expr_ast.cpp"
 
 int PrintList::gen(SymbolTableGen & vars)
-#line 450 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 492 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     code = "";
     for(const auto& val : vals){
@@ -1338,7 +1384,7 @@ int PrintList::gen(SymbolTableGen & vars)
     }
     return 0;
 }
-#line 1342 "expr_ast.cpp"
+#line 1388 "expr_ast.cpp"
 
 int PrintList::isA(int kind) const
 {
@@ -1366,26 +1412,32 @@ PrintExpr::~PrintExpr()
 }
 
 int PrintExpr::eval(SymbolTable & vars)
-#line 201 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 233 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     std::cout << expr->eval(vars);
     return 0;
 }
-#line 1375 "expr_ast.cpp"
+#line 1421 "expr_ast.cpp"
 
 int PrintExpr::gen(SymbolTableGen & vars)
-#line 460 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 502 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 { 
     expr->gen(vars);
 
     code = expr->code;
+    code += "addi\t\t $sp, $sp, -4\n";
+    code += "sw\t\t $ra, 0($sp)\n";
+
     code+= "move\t\t $a0,$t"+aux.to_str(expr->place)+"\n";
     code+= "jal\t\t print_int\n";
+
+    code += "lw\t\t $ra, 0($sp)\n";
+    code += "addi\t\t $sp, $sp, 4\n";
 
     aux.freeReg(expr->place);
     return 0;
 }
-#line 1389 "expr_ast.cpp"
+#line 1441 "expr_ast.cpp"
 
 int PrintExpr::isA(int kind) const
 {
@@ -1413,23 +1465,28 @@ PrintString::~PrintString()
 }
 
 int PrintString::eval(SymbolTable & vars)
-#line 206 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 238 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     std::cout<<literal;
     return 0;
 }
-#line 1422 "expr_ast.cpp"
+#line 1474 "expr_ast.cpp"
 
 int PrintString::gen(SymbolTableGen & vars)
-#line 472 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 520 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     string_t var = aux.saveVar(vars,literal,2);
-    code = "la\t\t $a0,"+var+"\n";
-    code+= "jal\t\t print_str\n";
+    code = "addi\t\t $sp, $sp, -4\n";
+    code += "sw\t\t $ra, 0($sp)\n";
 
+    code += "la\t\t $a0,"+var+"\n";
+    code+= "jal\t\t print_str\n";
+    
+    code += "lw\t\t $ra, 0($sp)\n";
+    code += "addi\t\t $sp, $sp, 4\n";
     return 0;
 }
-#line 1433 "expr_ast.cpp"
+#line 1490 "expr_ast.cpp"
 
 int PrintString::isA(int kind) const
 {
@@ -1459,7 +1516,7 @@ IfStmt::~IfStmt()
 }
 
 int IfStmt::eval(SymbolTable & vars)
-#line 219 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 251 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     if(cond->eval(vars))
         true_blk->eval(vars);
@@ -1468,10 +1525,10 @@ int IfStmt::eval(SymbolTable & vars)
 
     return 0;
 }
-#line 1472 "expr_ast.cpp"
+#line 1529 "expr_ast.cpp"
 
 int IfStmt::gen(SymbolTableGen & vars)
-#line 481 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 534 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     cond->gen(vars);
     code = cond->code;
@@ -1492,7 +1549,7 @@ int IfStmt::gen(SymbolTableGen & vars)
 
     return 0;
 }
-#line 1496 "expr_ast.cpp"
+#line 1553 "expr_ast.cpp"
 
 int IfStmt::isA(int kind) const
 {
@@ -1520,17 +1577,17 @@ ElseStmt::~ElseStmt()
 }
 
 int ElseStmt::eval(SymbolTable & vars)
-#line 228 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 260 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     if(code_blk != nullptr){
         code_blk->eval(vars);
     }
     return 0;
 }
-#line 1531 "expr_ast.cpp"
+#line 1588 "expr_ast.cpp"
 
 int ElseStmt::gen(SymbolTableGen & vars)
-#line 503 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 556 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     if(code_blk != nullptr){
         std::string label_else = aux.labelGenerator("else");
@@ -1540,7 +1597,7 @@ int ElseStmt::gen(SymbolTableGen & vars)
     }
     return 0;
 }
-#line 1544 "expr_ast.cpp"
+#line 1601 "expr_ast.cpp"
 
 int ElseStmt::isA(int kind) const
 {
@@ -1569,16 +1626,16 @@ WhileStmt::~WhileStmt()
 }
 
 int WhileStmt::eval(SymbolTable & vars)
-#line 235 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 267 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     while(cond->eval(vars))
         block->eval(vars);
     return 0;
 }
-#line 1579 "expr_ast.cpp"
+#line 1636 "expr_ast.cpp"
 
 int WhileStmt::gen(SymbolTableGen & vars)
-#line 514 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 567 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     std::string label_while = aux.labelGenerator("while");
     code = "\n"+label_while+":\n";
@@ -1599,7 +1656,7 @@ int WhileStmt::gen(SymbolTableGen & vars)
 
     return 0;
 }
-#line 1603 "expr_ast.cpp"
+#line 1660 "expr_ast.cpp"
 
 int WhileStmt::isA(int kind) const
 {
@@ -1629,37 +1686,37 @@ FuncDecl::~FuncDecl()
 }
 
 int FuncDecl::eval(SymbolTable & vars)
-#line 241 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 273 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
     return 0;
 }
-#line 1637 "expr_ast.cpp"
+#line 1694 "expr_ast.cpp"
 
 int FuncDecl::gen(SymbolTableGen & vars)
-#line 536 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+#line 589 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
 {
-    args->gen(vars);
-    code = args->code;
-
+    int parameter_count = 0;
+    code = "";
     std::string label_func = aux.labelGenerator(name);
-    int label_pos = aux.getReg();
-    int func_name = aux.getReg();
-    aux.saveVar(vars,name,1);
-    code += "la\t\t $t"+aux.to_str(label_pos)+", "+label_func+"\n";
-    code += "la\t\t $t"+aux.to_str(func_name)+", "+name+"\n";
-    code += "sw\t\t $t"+aux.to_str(label_pos)+", 0($t"+aux.to_str(func_name)+")\n";
-    
-    aux.freeReg(label_pos);
-    aux.freeReg(func_name); 
+    aux.saveLabel(name, label_func); 
 
     code+= "\n"+label_func+":\n\n";
+    for(const auto& arg : args->args){
+        std::string parameter = reinterpret_cast<Ast::IdExpr*>(arg)->id;
+        
+        aux.saveVar(vars,parameter,1);
+        int temp = aux.getReg();
+        code+= "la\t\t $t"+aux.to_str(temp)+", "+parameter+"\n";
+        code+= "sw\t\t $a"+aux.to_str(parameter_count++)+", 0($t"+aux.to_str(temp)+")\n";
+        aux.freeReg(temp);
+    }
     
     code_blk->gen(vars);
     code += code_blk->code;
 
     return 0;
 }
-#line 1663 "expr_ast.cpp"
+#line 1720 "expr_ast.cpp"
 
 int FuncDecl::isA(int kind) const
 {
@@ -1672,6 +1729,132 @@ int FuncDecl::isA(int kind) const
 const char *FuncDecl::getKindName() const
 {
 	return "FuncDecl";
+}
+
+ReturnStmt::ReturnStmt(Expr * expr)
+	: Stmt()
+{
+	this->kind__ = ReturnStmt_kind;
+	this->expr = expr;
+}
+
+ReturnStmt::~ReturnStmt()
+{
+	// not used
+}
+
+int ReturnStmt::eval(SymbolTable & vars)
+#line 281 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+{
+    return 0;
+}
+#line 1752 "expr_ast.cpp"
+
+int ReturnStmt::gen(SymbolTableGen & vars)
+#line 624 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+{
+    expr->gen(vars);
+
+    place = expr->place;
+    code = expr->code;
+    code += "jr\t\t $ra\n";
+
+    return 0;
+}
+#line 1765 "expr_ast.cpp"
+
+int ReturnStmt::isA(int kind) const
+{
+	if(kind == ReturnStmt_kind)
+		return 1;
+	else
+		return Stmt::isA(kind);
+}
+
+const char *ReturnStmt::getKindName() const
+{
+	return "ReturnStmt";
+}
+
+ArrayDecl::ArrayDecl(string_t name, ArgList * args)
+	: Stmt()
+{
+	this->kind__ = ArrayDecl_kind;
+	this->name = name;
+	this->args = args;
+}
+
+ArrayDecl::~ArrayDecl()
+{
+	// not used
+}
+
+int ArrayDecl::eval(SymbolTable & vars)
+#line 183 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+{
+    return 0;
+}
+#line 1798 "expr_ast.cpp"
+
+int ArrayDecl::gen(SymbolTableGen & vars)
+#line 634 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+{
+    return 0;
+}
+#line 1805 "expr_ast.cpp"
+
+int ArrayDecl::isA(int kind) const
+{
+	if(kind == ArrayDecl_kind)
+		return 1;
+	else
+		return Stmt::isA(kind);
+}
+
+const char *ArrayDecl::getKindName() const
+{
+	return "ArrayDecl";
+}
+
+ArrayStmt::ArrayStmt(string_t name, Expr * exprPos, Expr * exprRHS)
+	: Stmt()
+{
+	this->kind__ = ArrayStmt_kind;
+	this->name = name;
+	this->exprPos = exprPos;
+	this->exprRHS = exprRHS;
+}
+
+ArrayStmt::~ArrayStmt()
+{
+	// not used
+}
+
+int ArrayStmt::eval(SymbolTable & vars)
+#line 187 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+{
+    return 0;
+}
+#line 1839 "expr_ast.cpp"
+
+int ArrayStmt::gen(SymbolTableGen & vars)
+#line 638 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr_ast.tc"
+{
+    return 0;
+}
+#line 1846 "expr_ast.cpp"
+
+int ArrayStmt::isA(int kind) const
+{
+	if(kind == ArrayStmt_kind)
+		return 1;
+	else
+		return Stmt::isA(kind);
+}
+
+const char *ArrayStmt::getKindName() const
+{
+	return "ArrayStmt";
 }
 
 }

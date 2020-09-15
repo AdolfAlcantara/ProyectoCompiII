@@ -81,9 +81,27 @@ public:
         }
     }
 
+    void saveLabel(std::string name, std::string label){
+        functions.insert(std::pair<std::string,std::string>(name, label));
+    }
+
+    std::string getLabel(std::string name){
+        std::map<std::string,std::string>::iterator it;
+
+        it = functions.find(name);
+        if(it != functions.end()){
+            return it->second;
+        }else{
+            std::cout<<"No se encontro etiqueta para "+name+"\n";
+            return nullptr;
+        }
+
+    }
+
 private:
 
     int varCounter = 0,labelCounter=0;
+    std::map<std::string, std::string> functions;
     std::map<int, bool> args{
         {0,false},
         {1,false},

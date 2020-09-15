@@ -36,6 +36,7 @@ const int IdExpr_kind = 5;
 const int InputExpr_kind = 6;
 const int ArgList_kind = 22;
 const int FuncCall_kind = 31;
+const int ArrayExpr_kind = 35;
 const int AddExpr_kind = 7;
 const int SubExpr_kind = 8;
 const int MulExpr_kind = 9;
@@ -58,6 +59,9 @@ const int IfStmt_kind = 27;
 const int ElseStmt_kind = 28;
 const int WhileStmt_kind = 29;
 const int FuncDecl_kind = 30;
+const int ReturnStmt_kind = 32;
+const int ArrayDecl_kind = 33;
+const int ArrayStmt_kind = 34;
 
 class Node;
 class Expr;
@@ -68,6 +72,7 @@ class IdExpr;
 class InputExpr;
 class ArgList;
 class FuncCall;
+class ArrayExpr;
 class AddExpr;
 class SubExpr;
 class MulExpr;
@@ -90,6 +95,9 @@ class IfStmt;
 class ElseStmt;
 class WhileStmt;
 class FuncDecl;
+class ReturnStmt;
+class ArrayDecl;
+class ArrayStmt;
 
 class YYNODESTATE
 {
@@ -104,7 +112,7 @@ private:
 	struct YYNODESTATE_block *blocks__;
 	struct YYNODESTATE_push *push_stack__;
 	int used__;
-#line 108 "expr_ast.h"
+#line 116 "expr_ast.h"
 private:
 
 	static YYNODESTATE *state__;
@@ -342,6 +350,29 @@ public:
 protected:
 
 	virtual ~FuncCall();
+
+};
+
+class ArrayExpr : public Expr
+{
+public:
+
+	ArrayExpr(string_t name, Expr * exprPos);
+
+public:
+
+	string_t name;
+	Expr * exprPos;
+
+	virtual int eval(SymbolTable & vars);
+	virtual int gen(SymbolTableGen & vars);
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~ArrayExpr();
 
 };
 
@@ -810,6 +841,75 @@ public:
 protected:
 
 	virtual ~FuncDecl();
+
+};
+
+class ReturnStmt : public Stmt
+{
+public:
+
+	ReturnStmt(Expr * expr);
+
+public:
+
+	Expr * expr;
+
+	virtual int eval(SymbolTable & vars);
+	virtual int gen(SymbolTableGen & vars);
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~ReturnStmt();
+
+};
+
+class ArrayDecl : public Stmt
+{
+public:
+
+	ArrayDecl(string_t name, ArgList * args);
+
+public:
+
+	string_t name;
+	ArgList * args;
+
+	virtual int eval(SymbolTable & vars);
+	virtual int gen(SymbolTableGen & vars);
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~ArrayDecl();
+
+};
+
+class ArrayStmt : public Stmt
+{
+public:
+
+	ArrayStmt(string_t name, Expr * exprPos, Expr * exprRHS);
+
+public:
+
+	string_t name;
+	Expr * exprPos;
+	Expr * exprRHS;
+
+	virtual int eval(SymbolTable & vars);
+	virtual int gen(SymbolTableGen & vars);
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~ArrayStmt();
 
 };
 

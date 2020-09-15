@@ -379,15 +379,18 @@ namespace Expr {
       // func_decl
       // simple_stmts
       // simple_stmts_p
+      // assign_stmt
+      // assign_stmt_op
+      // array_stmt
       // func_stmt
       // while_stmt
       // for_stmt
       // if_stmt
       // if_opt
       // if_opt_p
-      // assign_stmt
       // arg_list
       // arg_list_p
+      // return_stmt
       // print_stmt
       // print_stmt_p
       // print_stmt_pp
@@ -592,11 +595,11 @@ namespace Expr {
         // Type destructor.
 switch (yytype)
     {
-      case 60: // expr
-      case 61: // term
-      case 62: // prod
-      case 63: // factor
-      case 64: // factor_p
+      case 63: // expr
+      case 64: // term
+      case 65: // prod
+      case 66: // factor
+      case 67: // factor_p
         value.template destroy< Ast::Expr* > ();
         break;
 
@@ -604,18 +607,21 @@ switch (yytype)
       case 43: // func_decl
       case 44: // simple_stmts
       case 45: // simple_stmts_p
-      case 46: // func_stmt
-      case 47: // while_stmt
-      case 48: // for_stmt
-      case 49: // if_stmt
-      case 50: // if_opt
-      case 51: // if_opt_p
-      case 53: // assign_stmt
-      case 55: // arg_list
-      case 56: // arg_list_p
-      case 57: // print_stmt
-      case 58: // print_stmt_p
-      case 59: // print_stmt_pp
+      case 46: // assign_stmt
+      case 47: // assign_stmt_op
+      case 48: // array_stmt
+      case 49: // func_stmt
+      case 50: // while_stmt
+      case 51: // for_stmt
+      case 52: // if_stmt
+      case 53: // if_opt
+      case 54: // if_opt_p
+      case 57: // arg_list
+      case 58: // arg_list_p
+      case 59: // return_stmt
+      case 60: // print_stmt
+      case 61: // print_stmt_p
+      case 62: // print_stmt_pp
         value.template destroy< Ast::Node * > ();
         break;
 
@@ -1350,7 +1356,7 @@ switch (yytype)
     Parser& operator= (const Parser&);
 
     /// Stored state numbers (used for stacks).
-    typedef signed char state_type;
+    typedef unsigned char state_type;
 
     /// Generate an error message.
     /// \param yystate   the state where the error occurred.
@@ -1390,17 +1396,17 @@ switch (yytype)
     static const signed char yydefact_[];
 
     // YYPGOTO[NTERM-NUM].
-    static const short yypgoto_[];
+    static const signed char yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
-    static const signed char yydefgoto_[];
+    static const short yydefgoto_[];
 
     // YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
     // positive, shift that token.  If negative, reduce the rule whose
     // number is the opposite.  If YYTABLE_NINF, syntax error.
-    static const signed char yytable_[];
+    static const unsigned char yytable_[];
 
-    static const signed char yycheck_[];
+    static const short yycheck_[];
 
     // YYSTOS[STATE-NUM] -- The (internal number of the) accessing
     // symbol of state STATE-NUM.
@@ -1421,7 +1427,7 @@ switch (yytype)
     static const char* const yytname_[];
 #if YYDEBUG
     // YYRLINE[YYN] -- Source line where rule number YYN was defined.
-    static const unsigned char yyrline_[];
+    static const short yyrline_[];
     /// Report on the debug stream that the rule \a r is going to be reduced.
     virtual void yy_reduce_print_ (int r);
     /// Print the state stack on the debug stream.
@@ -1648,8 +1654,8 @@ switch (yytype)
     enum
     {
       yyeof_ = 0,
-      yylast_ = 218,     ///< Last index in yytable_.
-      yynnts_ = 25,  ///< Number of nonterminal symbols.
+      yylast_ = 243,     ///< Last index in yytable_.
+      yynnts_ = 28,  ///< Number of nonterminal symbols.
       yyfinal_ = 5, ///< Termination state number.
       yyntokens_ = 40  ///< Number of tokens.
     };
@@ -1663,7 +1669,7 @@ switch (yytype)
 
 #line 8 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
 } // Expr
-#line 1667 "expr_parser.h"
+#line 1673 "expr_parser.h"
 
 
 

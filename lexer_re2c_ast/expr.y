@@ -84,11 +84,12 @@
 %token Indent
 %token Dedent
 %type<Ast::Expr*> expr term factor prod factor_p
-%type<Ast::Node *> complex_stmts simple_stmts simple_stmts_p print_stmt func_decl assign_stmt arg_list arg_list_p
+%type<Ast::Node *> complex_stmts simple_stmts simple_stmts_p print_stmt assign_stmt arg_list arg_list_p
 %type<Ast::Node *> print_stmt_pp print_stmt_p
 %type<Ast::Node *> if_stmt if_opt if_opt_p 
 %type<Ast::Node *> for_stmt while_stmt 
-%type<Ast::Node *> func_stmt 
+%type<Ast::Node *> func_stmt func_decl return_stmt 
+%type<Ast::Node *> assign_stmt_op array_stmt
 
 %% 
 input: NewLine complex_stmts {root = $2;}
@@ -96,8 +97,8 @@ input: NewLine complex_stmts {root = $2;}
 ;
 
 complex_stmts: complex_stmts KW_DEF func_decl   {
-                                                    // $$ = $1;
-                                                    // reinterpret_cast<Ast::BlockStmt*>($$)->l.push_back($2);
+                                                    $$ = $1;
+                                                    reinterpret_cast<Ast::BlockStmt*>($$)->l.push_back($3);
                                                 }
                 | complex_stmts simple_stmts    {
                                                     $$ = $1;
@@ -110,6 +111,9 @@ complex_stmts: complex_stmts KW_DEF func_decl   {
 ;
 
 func_decl:  TK_IDENTIFIER TK_OPENPAR arg_list TK_CLOSEPAR TK_COLON Indent complex_stmts Dedent
+            {
+                $$ = new Ast::FuncDecl($1, reinterpret_cast<Ast::ArgList*>($3),reinterpret_cast<Ast::BlockStmt*>($7));
+            }
 ;
 
 simple_stmts: TK_IDENTIFIER simple_stmts_p stmt_end_nl  {
@@ -120,18 +124,37 @@ simple_stmts: TK_IDENTIFIER simple_stmts_p stmt_end_nl  {
                                                             }else if(kind == "FuncCall"){
                                                                 $$ = $2;
                                                                 reinterpret_cast<Ast::FuncCall*>($$)->name = $1;
+                                                            }else if(kind == "ArrayDecl"){
+                                                                $$ = $2;
+                                                                reinterpret_cast<Ast::ArrayDecl*>($$)->name = $1;
+                                                            }else if(kind == "ArrayStmt"){
+                                                                $$ = $2;
+                                                                reinterpret_cast<Ast::ArrayStmt*>($$)->name = $1;
                                                             }
                                                         }
             | print_stmt stmt_end_nl    {$$ = $1;}
             | if_stmt                   {$$ = $1;}
             | for_stmt                  {$$ = $1;}
             | while_stmt                {$$ = $1;}
+            | return_stmt stmt_end_nl   {$$ = $1;}
 
 ;
 
 simple_stmts_p: assign_stmt {$$ = $1;}
                 | func_stmt {$$ = $1;}
+                | array_stmt {$$ = $1;}
 ;
+
+assign_stmt: "=" assign_stmt_op {$$ = $2;}
+;
+
+assign_stmt_op: expr {$$ = new Ast::AssignStmt("",$1);}
+                | "[" arg_list "]" {$$ = new Ast::ArrayDecl("",reinterpret_cast<Ast::ArgList*>($2));}
+;
+
+array_stmt: "[" expr "]" "=" expr {$$ = new Ast::ArrayStmt("",$2,$5);}
+;
+
 
 func_stmt: "(" arg_list ")" {$$ = new Ast::FuncCall("",reinterpret_cast<Ast::ArgList*>($2));}
 ;
@@ -155,8 +178,8 @@ if_opt:      Dedent if_opt_p    {$$ = $2;}
             | TK_EOF            {$$ = nullptr;}
 ;
 
-if_opt_p:   KW_ELIF expr TK_COLON Indent complex_stmts if_opt   {$$ = new Ast::IfStmt($2,reinterpret_cast<Ast::Stmt*>($5),reinterpret_cast<Ast::Stmt*>($6));}
-            | KW_ELSE TK_COLON Indent complex_stmts if_opt_pp   {$$ = new Ast::ElseStmt(reinterpret_cast<Ast::Stmt*>($4));}
+if_opt_p:   KW_ELIF expr TK_COLON Indent complex_stmts if_opt   {$$ = new Ast::IfStmt($2,reinterpret_cast<Ast::BlockStmt*>($5),reinterpret_cast<Ast::BlockStmt*>($6));}
+            | KW_ELSE TK_COLON Indent complex_stmts if_opt_pp   {$$ = new Ast::ElseStmt(reinterpret_cast<Ast::BlockStmt*>($4));}
             | /**/                                              {$$ = nullptr;}
 ;
 
@@ -164,8 +187,6 @@ if_opt_pp:  Dedent
             | TK_EOF    
 ;
 
-assign_stmt: "=" expr {$$ = new Ast::AssignStmt("",$2);}
-;
 
 stmt_end_nl: NewLine
             | /**/
@@ -184,6 +205,9 @@ arg_list_p: arg_list_p  expr  TK_COMMA  {
                                             Ast::NodeVector args;
                                             $$ = new Ast::ArgList(args);
                                         }
+;
+
+return_stmt: KW_RETURN expr             {$$ = new Ast::ReturnStmt($2);}
 ;
 
 print_stmt: KW_PRINT print_stmt_p           {$$ = $2;}
@@ -239,12 +263,15 @@ factor:     TK_NUMBER {$$ = new Ast::NumExpr($1);}
                                         }else if(kind == "IdExpr"){
                                             $$ = $2;
                                             reinterpret_cast<Ast::IdExpr*>($$)->id = $1;
+                                        }else if(kind == "ArrayExpr"){
+                                            $$ = $2;
+                                            reinterpret_cast<Ast::ArrayExpr*>($$)->name = $1;
                                         }
                                     }
             | KW_INPUT TK_OPENPAR TK_STRING TK_CLOSEPAR {$$ = new Ast::InputExpr($3);}
 ;
 
 factor_p:   TK_OPENPAR arg_list TK_CLOSEPAR {$$ = new Ast::FuncCall("",reinterpret_cast<Ast::ArgList*>($2));}
-            | "[" expr "]" 
+            | "[" expr "]" {$$ = new Ast::ArrayExpr("",$2);}
             | /**/ {$$ = new Ast::IdExpr("");}
 ;

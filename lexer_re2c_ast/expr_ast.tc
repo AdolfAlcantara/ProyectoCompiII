@@ -125,6 +125,26 @@ namespace Ast
     ArgList *args;
 }
 
+%node ReturnStmt Stmt = {
+    Expr *expr;
+} 
+
+%node ArrayDecl Stmt = {
+    string_t name;
+    ArgList * args;
+}
+
+%node ArrayStmt Stmt = {
+    string_t name;
+    Expr *exprPos;
+    Expr *exprRHS;
+}
+
+%node ArrayExpr Expr = {
+    string_t name;
+    Expr *exprPos;
+}
+
 %operation %virtual int eval(Node *this, SymbolTable& vars);
 
 eval(AddExpr) { return expr1->eval(vars) + expr2->eval(vars);}
@@ -158,6 +178,18 @@ eval(InputExpr){
     int val;
     std::cin>>val;
     return val;
+}
+
+eval(ArrayDecl){
+    return 0;
+}
+
+eval(ArrayStmt){
+    return 0;
+}
+
+eval(ArrayExpr){
+    return 0;
 }
 
 eval(AssignStmt){
@@ -243,6 +275,10 @@ eval(FuncDecl){
 }
 
 eval(FuncCall){
+    return 0;
+}
+
+eval(ReturnStmt){
     return 0;
 }
 
@@ -370,8 +406,14 @@ gen(IdExpr){
 gen(InputExpr){
     place = aux.getReg();
     
-    code = "jal read_int\n";
+    code = "addi\t\t $sp, $sp, -4\n";
+    code += "sw\t\t $ra, 0($sp)\n";
+    
+    code += "jal read_int\n";
     code+= "move\t\t $t"+aux.to_str(place)+", $v0\n";
+
+    code += "lw\t\t $ra, 0($sp)\n";
+    code += "addi\t\t $sp, $sp, 4\n";
     return 0;
 }
 
@@ -461,8 +503,14 @@ gen(PrintExpr)
     expr->gen(vars);
 
     code = expr->code;
+    code += "addi\t\t $sp, $sp, -4\n";
+    code += "sw\t\t $ra, 0($sp)\n";
+
     code+= "move\t\t $a0,$t"+aux.to_str(expr->place)+"\n";
     code+= "jal\t\t print_int\n";
+
+    code += "lw\t\t $ra, 0($sp)\n";
+    code += "addi\t\t $sp, $sp, 4\n";
 
     aux.freeReg(expr->place);
     return 0;
@@ -471,9 +519,14 @@ gen(PrintExpr)
 gen(PrintString)
 {
     string_t var = aux.saveVar(vars,literal,2);
-    code = "la\t\t $a0,"+var+"\n";
-    code+= "jal\t\t print_str\n";
+    code = "addi\t\t $sp, $sp, -4\n";
+    code += "sw\t\t $ra, 0($sp)\n";
 
+    code += "la\t\t $a0,"+var+"\n";
+    code+= "jal\t\t print_str\n";
+    
+    code += "lw\t\t $ra, 0($sp)\n";
+    code += "addi\t\t $sp, $sp, 4\n";
     return 0;
 }
 
@@ -534,21 +587,21 @@ gen(WhileStmt)
 
 gen(FuncDecl)
 {
-    args->gen(vars);
-    code = args->code;
-
+    int parameter_count = 0;
+    code = "";
     std::string label_func = aux.labelGenerator(name);
-    int label_pos = aux.getReg();
-    int func_name = aux.getReg();
-    aux.saveVar(vars,name,1);
-    code += "la\t\t $t"+aux.to_str(label_pos)+", "+label_func+"\n";
-    code += "la\t\t $t"+aux.to_str(func_name)+", "+name+"\n";
-    code += "sw\t\t $t"+aux.to_str(label_pos)+", 0($t"+aux.to_str(func_name)+")\n";
-    
-    aux.freeReg(label_pos);
-    aux.freeReg(func_name); 
+    aux.saveLabel(name, label_func); 
 
     code+= "\n"+label_func+":\n\n";
+    for(const auto& arg : args->args){
+        std::string parameter = reinterpret_cast<Ast::IdExpr*>(arg)->id;
+        
+        aux.saveVar(vars,parameter,1);
+        int temp = aux.getReg();
+        code+= "la\t\t $t"+aux.to_str(temp)+", "+parameter+"\n";
+        code+= "sw\t\t $a"+aux.to_str(parameter_count++)+", 0($t"+aux.to_str(temp)+")\n";
+        aux.freeReg(temp);
+    }
     
     code_blk->gen(vars);
     code += code_blk->code;
@@ -559,11 +612,33 @@ gen(FuncDecl)
 gen(FuncCall){
     args->gen(vars);
     code = args->code;
-    
+    std::string _name = aux.getLabel(name);
     code += "addi\t\t $sp, $sp, -4\n";
     code += "sw\t\t $ra, 0($sp)\n";
-    code += "jal\t\t "+name+"\n\n";
+    code += "jal\t\t "+_name+"\n\n";
     code += "lw\t\t $ra, 0($sp)\n";
     code += "addi\t\t $sp, $sp, 4\n";
+    return 0;
+}
+
+gen(ReturnStmt){
+    expr->gen(vars);
+
+    place = expr->place;
+    code = expr->code;
+    code += "jr\t\t $ra\n";
+
+    return 0;
+}
+
+gen(ArrayDecl){
+    return 0;
+}
+
+gen(ArrayStmt){
+    return 0;
+}
+
+gen(ArrayExpr){
     return 0;
 }
