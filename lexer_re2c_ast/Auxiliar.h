@@ -1,5 +1,6 @@
 #include <sstream>
 #include <cstdio>
+#include <vector>
 #include <map> 
 
 class Auxiliar
@@ -98,8 +99,18 @@ public:
 
     }
 
-private:
+    void saveArrayRange(int spaces){
+        arraySizes.push_back(spaces);
+    }
 
+    int removeArrayRange(){
+        int size = arraySizes.back();
+        arraySizes.pop_back();
+        return size;
+    }
+
+private:
+    std::vector<int> arraySizes;
     int varCounter = 0,labelCounter=0;
     std::map<std::string, std::string> functions;
     std::map<int, bool> args{

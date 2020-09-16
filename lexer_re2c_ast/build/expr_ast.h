@@ -30,13 +30,14 @@ namespace Ast
 const int Node_kind = 1;
 const int Expr_kind = 2;
 const int Stmt_kind = 19;
+const int StmtList_kind = 21;
 const int BinaryExpr_kind = 3;
 const int NumExpr_kind = 4;
 const int IdExpr_kind = 5;
 const int InputExpr_kind = 6;
-const int ArgList_kind = 22;
-const int FuncCall_kind = 31;
-const int ArrayExpr_kind = 35;
+const int ArgList_kind = 23;
+const int FuncCall_kind = 32;
+const int ArrayExpr_kind = 36;
 const int AddExpr_kind = 7;
 const int SubExpr_kind = 8;
 const int MulExpr_kind = 9;
@@ -50,22 +51,23 @@ const int LEExpr_kind = 16;
 const int EqExpr_kind = 17;
 const int NotExpr_kind = 18;
 const int AssignStmt_kind = 20;
-const int BlockStmt_kind = 21;
-const int ForStmt_kind = 23;
-const int PrintList_kind = 24;
-const int PrintExpr_kind = 25;
-const int PrintString_kind = 26;
-const int IfStmt_kind = 27;
-const int ElseStmt_kind = 28;
-const int WhileStmt_kind = 29;
-const int FuncDecl_kind = 30;
-const int ReturnStmt_kind = 32;
-const int ArrayDecl_kind = 33;
-const int ArrayStmt_kind = 34;
+const int BlockStmt_kind = 22;
+const int ForStmt_kind = 24;
+const int PrintList_kind = 25;
+const int PrintExpr_kind = 26;
+const int PrintString_kind = 27;
+const int IfStmt_kind = 28;
+const int ElseStmt_kind = 29;
+const int WhileStmt_kind = 30;
+const int FuncDecl_kind = 31;
+const int ReturnStmt_kind = 33;
+const int ArrayDecl_kind = 34;
+const int ArrayStmt_kind = 35;
 
 class Node;
 class Expr;
 class Stmt;
+class StmtList;
 class BinaryExpr;
 class NumExpr;
 class IdExpr;
@@ -112,7 +114,7 @@ private:
 	struct YYNODESTATE_block *blocks__;
 	struct YYNODESTATE_push *push_stack__;
 	int used__;
-#line 116 "expr_ast.h"
+#line 118 "expr_ast.h"
 private:
 
 	static YYNODESTATE *state__;
@@ -216,6 +218,29 @@ public:
 protected:
 
 	virtual ~Stmt();
+
+};
+
+class StmtList : public Node
+{
+public:
+
+	StmtList(BlockStmt * funcs, BlockStmt * stmts);
+
+public:
+
+	BlockStmt * funcs;
+	BlockStmt * stmts;
+
+	virtual int eval(SymbolTable & vars);
+	virtual int gen(SymbolTableGen & vars);
+
+	virtual int isA(int kind) const;
+	virtual const char *getKindName() const;
+
+protected:
+
+	virtual ~StmtList();
 
 };
 

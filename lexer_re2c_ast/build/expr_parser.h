@@ -375,6 +375,8 @@ namespace Expr {
       // factor_p
       char dummy1[sizeof (Ast::Expr*)];
 
+      // stmts_list
+      // func_defs
       // complex_stmts
       // func_decl
       // simple_stmts
@@ -595,33 +597,35 @@ namespace Expr {
         // Type destructor.
 switch (yytype)
     {
-      case 63: // expr
-      case 64: // term
-      case 65: // prod
-      case 66: // factor
-      case 67: // factor_p
+      case 65: // expr
+      case 66: // term
+      case 67: // prod
+      case 68: // factor
+      case 69: // factor_p
         value.template destroy< Ast::Expr* > ();
         break;
 
-      case 42: // complex_stmts
-      case 43: // func_decl
-      case 44: // simple_stmts
-      case 45: // simple_stmts_p
-      case 46: // assign_stmt
-      case 47: // assign_stmt_op
-      case 48: // array_stmt
-      case 49: // func_stmt
-      case 50: // while_stmt
-      case 51: // for_stmt
-      case 52: // if_stmt
-      case 53: // if_opt
-      case 54: // if_opt_p
-      case 57: // arg_list
-      case 58: // arg_list_p
-      case 59: // return_stmt
-      case 60: // print_stmt
-      case 61: // print_stmt_p
-      case 62: // print_stmt_pp
+      case 42: // stmts_list
+      case 43: // func_defs
+      case 44: // complex_stmts
+      case 45: // func_decl
+      case 46: // simple_stmts
+      case 47: // simple_stmts_p
+      case 48: // assign_stmt
+      case 49: // assign_stmt_op
+      case 50: // array_stmt
+      case 51: // func_stmt
+      case 52: // while_stmt
+      case 53: // for_stmt
+      case 54: // if_stmt
+      case 55: // if_opt
+      case 56: // if_opt_p
+      case 59: // arg_list
+      case 60: // arg_list_p
+      case 61: // return_stmt
+      case 62: // print_stmt
+      case 63: // print_stmt_p
+      case 64: // print_stmt_pp
         value.template destroy< Ast::Node * > ();
         break;
 
@@ -1396,7 +1400,7 @@ switch (yytype)
     static const signed char yydefact_[];
 
     // YYPGOTO[NTERM-NUM].
-    static const signed char yypgoto_[];
+    static const short yypgoto_[];
 
     // YYDEFGOTO[NTERM-NUM].
     static const short yydefgoto_[];
@@ -1654,9 +1658,9 @@ switch (yytype)
     enum
     {
       yyeof_ = 0,
-      yylast_ = 243,     ///< Last index in yytable_.
-      yynnts_ = 28,  ///< Number of nonterminal symbols.
-      yyfinal_ = 5, ///< Termination state number.
+      yylast_ = 275,     ///< Last index in yytable_.
+      yynnts_ = 30,  ///< Number of nonterminal symbols.
+      yyfinal_ = 42, ///< Termination state number.
       yyntokens_ = 40  ///< Number of tokens.
     };
 
@@ -1669,7 +1673,7 @@ switch (yytype)
 
 #line 8 "/home/deafdead/Documentos/compiII/proyecto/lexer_re2c_ast/expr.y"
 } // Expr
-#line 1673 "expr_parser.h"
+#line 1677 "expr_parser.h"
 
 
 

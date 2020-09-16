@@ -73,6 +73,11 @@ namespace Ast
     Expr * expr;
 }
 
+%node StmtList Node = {
+    BlockStmt *funcs;
+    BlockStmt *stmts;   
+}
+
 %node BlockStmt Stmt = {
     NodeVector l;
 }
@@ -196,6 +201,10 @@ eval(AssignStmt){
     int value = expr->eval(vars);
     vars[id] = value;
 
+    return 0;
+}
+
+eval(StmtList){
     return 0;
 }
 
@@ -395,9 +404,9 @@ gen(NumExpr)
 }
 
 gen(IdExpr){
-    std::cout<<"IdExpr:\n";
+    std::cout<<"IdExpr:"<<id<<"\n";
     place  = aux.getReg();
-    
+    std::cout<<"Reg:"<<place<<"\n";
     code = "la\t\t $t"+aux.to_str(place)+", "+id+"\n";
     code += "lw\t\t $t"+aux.to_str(place)+", 0($t"+aux.to_str(place)+")\n";
     return 0;
@@ -406,14 +415,14 @@ gen(IdExpr){
 gen(InputExpr){
     place = aux.getReg();
     
-    code = "addi\t\t $sp, $sp, -4\n";
+    // code = "addi\t\t $sp, $sp, -4\n";
     code += "sw\t\t $ra, 0($sp)\n";
     
     code += "jal read_int\n";
     code+= "move\t\t $t"+aux.to_str(place)+", $v0\n";
 
     code += "lw\t\t $ra, 0($sp)\n";
-    code += "addi\t\t $sp, $sp, 4\n";
+    // code += "addi\t\t $sp, $sp, 4\n";
     return 0;
 }
 
@@ -430,11 +439,28 @@ gen(AssignStmt){
     return 0;
 }
 
+gen(StmtList){
+    code = "";
+    if(funcs != nullptr){
+        funcs->gen(vars);
+        code+= funcs->code;
+    }
+
+    code+="\nmain:\n";
+    code+="addi\t\t $sp, $sp, -4\n";
+    stmts->gen(vars);
+    code+= stmts->code;
+    code+="addi\t\t $sp, $sp, 4\n";
+    code+="jr\t\t $ra\n";
+    return 0;
+}
+
 gen(BlockStmt){
     code = "";
     for(const auto& stmt : l){
         stmt->gen(vars);
         code += stmt->code;
+        aux.freeReg(stmt->place);
     }
 
     return 0;
@@ -465,22 +491,32 @@ gen(ForStmt){
     code += "la\t\t $t"+aux.to_str(temp)+", "+id+"\n";
     code += "sw\t\t $t"+aux.to_str(start)+", 0($t"+aux.to_str(temp)+")\n";
     aux.freeReg(temp);
+    aux.freeReg(start);
 
     std::string label_for = aux.labelGenerator("for");
     std::string label_end_for = aux.labelGenerator("end_for");
     code += label_for+":\n\n";
     temp = aux.getReg();
-    code += "slt\t\t $t"+aux.to_str(temp)+", $t"+aux.to_str(start)+", $t"+aux.to_str(end)+"\n";
+    int _i = aux.getReg();
+    code += "la\t\t $t"+aux.to_str(_i)+", "+id+"\n";
+    code += "lw\t\t $t"+aux.to_str(_i)+", 0($t"+aux.to_str(_i)+")\n";
+    code += "slt\t\t $t"+aux.to_str(temp)+", $t"+aux.to_str(_i)+", $t"+aux.to_str(end)+"\n";
     code += "beq\t\t $t"+aux.to_str(temp)+", $zero, "+label_end_for+"\n\n";
     aux.freeReg(temp);
+    aux.freeReg(_i);
+
     blck_stmts->gen(vars);
     code += blck_stmts->code;
 
-    code += "addi\t\t $t"+aux.to_str(start)+", $t"+aux.to_str(start)+", 1\n";
+    _i = aux.getReg();
+    code += "la\t\t $t"+aux.to_str(_i)+", "+id+"\n";
+    code += "lw\t\t $t"+aux.to_str(_i)+", 0($t"+aux.to_str(_i)+")\n";
+    code += "addi\t\t $t"+aux.to_str(_i)+", $t"+aux.to_str(_i)+", 1\n";
     temp = aux.getReg();
     code += "la\t\t $t"+aux.to_str(temp)+", "+id+"\n";
-    code += "sw\t\t $t"+aux.to_str(start)+", 0($t"+aux.to_str(temp)+")\n";
+    code += "sw\t\t $t"+aux.to_str(_i)+", 0($t"+aux.to_str(temp)+")\n";
     aux.freeReg(temp);
+    aux.freeReg(_i);
     code+="j\t\t "+label_for+"\n";
 
     code+="\n"+label_end_for+":\n\n";
@@ -503,14 +539,16 @@ gen(PrintExpr)
     expr->gen(vars);
 
     code = expr->code;
-    code += "addi\t\t $sp, $sp, -4\n";
+    // code += "addi\t\t $sp, $sp, -4\n";
     code += "sw\t\t $ra, 0($sp)\n";
 
     code+= "move\t\t $a0,$t"+aux.to_str(expr->place)+"\n";
     code+= "jal\t\t print_int\n";
+    code+= "li\t\t $a0, 10\n";
+    code+= "jal\t\t print_char\n";
 
     code += "lw\t\t $ra, 0($sp)\n";
-    code += "addi\t\t $sp, $sp, 4\n";
+    // code += "addi\t\t $sp, $sp, 4\n";
 
     aux.freeReg(expr->place);
     return 0;
@@ -519,14 +557,16 @@ gen(PrintExpr)
 gen(PrintString)
 {
     string_t var = aux.saveVar(vars,literal,2);
-    code = "addi\t\t $sp, $sp, -4\n";
+    // code = "addi\t\t $sp, $sp, -4\n";
     code += "sw\t\t $ra, 0($sp)\n";
 
     code += "la\t\t $a0,"+var+"\n";
     code+= "jal\t\t print_str\n";
+    code+= "li\t\t $a0, 10\n";
+    code+= "jal\t\t print_char\n";
     
     code += "lw\t\t $ra, 0($sp)\n";
-    code += "addi\t\t $sp, $sp, 4\n";
+    // code += "addi\t\t $sp, $sp, 4\n";
     return 0;
 }
 
@@ -535,19 +575,23 @@ gen(IfStmt)
     cond->gen(vars);
     code = cond->code;
     std::string label_if = aux.labelGenerator("if");
+    std::string label_else = aux.labelGenerator("else");
     std::string label_end_if = aux.labelGenerator("end_if");
     code+= "\n"+label_if+":\n\n";
-    code+= "beq\t\t $t"+aux.to_str(cond->place)+", $zero, "+label_end_if +"\n";
+    code+= "beq\t\t $t"+aux.to_str(cond->place)+", $zero, "+label_else +"\n";
     aux.freeReg(cond->place);
 
     true_blk->gen(vars);
     code+= true_blk->code;
-    code+="\n"+label_end_if+":\n\n";
+    code+= "j\t\t "+label_end_if+"\n\n";
 
+    code+=label_else+":\n\n";
     if(false_blk != nullptr){
         false_blk->gen(vars);
         code+= false_blk->code;
     }
+
+    code+= label_end_if+":\n\n";
 
     return 0;
 }
@@ -555,9 +599,7 @@ gen(IfStmt)
 gen(ElseStmt)
 {
     if(code_blk != nullptr){
-        std::string label_else = aux.labelGenerator("else");
         code_blk->gen(vars);
-        code = "\n"+label_else+":\n\n";
         code+= code_blk->code;
     }
     return 0;
@@ -593,6 +635,10 @@ gen(FuncDecl)
     aux.saveLabel(name, label_func); 
 
     code+= "\n"+label_func+":\n\n";
+
+    code+= "addi\t\t $sp, $sp, -4\n";
+    
+
     for(const auto& arg : args->args){
         std::string parameter = reinterpret_cast<Ast::IdExpr*>(arg)->id;
         
@@ -605,7 +651,8 @@ gen(FuncDecl)
     
     code_blk->gen(vars);
     code += code_blk->code;
-
+    code += "addi\t\t $sp, $sp, 4\n";
+    code += "jr\t\t $ra\n\n";
     return 0;
 }
 
@@ -613,32 +660,84 @@ gen(FuncCall){
     args->gen(vars);
     code = args->code;
     std::string _name = aux.getLabel(name);
-    code += "addi\t\t $sp, $sp, -4\n";
+    // code += "addi\t\t $sp, $sp, -4\n";
     code += "sw\t\t $ra, 0($sp)\n";
     code += "jal\t\t "+_name+"\n\n";
     code += "lw\t\t $ra, 0($sp)\n";
-    code += "addi\t\t $sp, $sp, 4\n";
+    place = aux.getReg();
+    code += "move\t\t $t"+aux.to_str(place)+", $v0\n\n";
+    // code += "addi\t\t $sp, $sp, 4\n";
     return 0;
 }
 
 gen(ReturnStmt){
     expr->gen(vars);
 
-    place = expr->place;
     code = expr->code;
-    code += "jr\t\t $ra\n";
-
+    code += "move\t\t $v0, $t"+aux.to_str(expr->place)+"\n";
+    code += "addi\t\t $sp, $sp, 4\n";
+    code += "jr\t\t $ra\n\n";
+    aux.freeReg(expr->place);
     return 0;
 }
 
 gen(ArrayDecl){
+    std::string tempCode = "";
+    int spaces = 0;
+    for(const auto& arg : args->args){
+        int offset = spaces * 4;
+        offset += 4;
+        arg->gen(vars);
+        tempCode+= arg->code;
+        tempCode+="sw\t\t $t"+aux.to_str(arg->place)+", "+aux.to_str(offset)+"($sp)\n";
+        aux.freeReg(arg->place);
+        spaces++;
+    }
+    aux.saveArrayRange(spaces);
+    aux.saveVar(vars,name,1);
+    code = "addi\t\t $sp, $sp, -"+aux.to_str(spaces*4)+"\n\n";
+    code += tempCode;
+    int array_addr = aux.getReg();
+    code+= "la $t"+aux.to_str(array_addr)+", "+name+"\n";
+    code+= "sw $sp, 0($t"+aux.to_str(array_addr)+")\n\n";
     return 0;
 }
 
 gen(ArrayStmt){
+    exprPos->gen(vars);
+
+    code = exprPos->code;
+    code += "sll\t\t $t"+aux.to_str(exprPos->place)+", $t"+aux.to_str(exprPos->place)+", 2\n";
+    code += "addi\t\t $t"+aux.to_str(exprPos->place)+",$t"+aux.to_str(exprPos->place)+", 4\n";
+    int address = aux.getReg();
+    code += "la\t\t $t"+aux.to_str(address)+", "+name+"\n";
+    code += "lw\t\t $t"+aux.to_str(address)+", 0($t"+aux.to_str(address)+")\n";
+    code += "add\t\t $t"+aux.to_str(address)+", $t"+aux.to_str(exprPos->place)+", $t"+aux.to_str(address)+"\n\n";
+
+    aux.freeReg(exprPos->place);
+    exprRHS->gen(vars);
+
+    code+= exprRHS->code;
+    code+= "sw\t\t $t"+aux.to_str(exprRHS->place)+", 0($t"+aux.to_str(address)+")\n\n";
+    aux.freeReg(exprRHS->place);
+    aux.freeReg(address);
+
     return 0;
 }
 
 gen(ArrayExpr){
+    exprPos->gen(vars);
+
+    code = exprPos->code;
+    code += "sll\t\t $t"+aux.to_str(exprPos->place)+", $t"+aux.to_str(exprPos->place)+", 2\n";
+    code += "addi\t\t $t"+aux.to_str(exprPos->place)+",$t"+aux.to_str(exprPos->place)+", 4\n";
+    int address = aux.getReg();
+    code += "la\t\t $t"+aux.to_str(address)+", "+name+"\n";
+    code += "lw\t\t $t"+aux.to_str(address)+", 0($t"+aux.to_str(address)+")\n";
+    code += "add\t\t $t"+aux.to_str(address)+", $t"+aux.to_str(exprPos->place)+", $t"+aux.to_str(address)+"\n\n";
+
+    place = aux.getReg();
+    code += "lw $t"+aux.to_str(place)+", 0($t"+aux.to_str(address)+")\n\n";
+    aux.freeReg(address);
     return 0;
 }

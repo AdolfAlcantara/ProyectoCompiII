@@ -84,7 +84,7 @@
 %token Indent
 %token Dedent
 %type<Ast::Expr*> expr term factor prod factor_p
-%type<Ast::Node *> complex_stmts simple_stmts simple_stmts_p print_stmt assign_stmt arg_list arg_list_p
+%type<Ast::Node *> stmts_list func_defs complex_stmts simple_stmts simple_stmts_p print_stmt assign_stmt arg_list arg_list_p
 %type<Ast::Node *> print_stmt_pp print_stmt_p
 %type<Ast::Node *> if_stmt if_opt if_opt_p 
 %type<Ast::Node *> for_stmt while_stmt 
@@ -92,11 +92,37 @@
 %type<Ast::Node *> assign_stmt_op array_stmt
 
 %% 
-input: NewLine complex_stmts {root = $2;}
-        | complex_stmts     {root = $1;}
+input: NewLine stmts_list {root = $2;}
+        | stmts_list     {root = $1;}
 ;
 
-complex_stmts: complex_stmts KW_DEF func_decl   {
+stmts_list: func_defs complex_stmts { $$ = new Ast::StmtList(reinterpret_cast<Ast::BlockStmt*>($1),reinterpret_cast<Ast::BlockStmt*>($2));}
+            | complex_stmts { $$ = new Ast::StmtList(nullptr,reinterpret_cast<Ast::BlockStmt*>($1));}
+;
+
+func_defs: func_defs KW_DEF func_decl           {
+                                                    $$ = $1;
+                                                    reinterpret_cast<Ast::BlockStmt*>($$)->l.push_back($3);
+                                                }
+            | KW_DEF func_decl                    {
+                                                    Ast::NodeVector stmts;
+                                                    stmts.push_back($2);
+                                                    $$ = new Ast::BlockStmt(stmts);
+                                                }
+;
+
+complex_stmts: complex_stmts simple_stmts       {
+                                                    $$ = $1;
+                                                    reinterpret_cast<Ast::BlockStmt*>($$)->l.push_back($2);
+                                                }
+                | simple_stmts                  {
+                                                    Ast::NodeVector stmts;
+                                                    stmts.push_back($1);
+                                                    $$ = new Ast::BlockStmt(stmts);
+                                                }
+;
+
+/* complex_stmts: complex_stmts KW_DEF func_decl   {
                                                     $$ = $1;
                                                     reinterpret_cast<Ast::BlockStmt*>($$)->l.push_back($3);
                                                 }
@@ -104,11 +130,11 @@ complex_stmts: complex_stmts KW_DEF func_decl   {
                                                     $$ = $1;
                                                     reinterpret_cast<Ast::BlockStmt*>($$)->l.push_back($2);
                                                 }
-                |/**/                           { 
+                |                           { 
                                                     Ast::NodeVector stmts;
                                                     $$ = new Ast::BlockStmt(stmts);
                                                 }
-;
+; */
 
 func_decl:  TK_IDENTIFIER TK_OPENPAR arg_list TK_CLOSEPAR TK_COLON Indent complex_stmts Dedent
             {
