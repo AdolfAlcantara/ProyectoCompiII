@@ -323,9 +323,54 @@ gen(SubExpr)
     return 0;
 }
 
-gen(MulExpr) {return 0;}
-gen(DivExpr) {return 0;}
-gen(ModExpr) {return 0;}
+gen(MulExpr)
+{
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    place = aux.getReg();
+
+    code = expr1->code + expr2->code;
+    code += "mult\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n\n";
+    code += "mflo\t\t $t"+aux.to_str(place)+"\n";
+    
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);
+    return 0;
+}
+
+gen(DivExpr) 
+{
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    place = aux.getReg();
+
+    code = expr1->code + expr2->code;
+    code += "div\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n\n";
+    code += "mflo\t\t $t"+aux.to_str(place)+"\n";
+    
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);   
+    
+    return 0;
+}
+gen(ModExpr)
+{
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    place = aux.getReg();
+
+    code = expr1->code + expr2->code;
+    code += "div\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n\n";
+    code += "mfhi\t\t $t"+aux.to_str(place)+"\n";
+    
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);   
+        
+    return 0;
+}
 gen(PwdExpr) {return 0;}
 gen(GTExpr) 
 {
@@ -414,10 +459,13 @@ gen(IdExpr){
 
 gen(InputExpr){
     place = aux.getReg();
-    
+    string_t var = aux.saveVar(vars,text,2);
+    code="";
     // code = "addi\t\t $sp, $sp, -4\n";
     code += "sw\t\t $ra, 0($sp)\n";
     
+    code += "la\t\t $a0,"+var+"\n";
+    code += "jal\t\t print_str\n";
     code += "jal read_int\n";
     code+= "move\t\t $t"+aux.to_str(place)+", $v0\n";
 
