@@ -371,7 +371,68 @@ gen(ModExpr)
         
     return 0;
 }
-gen(PwdExpr) {return 0;}
+gen(PwdExpr) 
+{
+    int place = aux.getReg();
+    code = "";
+    if(expr1->getKindName() == "NumExpr" && expr2->getKindName() == "NumExpr")
+    {
+        int res = pow(reinterpret_cast<Ast::NumExpr*>(expr1)->value, reinterpret_cast<Ast::NumExpr*>(expr2)->value);
+        code += "li\t\t $t"+aux.to_str(place)+", "+aux.to_str(res)+"\n\n";
+
+    }else if(expr2->getKindName() == "NumExpr")
+    {
+        if(reinterpret_cast<Ast::NumExpr*>(expr2)->value == 0){
+            code += "li\t\t $t"+aux.to_str(place)+", 1";
+        }else if(reinterpret_cast<Ast::NumExpr*>(expr2)->value == 1){
+            expr1->gen(vars);
+            code += expr1->code;
+            code += "move\t\t $t"+aux.to_str(place)+",$t"+aux.to_str(expr1->place)+"\n";
+            aux.freeReg(expr1->place);
+        }else{
+            expr1->gen(vars);
+            expr2->gen(vars);
+
+            std::string pwd_label = aux.labelGenerator("pwd");
+            std::string pwd_end_label = aux.labelGenerator("pwd");
+            code += expr1->code + expr2->code;
+            code += "li\t\t $t"+aux.to_str(place)+", 1\n";
+
+            code += pwd_label+":\n";
+            code += "beq\t\t $t"+aux.to_str(expr2->place)+",$zero, "+pwd_end_label+"\n";
+            code += "mult\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+"\n";
+            code += "mflo\t\t $t"+aux.to_str(place)+"\n\n";
+            code += "addi\t\t $t"+aux.to_str(expr2->place)+", $t"+aux.to_str(expr2->place)+", -1\n";
+            code += "j\t\t "+pwd_label+"\n";
+
+            code+= pwd_end_label+":\n";
+
+            aux.freeReg(expr1->place);
+            aux.freeReg(expr2->place);
+        }
+    }else{
+        expr1->gen(vars);
+        expr2->gen(vars);
+        std::string pwd_label = aux.labelGenerator("pwd");
+        std::string pwd_end_label = aux.labelGenerator("pwd");
+        code += expr1->code + expr2->code;
+        code += "li\t\t $t"+aux.to_str(place)+", 1\n";
+
+        code += pwd_label+":\n";
+        code += "beq\t\t $t"+aux.to_str(expr2->place)+",$zero, "+pwd_end_label+"\n";
+        code += "mult\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+"\n";
+        code += "mflo\t\t $t"+aux.to_str(place)+"\n\n";
+        code += "addi\t\t $t"+aux.to_str(expr2->place)+", $t"+aux.to_str(expr2->place)+", -1\n";
+        code += "j\t\t "+pwd_label+"\n";
+
+        code+= pwd_end_label+":\n";
+
+        aux.freeReg(expr1->place);
+        aux.freeReg(expr2->place);
+    }
+    return 0;
+}
+
 gen(GTExpr) 
 {
     expr1->gen(vars);
@@ -384,6 +445,7 @@ gen(GTExpr)
     aux.freeReg(expr2->place);
     return 0;
 }
+
 gen(LTExpr) 
 {
     expr1->gen(vars);
@@ -396,12 +458,15 @@ gen(LTExpr)
     aux.freeReg(expr2->place);
     return 0;
 }
+
 gen(GEExpr) {return 0;}
+
 gen(LEExpr) 
 {
     
     return 0;
 }
+
 gen(EqExpr) 
 {
     expr1->gen(vars);

@@ -13,4 +13,4 @@ print "Sub ", x - y
 print "Mul ", x * y
 print "Div ", x / y
 print "Mod ", x % y
-# print "Exp ", x ** y
+print "Exp ", x ** y
