@@ -7,19 +7,8 @@ x = input("Enter a number: ")
 y = input("Enter another number : ")
 
 if x == y:
-    print "X is equal to Y"
-    x = y + 1
-    print x
-elif x > y:
-    print "X is more than Y"
-    y = x + 10
-    print y
+    print 'X is equal to Y'
+elif x < y:
+    print 'X is less than Y'
 else:
-    print "X is not equal to Y"
-    if x < y:
-        print "X is less than Y"
-    else:
-        print "X is not equal"
-
-x = 10
-print x
+    print 'X is not equal to Y'

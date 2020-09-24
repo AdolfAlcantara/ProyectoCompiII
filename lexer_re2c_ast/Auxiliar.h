@@ -77,6 +77,9 @@ public:
             return "";
         }else{
             std::string var = varGenerator();
+
+            t = t.substr(1, t.size() - 2);
+            t = "\""+t+"\"";
             vars.insert({var,t});
             return var;
         }

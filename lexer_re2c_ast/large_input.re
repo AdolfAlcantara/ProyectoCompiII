@@ -22,7 +22,7 @@ int ExprLexer::getNextToken(semantic_type *yylval)
 
     
     if(remaining_tokens.size() > 0){
-        std::cout<<"dedent in stack\n";
+        //std::cout<<"dedent in stack\n";
         remaining_tokens.pop_back();
         return makeToken(token::Dedent);
     }
@@ -51,8 +51,8 @@ int ExprLexer::getNextToken(semantic_type *yylval)
             *       {return TkError();}
             [\n]   {   
                         //continue;
-                        std::cout<<"global newline: "<<input.tokenText();
-                        std::cout<<"global newline size: "<<input.tokenText().length() <<"\n";
+                        //std::cout<<"global newline: "<<input.tokenText();
+                        //std::cout<<"global newline size: "<<input.tokenText().length() <<"\n";
                         //makeToken(token::TK_EOF);
                         input.tok = input.cur;
                         goto indent_block;
@@ -62,71 +62,71 @@ int ExprLexer::getNextToken(semantic_type *yylval)
             
             num     {
                 yylval->emplace<int>(std::strtol(std::string(input.tok, input.cur).c_str(), nullptr,10));
-                std::cout<<"number token\n";
-                std::cout<<"-----"<<"\n"; 
+                //std::cout<<"number token\n";
+                //std::cout<<"-----"<<"\n"; 
                 return makeToken(token::TK_NUMBER);
             }
             ident   {
                 yylval->emplace<std::string>(std::string(input.tok, input.cur).c_str(),std::string(input.tok, input.cur).size());
                 if(input.tokenText().compare("print")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"print token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"print token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_PRINT);
                 }else if(input.tokenText().compare("input")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"input token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"input token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_INPUT);
                 }else if(input.tokenText().compare("if")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"if token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"if token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_IF);
                 }else if(input.tokenText().compare("elif")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"elif token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"elif token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_ELIF);
                 }else if(input.tokenText().compare("else")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"else token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"else token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_ELSE);
                 }else if(input.tokenText().compare("def")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"def token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"def token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_DEF);
                 }else if(input.tokenText().compare("return")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"return token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"return token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_RETURN);
                 }else if(input.tokenText().compare("while")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"while token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"while token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_WHILE);
                 }else if(input.tokenText().compare("for")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"for token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"for token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_FOR);
                 }else if(input.tokenText().compare("in")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"in token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"in token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_IN);
                 }else if(input.tokenText().compare("range")==0){
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"range token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"range token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::KW_RANGE);
                 }else{
-                    std::cout<<"secret word: "<<input.tokenText()<<"\n";
-                    std::cout<<"ident token\n";
-                    std::cout<<"-----"<<"\n"; 
+                    //std::cout<<"secret word: "<<input.tokenText()<<"\n";
+                    //std::cout<<"ident token\n";
+                    //std::cout<<"-----"<<"\n"; 
                     return makeToken(token::TK_IDENTIFIER);
                 }
                 
@@ -135,101 +135,101 @@ int ExprLexer::getNextToken(semantic_type *yylval)
 
             string {
                 yylval->emplace<std::string>(std::string(input.tok, input.cur).c_str(),std::string(input.tok, input.cur).size());
-                std::cout<<input.tokenText()<<"\n"; 
-                std::cout<<"string token\n";
-                std::cout<<"-----"<<"\n"; 
+                //std::cout<<input.tokenText()<<"\n"; 
+                //std::cout<<"string token\n";
+                //std::cout<<"-----"<<"\n"; 
                 return makeToken(token::TK_STRING);
                 }
             comment {
-                std::cout<<input.tokenText()<<"\n";
-                std::cout<<"-----"<<"\n"; 
+                //std::cout<<input.tokenText()<<"\n";
+                //std::cout<<"-----"<<"\n"; 
                 continue;
             }
             
             "+"  { return makeToken(token::OP_ADD);}
             "-"  { return makeToken(token::OP_SUB);}
             "**"  { 
-                    std::cout<<"pwd token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"pwd token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::OP_PWD);
                     }
             "*"  { 
-                    std::cout<<"mult token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"mult token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::OP_MUL);
                 }
             "/"  { return makeToken(token::OP_DIV);}
             "%"  { 
-                    std::cout<<"mod token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"mod token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::OP_MOD);}
             "="  {
-                    std::cout<<"assign token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"assign token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::OP_ASSIGN);}
             "("  {
-                    std::cout<<"open par token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"open par token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::TK_OPENPAR);}
             ")"  {
-                    std::cout<<"close par token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"close par token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     auto x = makeToken(token::TK_CLOSEPAR);
-                    std::cout<<text<<"\n";
+                    //std::cout<<text<<"\n";
                     return x;
                 }
             "["  {
-                    std::cout<<"open bracket token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"open bracket token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     auto x = makeToken(token::TK_OPENBCKT);
-                    std::cout<<text<<"\n";
+                    //std::cout<<text<<"\n";
                     return x;
                 }
             "]"  {
-                    std::cout<<"close bracket token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"close bracket token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     auto x = makeToken(token::TK_CLOSEBCKT);
-                    std::cout<<text<<"\n";
+                    //std::cout<<text<<"\n";
                     return x;
                 }
             ","  {
-                    std::cout<<"comma token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"comma token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::TK_COMMA);
                 }
             ":" {
-                    std::cout<<"colon token\n";
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"colon token\n";
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::TK_COLON);
                 }
             ">"  {
-                    std::cout<<"greater than token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"greater than token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::OP_GT);
                 }
             "<"  {
-                    std::cout<<"less than token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"less than token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::OP_LT);
                 }
             ">="  {
-                    std::cout<<"GET token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"GET token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::OP_GET);
                 }
             "<="  {
-                    std::cout<<"LET token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"LET token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::OP_LET);
                 }
             "=="  {
-                    std::cout<<"Equal token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"Equal token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::OP_EQ);
                 }
             "!="  {
-                    std::cout<<"Not equal token\n"; 
-                    std::cout<<"-----"<<"\n";
+                    //std::cout<<"Not equal token\n"; 
+                    //std::cout<<"-----"<<"\n";
                     return makeToken(token::OP_NEQ);
                 }
         
@@ -241,7 +241,7 @@ int ExprLexer::getNextToken(semantic_type *yylval)
 
                 comment { continue;}
 
-                "\n" {  std::cout<<"indent_b new line: "<<input.tokenText()<<"\n"; 
+                "\n" {  //std::cout<<"indent_b new line: "<<input.tokenText()<<"\n"; 
                         input.tok = input.cur;
                         goto indent_block;
                     }
@@ -249,39 +249,39 @@ int ExprLexer::getNextToken(semantic_type *yylval)
                 [ \t]* {
                     //input.cur--;
                     //yylval->emplace<std::string>(std::string(input.tok, input.cur).c_str(),std::string(input.tok, input.cur).size());
-                    //std::cout<<"text: "<<input.tokenText()<<"\n";
-                    //std::cout<<"text: "<<input.tokenText()<<"\n";
+                    ////std::cout<<"text: "<<input.tokenText()<<"\n";
+                    ////std::cout<<"text: "<<input.tokenText()<<"\n";
                     int _spaces = input.tokenText().length();
-                    std::cout<<"spaces entrando:" << _spaces << "\n";
-                    std::cout<<"pila de espacios:" << spaces.size() << "\n";
+                    //std::cout<<"spaces entrando:" << _spaces << "\n";
+                    //std::cout<<"pila de espacios:" << spaces.size() << "\n";
                     for(int x = 0; x<spaces.size(); x++){
-                        std::cout<<"pos:"<<x<<", text:"<<spaces[x] << "\n";
+                        //std::cout<<"pos:"<<x<<", text:"<<spaces[x] << "\n";
                     }
                     
 
                     if(_spaces > spaces.back()){
-                        std::cout<<"flag\n";
+                        //std::cout<<"flag\n";
                         spaces.push_back(_spaces);
-                        std::cout<<"Push:" << _spaces << "\n\n";
+                        //std::cout<<"Push:" << _spaces << "\n\n";
 
-                        std::cout<<"indent token\n"; 
-                        std::cout<<"-----"<<"\n";    
+                        //std::cout<<"indent token\n"; 
+                        //std::cout<<"-----"<<"\n";    
                         return makeToken(token::Indent);
 
                     }else if(_spaces < spaces.back()){
                             while(_spaces != spaces.back()){
                                 remaining_tokens.push_back(token::Dedent);
-                                std::cout<<"Pop:" << spaces.back() << "\n\n";
+                                //std::cout<<"Pop:" << spaces.back() << "\n\n";
                                 spaces.pop_back();
                             }
-                            //std::cout<<"remaining_dedents size: "<< remaining_dedents.size() << "\n";
+                            ////std::cout<<"remaining_dedents size: "<< remaining_dedents.size() << "\n";
                             remaining_tokens.pop_back();
-                            std::cout<<"Dedent token\n"; 
-                            std::cout<<"-----"<<"\n";    
+                            //std::cout<<"Dedent token\n"; 
+                            //std::cout<<"-----"<<"\n";    
                             return makeToken(token::Dedent);
                     }else{
-                        std::cout<<"newline token\n"; 
-                        std::cout<<"-----"<<"\n";    
+                        //std::cout<<"newline token\n"; 
+                        //std::cout<<"-----"<<"\n";    
                         return makeToken(token::NewLine);
                     }
                 }

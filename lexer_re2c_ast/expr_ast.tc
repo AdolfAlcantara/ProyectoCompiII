@@ -179,7 +179,7 @@ eval(IdExpr){
 }
 
 eval(InputExpr){
-    std::cout<<text;
+    //std::cout<<text;
     int val;
     std::cin>>val;
     return val;
@@ -224,28 +224,15 @@ eval(ArgList){
 }
 
 eval(ForStmt){
-    // int second = args->args.back()->eval(vars);
-    // std::cout<<"second: "<<second<<std::endl;
-    // args->args.pop_back();
-    // int first = args->args.back()->eval(vars);
-    // std::cout<<"first: "<<first<<std::endl;
-    // vars[id] = first;
-    // int i = first;
-    // for(;i<second;){
-    //     blck_stmts->eval(vars);
-    //     i++;
-    //     vars[id] = i;
-    // }
+
     return 0;
 }
 
 eval(PrintExpr){
-    std::cout << expr->eval(vars);
     return 0;
 }
 
 eval(PrintString){
-    std::cout<<literal;
     return 0;
 }
 
@@ -253,7 +240,7 @@ eval(PrintList){
     for(const auto& p : vals){
         p->eval(vars);
     }
-    std::cout<<std::endl;
+    //std::cout<<std::endl;
     return 0;
 }
 
@@ -459,10 +446,55 @@ gen(LTExpr)
     return 0;
 }
 
-gen(GEExpr) {return 0;}
+gen(GEExpr) {
+
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    code = expr1->code + expr2->code;
+    int gt = aux.getReg();
+    code+="slt\t\t $t"+aux.to_str(gt)+", $t"+aux.to_str(expr2->place)+", $t"+aux.to_str(expr1->place)+"\n";
+
+    int eq = aux.getReg();
+    code += "sub\t\t $t"+aux.to_str(eq)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+    code += "slt\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(eq)+", $zero\n";
+    code += "slt\t\t $t"+aux.to_str(expr2->place)+", $zero, $t"+aux.to_str(eq)+"\n";
+    code += "xori\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr1->place)+", 1\n";
+    code += "xori\t\t $t"+aux.to_str(expr2->place)+", $t"+aux.to_str(expr2->place)+", 0\n";
+    code += "xor\t\t $t"+aux.to_str(eq)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n";
+
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);
+    place = aux.getReg();
+
+    code += "or\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(gt)+", $t"+aux.to_str(eq)+"\n";
+    
+
+    return 0;
+}
 
 gen(LEExpr) 
 {
+    expr1->gen(vars);
+    expr2->gen(vars);
+
+    code = expr1->code + expr2->code;
+    int lt = aux.getReg();
+    code+="slt\t\t $t"+aux.to_str(lt)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n";
+
+    int eq = aux.getReg();
+    code += "sub\t\t $t"+aux.to_str(eq)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+    code += "slt\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(eq)+", $zero\n";
+    code += "slt\t\t $t"+aux.to_str(expr2->place)+", $zero, $t"+aux.to_str(eq)+"\n";
+    code += "xori\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr1->place)+", 1\n";
+    code += "xori\t\t $t"+aux.to_str(expr2->place)+", $t"+aux.to_str(expr2->place)+", 0\n";
+    code += "xor\t\t $t"+aux.to_str(eq)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n";
+
+    aux.freeReg(expr1->place);
+    aux.freeReg(expr2->place);
+    place = aux.getReg();
+
+    code += "or\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(lt)+", $t"+aux.to_str(eq)+"\n";
     
     return 0;
 }
@@ -514,9 +546,9 @@ gen(NumExpr)
 }
 
 gen(IdExpr){
-    std::cout<<"IdExpr:"<<id<<"\n";
+    //std::cout<<"IdExpr:"<<id<<"\n";
     place  = aux.getReg();
-    std::cout<<"Reg:"<<place<<"\n";
+    //std::cout<<"Reg:"<<place<<"\n";
     code = "la\t\t $t"+aux.to_str(place)+", "+id+"\n";
     code += "lw\t\t $t"+aux.to_str(place)+", 0($t"+aux.to_str(place)+")\n";
     return 0;

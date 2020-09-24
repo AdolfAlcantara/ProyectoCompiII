@@ -3,6 +3,27 @@
 #include <unordered_map>
 #include "lexer.h"
 
+std::string getFileName(std::string path){
+    std::size_t pos = path.find_last_of("/");
+    path = path.substr(pos+1);
+    pos = path.find(".");
+    path = path.substr(0,pos);
+    return path;
+}
+
+std::string createContext(Ast::SymbolTableGen symb_tbl_gen){
+    std::string context =".global main\n.data\n";
+    for(auto &x: symb_tbl_gen){
+        if(x.second == ""){
+            context += x.first +": .word 0\n";
+        }else{
+            context += x.first+":\n\t.byte "+x.second+", 0 \n";
+        }
+    }
+    context += "\n.text\n";
+    return context;
+}
+
 int main(int argc, char* argv[])
 {
 
@@ -20,6 +41,10 @@ int main(int argc, char* argv[])
         return 1;
     }
 
+    std::string name = getFileName(argv[1]);
+    name = "../generated/"+name+".asm";
+    
+
     Ast::Node *root;
     ExprLexer lexer(in);
     Expr::Parser p(root,lexer);
@@ -31,23 +56,15 @@ int main(int argc, char* argv[])
     }
     Ast::SymbolTable symb_tbl;
     Ast::SymbolTableGen symb_tbl_gen;
-    root->eval(symb_tbl);
+    //root->eval(symb_tbl);
     root->gen(symb_tbl_gen);
 
-    std::string context =".global main\n.data\n";
-    for(auto &x: symb_tbl_gen){
-        if(x.second == ""){
-            context += x.first +": .word 0\n";
-        }else{
-            context += x.first+":\n\t.byte "+x.second+", 0 \n";
-        }
-    }
-    context += "\n.text\n";
-    context += root->code;
-    std::cout<<"Codigo generado:"<<std::endl;
-    std::cout<<context;
+    std::string context = createContext(symb_tbl_gen);
+    context+= root->code;
 
+    std::ofstream mips_generated(name);
+    mips_generated<<context;
+    mips_generated.close();
 
     return 0;
 }
-
