@@ -13,6 +13,8 @@ std::string getFileName(std::string path){
 
 std::string createContext(Ast::SymbolTableGen symb_tbl_gen){
     std::string context =".global main\n.data\n";
+    context += "true:\n\t.byte \"true\", 0\n";
+    context += "false:\n\t.byte \"false\", 0\n";
     for(auto &x: symb_tbl_gen){
         if(x.second == ""){
             context += x.first +": .word 0\n";
@@ -21,6 +23,24 @@ std::string createContext(Ast::SymbolTableGen symb_tbl_gen){
         }
     }
     context += "\n.text\n";
+    //print true block stmt
+    context += "print_true:\n\n";
+    context += "addi\t\t $sp, $sp, -4\n";
+    context += "sw\t\t $ra, 0($sp)\n";
+    context += "la\t\t $a0, true\n";
+    context += "jal\t\t print_str\n";
+    context += "lw\t\t $ra, 0($sp)\n";
+    context += "addi\t\t $sp, $sp, 4\n";
+    context += "jr\t\t $ra\n\n";
+
+    context += "print_false:\n\n";
+    context += "addi\t\t $sp, $sp, -4\n";
+    context += "sw\t\t $ra, 0($sp)\n";
+    context += "la\t\t $a0, false\n";
+    context += "jal\t\t print_str\n";
+    context += "lw\t\t $ra, 0($sp)\n";
+    context += "addi\t\t $sp, $sp, 4\n";
+    context += "jr\t\t $ra\n";
     return context;
 }
 

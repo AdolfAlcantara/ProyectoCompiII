@@ -53,6 +53,10 @@ namespace Ast
     string_t text;
 }
 
+%node BoolExpr Expr = {
+    Expr * expr;
+}
+
 %node AddExpr BinaryExpr
 %node SubExpr BinaryExpr
 %node MulExpr BinaryExpr
@@ -169,6 +173,10 @@ eval(NumExpr){
     return value;
 }
 
+eval(BoolExpr){
+    return 0;
+}
+
 eval(IdExpr){
     auto it = vars.find(id);
 
@@ -282,64 +290,93 @@ eval(ReturnStmt){
 
 gen(AddExpr)
 {
-    expr1->gen(vars);
-    expr2->gen(vars);
-
     place = aux.getReg();
+    if(expr1->getKindName() == "NumExpr" && expr2->getKindName() == "NumExpr")
+    {
+        int sum = reinterpret_cast<Ast::NumExpr*>(expr1)->value + reinterpret_cast<Ast::NumExpr*>(expr2)->value;
+        code = ";optimizacion suma\n";
+        code += "li\t\t $t"+aux.to_str(place)+", "+aux.to_str(sum)+"\n";
+    }else{
 
-    code = expr1->code + expr2->code;
-    code += "add\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+        expr1->gen(vars);
+        expr2->gen(vars);
 
-    aux.freeReg(expr1->place);
-    aux.freeReg(expr2->place);
+        code = expr1->code + expr2->code;
+        code += "add\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+
+        aux.freeReg(expr1->place);
+        aux.freeReg(expr2->place);
+    }
     return 0;
 }
 
 gen(SubExpr)
 {
-    expr1->gen(vars);
-    expr2->gen(vars);
-
     place = aux.getReg();
+    if(expr1->getKindName() == "NumExpr" && expr2->getKindName() == "NumExpr")
+    {
+        int sum = reinterpret_cast<Ast::NumExpr*>(expr1)->value - reinterpret_cast<Ast::NumExpr*>(expr2)->value;
+        code = ";optimizacion resta\n";
+        code += "li\t\t $t"+aux.to_str(place)+", "+aux.to_str(sum)+"\n";
+    }else{
+        expr1->gen(vars);
+        expr2->gen(vars);
 
-    code = expr1->code + expr2->code;
-    code += "sub\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
+        code = expr1->code + expr2->code;
+        code += "sub\t\t $t"+aux.to_str(place)+", $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place) + "\n";
 
-    aux.freeReg(expr1->place);
-    aux.freeReg(expr2->place);
+        aux.freeReg(expr1->place);
+        aux.freeReg(expr2->place);
+    }
     return 0;
 }
 
 gen(MulExpr)
 {
-    expr1->gen(vars);
-    expr2->gen(vars);
-
     place = aux.getReg();
+    if(expr1->getKindName() == "NumExpr" && expr2->getKindName() == "NumExpr")
+    {
+        int sum = reinterpret_cast<Ast::NumExpr*>(expr1)->value * reinterpret_cast<Ast::NumExpr*>(expr2)->value;
+        code = ";optimizacion mul\n";
+        code += "li\t\t $t"+aux.to_str(place)+", "+aux.to_str(sum)+"\n";
+    }else{
+        expr1->gen(vars);
+        expr2->gen(vars);
 
-    code = expr1->code + expr2->code;
-    code += "mult\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n\n";
-    code += "mflo\t\t $t"+aux.to_str(place)+"\n";
-    
-    aux.freeReg(expr1->place);
-    aux.freeReg(expr2->place);
+        code = expr1->code + expr2->code;
+        code += "mult\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n\n";
+        code += "mflo\t\t $t"+aux.to_str(place)+"\n";
+        
+        aux.freeReg(expr1->place);
+        aux.freeReg(expr2->place);
+    }
     return 0;
 }
 
 gen(DivExpr) 
 {
-    expr1->gen(vars);
-    expr2->gen(vars);
-
     place = aux.getReg();
+    if(expr1->getKindName() == "NumExpr" && expr2->getKindName() == "NumExpr")
+    {
+        int _expr1 = reinterpret_cast<Ast::NumExpr*>(expr1)->value;
+        int _expr2 = reinterpret_cast<Ast::NumExpr*>(expr2)->value;
+        int res = 0;
+        if(_expr2 != 0 && _expr1 != 0){
+            res = _expr1 / _expr2;
+        } 
+        code = ";optimizacion div\n";
+        code += "li\t\t $t"+aux.to_str(place)+", "+aux.to_str(res)+"\n";
+    }else{
+        expr1->gen(vars);
+        expr2->gen(vars);
 
-    code = expr1->code + expr2->code;
-    code += "div\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n\n";
-    code += "mflo\t\t $t"+aux.to_str(place)+"\n";
-    
-    aux.freeReg(expr1->place);
-    aux.freeReg(expr2->place);   
-    
+        code = expr1->code + expr2->code;
+        code += "div\t\t $t"+aux.to_str(expr1->place)+", $t"+aux.to_str(expr2->place)+"\n\n";
+        code += "mflo\t\t $t"+aux.to_str(place)+"\n";
+        
+        aux.freeReg(expr1->place);
+        aux.freeReg(expr2->place);   
+    }
     return 0;
 }
 gen(ModExpr)
@@ -536,6 +573,15 @@ gen(NotExpr)
     
 }
 
+gen(BoolExpr){
+    expr->gen(vars);
+
+    place = expr->place;
+    code = expr->code;
+
+    return 0;
+}
+
 
 gen(NumExpr)
 {
@@ -672,10 +718,14 @@ gen(ForStmt){
 
 gen(PrintList){
     code = "";
+    code += "sw\t\t $ra, 0($sp)\n";
     for(const auto& val : vals){
         val->gen(vars);
         code += val->code;
     }
+    code+= "li\t\t $a0, 10\n";
+    code+= "jal\t\t print_char\n";
+    code += "lw\t\t $ra, 0($sp)\n";
     return 0;
 }
 
@@ -685,14 +735,27 @@ gen(PrintExpr)
 
     code = expr->code;
     // code += "addi\t\t $sp, $sp, -4\n";
-    code += "sw\t\t $ra, 0($sp)\n";
+    //code += "sw\t\t $ra, 0($sp)\n";
 
-    code+= "move\t\t $a0,$t"+aux.to_str(expr->place)+"\n";
-    code+= "jal\t\t print_int\n";
-    code+= "li\t\t $a0, 10\n";
-    code+= "jal\t\t print_char\n";
+    if(expr->getKindName()=="BoolExpr"){
+        std::string end_cond = aux.labelGenerator("end_cond");
+        std::string label_false = aux.labelGenerator("false");
 
-    code += "lw\t\t $ra, 0($sp)\n";
+        code += "beq\t\t $t"+aux.to_str(expr->place)+", $zero, "+label_false+"\n";
+        code += "jal\t\t print_true\n";
+        code += "j\t\t "+end_cond+"\n\n";
+        code += label_false+":\n";
+        code += "jal\t\t print_false\n";
+        code += end_cond+":\n\n";
+    }else{
+        code+= "move\t\t $a0,$t"+aux.to_str(expr->place)+"\n";
+        code+= "jal\t\t print_int\n";
+        // code+= "li\t\t $a0, 10\n";
+        // code+= "jal\t\t print_char\n";
+    }
+
+
+    //code += "lw\t\t $ra, 0($sp)\n";
     // code += "addi\t\t $sp, $sp, 4\n";
 
     aux.freeReg(expr->place);
@@ -703,14 +766,14 @@ gen(PrintString)
 {
     string_t var = aux.saveVar(vars,literal,2);
     // code = "addi\t\t $sp, $sp, -4\n";
-    code += "sw\t\t $ra, 0($sp)\n";
+    //code += "sw\t\t $ra, 0($sp)\n";
 
     code += "la\t\t $a0,"+var+"\n";
     code+= "jal\t\t print_str\n";
-    code+= "li\t\t $a0, 10\n";
-    code+= "jal\t\t print_char\n";
+    // code+= "li\t\t $a0, 10\n";
+    // code+= "jal\t\t print_char\n";
     
-    code += "lw\t\t $ra, 0($sp)\n";
+    // code += "lw\t\t $ra, 0($sp)\n";
     // code += "addi\t\t $sp, $sp, 4\n";
     return 0;
 }
@@ -802,16 +865,23 @@ gen(FuncDecl)
 }
 
 gen(FuncCall){
-    args->gen(vars);
-    code = args->code;
-    std::string _name = aux.getLabel(name);
-    // code += "addi\t\t $sp, $sp, -4\n";
-    code += "sw\t\t $ra, 0($sp)\n";
-    code += "jal\t\t "+_name+"\n\n";
-    code += "lw\t\t $ra, 0($sp)\n";
+    
     place = aux.getReg();
-    code += "move\t\t $t"+aux.to_str(place)+", $v0\n\n";
-    // code += "addi\t\t $sp, $sp, 4\n";
+    
+    if(name == "len"){
+        code+="li\t\t $t"+aux.to_str(place)+", 10\n\n";
+    }else{
+        args->gen(vars);
+        code = args->code;
+        std::string _name = aux.getLabel(name);
+        // code += "addi\t\t $sp, $sp, -4\n";
+        code += "sw\t\t $ra, 0($sp)\n";
+        code += "jal\t\t "+_name+"\n\n";
+        code += "lw\t\t $ra, 0($sp)\n";
+        
+        code += "move\t\t $t"+aux.to_str(place)+", $v0\n\n";
+        // code += "addi\t\t $sp, $sp, 4\n";
+    }
     return 0;
 }
 
@@ -838,7 +908,8 @@ gen(ArrayDecl){
         aux.freeReg(arg->place);
         spaces++;
     }
-    aux.saveArrayRange(spaces);
+
+    
     aux.saveVar(vars,name,1);
     code = "addi\t\t $sp, $sp, -"+aux.to_str(spaces*4)+"\n\n";
     code += tempCode;

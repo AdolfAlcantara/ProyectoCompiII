@@ -8,7 +8,7 @@ def getMin(arr, start, end):
     return min_idx
 
 def printArray(arr):
-    for i in range(0, 10):
+    for i in range(0, len(arr)):
         print arr[i]
 
 def selectionSort(arr, start, end):
@@ -21,5 +21,5 @@ def selectionSort(arr, start, end):
         selectionSort(arr, start + 1, end)
 
 arr = [100, 2, 67, 38, 76, 12, 50, 62, 14, 60]
-selectionSort(arr, 0, 10-1)
+selectionSort(arr, 0, len(arr)-1)
 printArray(arr)

@@ -260,12 +260,12 @@ print_stmt_pp: print_stmt_p TK_COMMA    {
 
 expr:   expr OP_ADD term {$$ = new Ast::AddExpr($1,$3);}
         | expr OP_SUB term {$$ = new Ast::SubExpr($1,$3);}
-        | expr OP_GT term {$$ = new Ast::GTExpr($1,$3);}
-        | expr OP_LT term {$$ = new Ast::LTExpr($1,$3);}
-        | expr OP_GET term {$$ = new Ast::GEExpr($1,$3);}
-        | expr OP_LET term {$$ = new Ast::LEExpr($1,$3);}
-        | expr OP_EQ term {$$ = new Ast::EqExpr($1,$3);}
-        | expr OP_NEQ term {$$ = new Ast::NotExpr($1,$3);}
+        | expr OP_GT term {$$ = new Ast::BoolExpr(new Ast::GTExpr($1,$3));}
+        | expr OP_LT term {$$ = new Ast::BoolExpr(new Ast::LTExpr($1,$3));}
+        | expr OP_GET term {$$ = new Ast::BoolExpr(new Ast::GEExpr($1,$3));}
+        | expr OP_LET term {$$ = new Ast::BoolExpr(new Ast::LEExpr($1,$3));}
+        | expr OP_EQ term {$$ = new Ast::BoolExpr(new Ast::EqExpr($1,$3));}
+        | expr OP_NEQ term {$$ = new Ast::BoolExpr( new Ast::NotExpr($1,$3));}
         | term {$$ = $1;}
 ;   
 

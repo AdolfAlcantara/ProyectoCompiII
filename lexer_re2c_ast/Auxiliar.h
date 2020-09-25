@@ -103,12 +103,12 @@ public:
     }
 
     void saveArrayRange(int spaces){
+        std::cout<<spaces<<"\n";
         arraySizes.push_back(spaces);
     }
 
-    int removeArrayRange(){
+    int getArrayRange(){
         int size = arraySizes.back();
-        arraySizes.pop_back();
         return size;
     }
 
